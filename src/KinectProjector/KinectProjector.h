@@ -35,6 +35,27 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include "Utils.h"
 #include "TemporalFrameFilter.h"
 
+// component names
+constexpr auto CMP_SPATIAL_FILTERING = "Spatial filtering";
+constexpr auto CMP_DRAW_KINECT_DEPTH_VIEW = "Draw kinect depth view";
+constexpr auto CMP_DRAW_KINECT_COLOR_VIEW = "Draw kinect color view";
+constexpr auto CMP_DUMP_DEBUG = "Dump Debug";
+constexpr auto CMP_QUICK_REACTION = "Quick reaction";
+constexpr auto CMP_AVERAGING = "Averaging";
+constexpr auto CMP_CEILING = "Ceiling";
+constexpr auto CMP_TILT_X = "Tilt X";
+constexpr auto CMP_TILT_Y = "Tilt Y";
+constexpr auto CMP_VERTICAL_OFFSET = "Vertical offset";
+constexpr auto CMP_SHOW_ROI_ON_SAND = "Show ROI on sand";
+constexpr auto CMP_INPAINT_OUTLIERS = "Inpaint outliers";
+constexpr auto CMP_FULL_FRAME_FILTERING = "Full Frame Filtering";
+
+// application states
+constexpr int APP_STATE_IDLE = 0;
+constexpr int APP_STATE_SETUP = 1;  // Shows depth image and display white rectangle on projector
+constexpr int APP_STATE_CALIBRATING = 2;
+constexpr int APP_STATE_RUNNING = 3;
+
 class ofxModalThemeProjKinect : public ofxModalTheme {
 public:
     ofxModalThemeProjKinect()
@@ -49,9 +70,12 @@ class KinectProjector {
 public:
     KinectProjector(std::shared_ptr<ofAppBaseWindow> const& p);
     
+    bool forceGuiUpdate;
+
     // Running loop functions
     void setup(bool sdisplayGui);
     void update();
+    void updateGuiValue();
     void updateNativeScale(float scaleMin, float scaleMax);
     void drawProjectorWindow();
     void drawMainWindow(float x, float y, float width, float height);
@@ -73,26 +97,49 @@ public:
 	// Try to start the application - assumes calibration has been done before
 	void startApplication();
 
-	// Setup & calibration functions
+    // Setup & calibration functions
     void startFullCalibration();
     void startAutomaticROIDetection();
     void startAutomaticKinectProjectorCalibration();
+    void setSpatialFiltering(bool sspatialFiltering, bool updateGui);
     void setGradFieldResolution(int gradFieldResolution);
 	void updateStatusGUI();
-	void setSpatialFiltering(bool sspatialFiltering);
-	void setInPainting(bool inp);
-	void setFullFrameFiltering(bool ff);	
+    void setForceGuiUpdate(bool value);
+    bool getSpatialFiltering();
+    void setInPainting(bool inp, bool updateGui);
+	bool getInPainting();
+    void setFullFrameFiltering(bool ff, bool updateGui);
+	bool getFullFrameFiltering();
+
 	
-	void setFollowBigChanges(bool sfollowBigChanges);
+	void setFollowBigChanges(bool sfollowBigChanges, bool updateGui);
+    bool getFollowBigChanges();
 	void StartManualROIDefinition();
 	void ResetSeaLevel();
 	void showROIonProjector(bool show);
+
+    bool getShowROIonProjector();
 
     // Gui and event functions
     void setupGui();
     void onButtonEvent(ofxDatGuiButtonEvent e);
 
 	void onToggleEvent(ofxDatGuiToggleEvent e);
+    void setAveraging(float value);
+    void setDrawKinectDepthView(bool value);
+    bool getDrawKinectDepthView();
+    void setDrawKinectColorView(bool value);
+    bool getDrawKinectColorView();
+    int getAveraging();
+    void setCeiling(float value);
+    float getCeiling();
+    void setTilt(float tiltX, float tiltY);
+    void setTiltX(float value);
+    void setTiltY(float value);
+    float getTiltX();
+    float getTiltY();
+    void setVerticalOffset(float value);
+    float getVerticalOffset();
     void onSliderEvent(ofxDatGuiSliderEvent e);
     void onConfirmModalEvent(ofxModalEvent e);
     void onCalibModalEvent(ofxModalEvent e);
@@ -163,10 +210,10 @@ public:
 	// The overall application stat
 	enum Application_state
 	{
-		APPLICATION_STATE_IDLE,
-		APPLICATION_STATE_SETUP,  // Shows depth image and display white rectangle on projector
-		APPLICATION_STATE_CALIBRATING,
-		APPLICATION_STATE_RUNNING
+		APPLICATION_STATE_IDLE = APP_STATE_IDLE,
+		APPLICATION_STATE_SETUP = APP_STATE_SETUP,  // Shows depth image and display white rectangle on projector
+		APPLICATION_STATE_CALIBRATING = APP_STATE_CALIBRATING,
+		APPLICATION_STATE_RUNNING = APP_STATE_RUNNING
 	};
 
 	Application_state GetApplicationState()
@@ -176,9 +223,13 @@ public:
 
 	bool getDumpDebugFiles();
 
+    void setDumpDebugFiles(bool value);
+
 	// Debug functions
 	void SaveFilteredDepthImage();
 	void SaveKinectColorImage();
+
+    ofxDatGui* getGui();
 
 private:
 
@@ -282,6 +333,10 @@ private:
     int                         numAveragingSlots;
 	bool                        doInpainting;
 	bool                        doFullFrameFiltering;
+
+    float tiltY;
+    float tiltX;
+    float verticalOffset;
 
     //kinect buffer
     ofxCvFloatImage             FilteredDepthImage;

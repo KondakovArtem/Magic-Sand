@@ -65,6 +65,9 @@ void CBoidGameController::setup(std::shared_ptr<KinectProjector> const& k)
 
 	// Vehicles
 	showMotherFish = false;
+	ofFish = 0;
+	ofShark = 0;
+	ofRabbits = 0;
 	showMotherRabbit = false;
 	motherPlatformSize = 30;
 	doFlippedDrawing = kinectProjector->getProjectionFlipped();
@@ -360,8 +363,11 @@ bool  CBoidGameController::InitiateGameSequence()
 
 		fboVehicles.end();
 		fish.clear();
+		ofFish = 0;
 		rabbits.clear();
+		ofRabbits = 0;
 		sharks.clear();
+		ofShark = 0;
 		showMotherFish = false;
 		showMotherRabbit = false;
 
@@ -498,16 +504,24 @@ bool CBoidGameController::StartSeekMotherGame()
 
 	fboVehicles.end();
 	fish.clear();
+	ofFish = 0;
 	rabbits.clear();
+	ofRabbits = 0;
 	sharks.clear();
+	ofShark = 0;
 	addMotherFish();
 	addMotherRabbit();
 
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 20; i++) {
 		addNewFish();
+		ofFish++;
+	}
+		
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 10; i++) {
 		addNewRabbit();
+		ofRabbits++;
+	}
 
 	UpdateGUI();
 	return true;
@@ -604,8 +618,7 @@ void CBoidGameController::addNewFish() {
 	//	addNewShark();
 }
 
-void CBoidGameController::addNewShark()
-{
+void CBoidGameController::addNewShark() {
 	ofVec2f location;
 	// Do not add  at borders
 	double W = kinectROI.getWidth() * 0.60;
@@ -807,8 +820,8 @@ void CBoidGameController::setupGui() {
 	gui = new ofxDatGui();
 	//	auto animalGame = gui->addFolder("Animal Game", ofColor::greenYellow);
 
-	//animalGame->addSlider("# of fish", 0, 10, fish.size())->setPrecision(0);
-	//animalGame->addSlider("# of rabbits", 0, 10, rabbits.size())->setPrecision(0);
+	//animalGame->addSlider(CMP_OF_FISH, 0, 10, fish.size())->setPrecision(0);
+	//animalGame->addSlider(CMP_OF_RABBITS, 0, 10, rabbits.size())->setPrecision(0);
 	//animalGame->addToggle("Mother fish", showMotherFish);
 	//animalGame->addToggle("Mother rabbit", showMotherRabbit);
 	//animalGame->addButton("Remove all animals");
@@ -816,9 +829,9 @@ void CBoidGameController::setupGui() {
 //	gui->addButton("Start Sandimal game");
 //	gui->addButton("Start Seek Mother game");
 
-	gui->addSlider("# of fish", 0, 200, fish.size())->setPrecision(0);
-	gui->addSlider("# of rabbits", 0, 50, rabbits.size())->setPrecision(0);
-	gui->addSlider("# of sharks", 0, 10, sharks.size())->setPrecision(0);
+	gui->addSlider(CMP_OF_FISH, 0, 200, ofFish)->setPrecision(0);
+	gui->addSlider(CMP_OF_RABBITS, 0, 50, ofRabbits)->setPrecision(0);
+	gui->addSlider(CMP_OF_SHARKS, 0, 10, ofShark)->setPrecision(0);
 	gui->addToggle("Mother fish", showMotherFish);
 	gui->addToggle("Mother rabbit", showMotherRabbit);
 	gui->addToggle("Draw flipped", doFlippedDrawing);
@@ -833,15 +846,19 @@ void CBoidGameController::setupGui() {
 
 	gui->setPosition(ofxDatGuiAnchor::BOTTOM_RIGHT); // You have to do it at the end
 	gui->setAutoDraw(false); // troubles with multiple windows drawings on Windows
-
+	
 //	std::cout << "GUI size " << gui->getWidth() << " x " << gui->getHeight() << std::endl;
+}
+
+ofxDatGui* CBoidGameController::getGui() {
+	return gui;
 }
 
 void CBoidGameController::UpdateGUI()
 {
-	gui->getSlider("# of fish")->setValue(fish.size());
-	gui->getSlider("# of rabbits")->setValue(rabbits.size());
-	gui->getSlider("# of sharks")->setValue(sharks.size());
+	gui->getSlider(CMP_OF_FISH)->setValue(ofFish);
+	gui->getSlider(CMP_OF_RABBITS)->setValue(ofRabbits);
+	gui->getSlider(CMP_OF_SHARKS)->setValue(ofShark);
 	gui->getToggle("Mother fish")->setEnabled(showMotherFish);
 	gui->getToggle("Mother rabbit")->setEnabled(showMotherRabbit);
 }
@@ -854,12 +871,15 @@ bool CBoidGameController::isIdle()
 void CBoidGameController::onButtonEvent(ofxDatGuiButtonEvent e) {
 	if (e.target->is("Remove all animals")) {
 		fish.clear();
+		ofFish = 0;
 		rabbits.clear();
+		ofRabbits = 0;
 		sharks.clear();
+		ofShark = 0;
 		showMotherFish = false;
 		showMotherRabbit = false;
-		gui->getSlider("# of fish")->setValue(0);
-		gui->getSlider("# of rabbits")->setValue(0);
+		gui->getSlider(CMP_OF_FISH)->setValue(0);
+		gui->getSlider(CMP_OF_RABBITS)->setValue(0);
 		gui->getToggle("Mother fish")->setChecked(false);
 		gui->getToggle("Mother rabbit")->setChecked(false);
 	}
@@ -897,36 +917,82 @@ void CBoidGameController::onToggleEvent(ofxDatGuiToggleEvent e) {
 	}
 }
 
-void CBoidGameController::onSliderEvent(ofxDatGuiSliderEvent e) {
-	if (e.target->is("# of fish")) {
-		if (e.value > fish.size())
-			while (e.value > fish.size()) {
-				addNewFish();
-			}
-		if (e.value < fish.size())
-			while (e.value < fish.size()) {
-				fish.pop_back();
-			}
 
+void CBoidGameController::adaptFish(int value) {
+	if (value > fish.size()) {
+		while (value > fish.size()) {
+			addNewFish();
+		}
 	}
-	else if (e.target->is("# of rabbits")) {
-		if (e.value > rabbits.size())
-			while (e.value > rabbits.size()) {
-				addNewRabbit();
-			}
-		if (e.value < rabbits.size())
-			while (e.value < rabbits.size()) {
-				rabbits.pop_back();
-			}
+	if (value < fish.size()) {
+		while (value < fish.size()) {
+			fish.pop_back();
+		}
 	}
-	else if (e.target->is("# of sharks")) {
-		if (e.value > sharks.size())
-			while (e.value > sharks.size()) {
-				addNewShark();
-			}
-		if (e.value < sharks.size())
-			while (e.value < sharks.size()) {
-				sharks.pop_back();
-			}
+}
+
+void CBoidGameController::setFish(int value) {
+	ofFish = value;
+	if (kinectProjector != nullptr && kinectProjector->GetApplicationState() == KinectProjector::APPLICATION_STATE_RUNNING) {
+		adaptFish(ofFish);
 	}
+}
+
+int CBoidGameController::getFish() {
+	return ofFish;
+}
+
+void CBoidGameController::adaptShark(int value) {
+	if (value > sharks.size()) {
+		while (value > sharks.size()) {
+			addNewShark();
+		}
+	}
+	if (value < sharks.size()) {
+		while (value < sharks.size()) {
+			sharks.pop_back();
+		}
+	}
+}
+
+void CBoidGameController::setSharks(int value) {
+	ofShark = value;
+	if (kinectProjector != nullptr && kinectProjector->GetApplicationState() == KinectProjector::APPLICATION_STATE_RUNNING) {
+		adaptShark(ofShark);
+	}
+}
+
+int CBoidGameController::getSharks() {
+	return ofShark;
+}
+
+
+void CBoidGameController::adaptRabbits(int value) {
+	if (value > rabbits.size()) {
+		while (value > rabbits.size()) {
+			addNewRabbit();
+		}
+	}
+	if (value < rabbits.size()) {
+		while (value < rabbits.size()) {
+			rabbits.pop_back();
+		}
+	}
+}
+
+void CBoidGameController::setRabbits(int value) {
+	ofRabbits = value;
+	if (kinectProjector != nullptr && kinectProjector->GetApplicationState() == KinectProjector::APPLICATION_STATE_RUNNING) {
+		adaptRabbits(ofRabbits);
+	}
+}
+
+int CBoidGameController::getRabbits() {
+	return ofRabbits;
+}
+
+void CBoidGameController::onSliderEvent(ofxDatGuiSliderEvent e) {
+	e.target->is(CMP_OF_FISH) ? setFish(e.value) : 
+	e.target->is(CMP_OF_RABBITS) ? setRabbits(e.value) :
+	e.target->is(CMP_OF_SHARKS) ? setSharks(e.value) : __noop;
 }

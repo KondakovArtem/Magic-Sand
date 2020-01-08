@@ -40,11 +40,15 @@ drawKinectView(false),
 drawKinectColorView(true)
 {
 	doShowROIonProjector = false;
+	tiltX = 0;
+	tiltY = 0;
 	applicationState = APPLICATION_STATE_SETUP;
     projWindow = p;
 	TemporalFilteringType = 1;
+	verticalOffset = 0;
 	DumpDebugFiles = true;
 	DebugFileOutDir = "DebugFiles//";
+	forceGuiUpdate = false;
 }
 
 void KinectProjector::setup(bool sdisplayGui)
@@ -81,7 +85,7 @@ void KinectProjector::setup(bool sdisplayGui)
 	basePlaneOffsetBack= ofVec3f(0,0,870); // This is our default baseplane offset
     basePlaneNormal = basePlaneNormalBack;
     basePlaneOffset = basePlaneOffsetBack;
-    basePlaneEq=getPlaneEquation(basePlaneOffset,basePlaneNormal);
+    basePlaneEq = getPlaneEquation(basePlaneOffset,basePlaneNormal);
     maxOffsetBack = basePlaneOffset.z-300;
     maxOffset = maxOffsetBack;
     maxOffsetSafeRange = 50; // Range above the autocalib measured max offset
@@ -237,10 +241,32 @@ void KinectProjector::updateStatusGUI()
 	StatusGUI->getLabel("Calibration Step")->setLabel("Calibration Step: " + calibrationText);;
 	StatusGUI->getLabel("Calibration Step")->setLabelColor(ofColor(0, 255, 255));
 
-	gui->getToggle("Spatial filtering")->setChecked(spatialFiltering);
-	gui->getToggle("Quick reaction")->setChecked(followBigChanges);
-	gui->getToggle("Inpaint outliers")->setChecked(doInpainting);
-	gui->getToggle("Full Frame Filtering")->setChecked(doFullFrameFiltering);
+	gui->getToggle(CMP_SPATIAL_FILTERING)->setChecked(spatialFiltering);
+	gui->getToggle(CMP_QUICK_REACTION)->setChecked(followBigChanges);
+	gui->getToggle(CMP_INPAINT_OUTLIERS)->setChecked(doInpainting);
+	gui->getToggle(CMP_FULL_FRAME_FILTERING)->setChecked(doFullFrameFiltering);
+}
+
+void KinectProjector::setForceGuiUpdate(bool value) {
+	forceGuiUpdate = value;
+}
+
+void KinectProjector::updateGuiValue() {
+	if (forceGuiUpdate) {
+		gui->getToggle(CMP_DRAW_KINECT_DEPTH_VIEW)->setChecked(drawKinectView);
+		gui->getToggle(CMP_DRAW_KINECT_COLOR_VIEW)->setChecked(drawKinectColorView);
+		gui->getToggle(CMP_DUMP_DEBUG)->setChecked(DumpDebugFiles);
+		gui->getSlider(CMP_CEILING)->setValue(getCeiling());
+		gui->getToggle(CMP_SPATIAL_FILTERING)->setChecked(spatialFiltering);
+		gui->getToggle(CMP_INPAINT_OUTLIERS)->setChecked(doInpainting);
+		gui->getToggle(CMP_FULL_FRAME_FILTERING)->setChecked(doFullFrameFiltering);
+		gui->getToggle(CMP_QUICK_REACTION)->setChecked(followBigChanges);
+		gui->getSlider(CMP_AVERAGING)->setValue(numAveragingSlots);
+		gui->getSlider(CMP_TILT_X)->setValue(tiltX);
+		gui->getSlider(CMP_TILT_Y)->setValue(tiltY);
+		gui->getSlider(CMP_VERTICAL_OFFSET)->setValue(verticalOffset);
+		setForceGuiUpdate(false);
+	}
 }
 
 void KinectProjector::update()
@@ -274,6 +300,8 @@ void KinectProjector::update()
 
 	if (displayGui)
 	{
+		
+		updateGuiValue();
 		gui->update();
 		StatusGUI->update();
 	}
@@ -1404,18 +1432,18 @@ void KinectProjector::setupGui(){
     gui->addBreak();
     
     auto advancedFolder = gui->addFolder("Advanced", ofColor::purple);
-    advancedFolder->addToggle("Display kinect depth view", drawKinectView)->setName("Draw kinect depth view");
-	advancedFolder->addToggle("Display kinect color view", drawKinectColorView)->setName("Draw kinect color view");
-	advancedFolder->addToggle("Dump Debug", DumpDebugFiles);
-	advancedFolder->addSlider("Ceiling", -300, 300, 0);
-    advancedFolder->addToggle("Spatial filtering", spatialFiltering);
-	advancedFolder->addToggle("Inpaint outliers", doInpainting);
-	advancedFolder->addToggle("Full Frame Filtering", doFullFrameFiltering);
-	advancedFolder->addToggle("Quick reaction", followBigChanges);
-    advancedFolder->addSlider("Averaging", 1, 40, numAveragingSlots)->setPrecision(0);
-	advancedFolder->addSlider("Tilt X", -30, 30, 0);
-	advancedFolder->addSlider("Tilt Y", -30, 30, 0);
-	advancedFolder->addSlider("Vertical offset", -100, 100, 0);
+    advancedFolder->addToggle("Display kinect depth view", drawKinectView)->setName(CMP_DRAW_KINECT_DEPTH_VIEW);
+	advancedFolder->addToggle("Display kinect color view", drawKinectColorView)->setName(CMP_DRAW_KINECT_COLOR_VIEW);
+	advancedFolder->addToggle(CMP_DUMP_DEBUG, DumpDebugFiles);
+	advancedFolder->addSlider(CMP_CEILING, -300, 300, 0);
+    advancedFolder->addToggle(CMP_SPATIAL_FILTERING, spatialFiltering);
+	advancedFolder->addToggle(CMP_INPAINT_OUTLIERS, doInpainting);
+	advancedFolder->addToggle(CMP_FULL_FRAME_FILTERING, doFullFrameFiltering);
+	advancedFolder->addToggle(CMP_QUICK_REACTION, followBigChanges);
+    advancedFolder->addSlider(CMP_AVERAGING, 1, 40, numAveragingSlots)->setPrecision(0);
+	advancedFolder->addSlider(CMP_TILT_X, -30, 30, tiltX);
+	advancedFolder->addSlider(CMP_TILT_Y, -30, 30, tiltY);
+	advancedFolder->addSlider(CMP_VERTICAL_OFFSET, -100, 100, verticalOffset);
 	advancedFolder->addButton("Reset sea level");
 	advancedFolder->addBreak();
 	
@@ -1423,18 +1451,18 @@ void KinectProjector::setupGui(){
 	calibrationFolder->addButton("Manually define sand region");
 	calibrationFolder->addButton("Automatically calibrate kinect & projector");
 	calibrationFolder->addButton("Auto Adjust ROI");
-	calibrationFolder->addToggle("Show ROI on sand", doShowROIonProjector);
+	calibrationFolder->addToggle(CMP_SHOW_ROI_ON_SAND, doShowROIonProjector);
 
-	//	advancedFolder->addButton("Draw ROI")->setName("Draw ROI");
- //   advancedFolder->addButton("Calibrate")->setName("Full Calibration");
-//	advancedFolder->addButton("Update ROI from calibration");
+//	  advancedFolder->addButton("Draw ROI")->setName("Draw ROI");
+//    advancedFolder->addButton("Calibrate")->setName("Full Calibration");
+//	  advancedFolder->addButton("Update ROI from calibration");
 //    gui->addButton("Automatically detect sand region");
 //    calibrationFolder->addButton("Manually define sand region");
 //    gui->addButton("Automatically calibrate kinect & projector");
 //    calibrationFolder->addButton("Manually calibrate kinect & projector");
-    
 //    gui->addBreak();
-    gui->addHeader(":: Settings ::", false);
+
+	gui->addHeader(":: Settings ::", false);
     
     // once the gui has been assembled, register callbacks to listen for component specific events //
     gui->onButtonEvent(this, &KinectProjector::onButtonEvent);
@@ -1506,10 +1534,10 @@ void KinectProjector::startApplication()
 			setNewKinectROI();
 			ROIcalibrated = true;
 			basePlaneComputed = true;
-			setFullFrameFiltering(doFullFrameFiltering);
-			setInPainting(doInpainting);
-			setFollowBigChanges(followBigChanges);
-			setSpatialFiltering(spatialFiltering);
+			setFullFrameFiltering(doFullFrameFiltering, true);
+			setInPainting(doInpainting, true);
+			setFollowBigChanges(followBigChanges, true);
+			setSpatialFiltering(spatialFiltering, true);
 
 			int nAvg = numAveragingSlots;
 			kinectgrabber.performInThread([nAvg](KinectGrabber & kg) {
@@ -1533,10 +1561,11 @@ void KinectProjector::startApplication()
 	autoCalibState = AUTOCALIB_STATE_DONE;
 	drawKinectColorView = false;
 	drawKinectView = false;
-	gui->getToggle("Draw kinect color view")->setChecked(drawKinectColorView);
-	gui->getToggle("Draw kinect depth view")->setChecked(drawKinectView);
+	gui->getToggle(CMP_DRAW_KINECT_COLOR_VIEW)->setChecked(drawKinectColorView);
+	gui->getToggle(CMP_DRAW_KINECT_DEPTH_VIEW)->setChecked(drawKinectView);
 	updateStatusGUI();
 }
+
 
 void KinectProjector::startFullCalibration()
 {
@@ -1605,39 +1634,63 @@ void KinectProjector::startAutomaticKinectProjectorCalibration(){
 	updateStatusGUI();
 }
 
-void KinectProjector::setSpatialFiltering(bool sspatialFiltering){
+void KinectProjector::setSpatialFiltering(bool sspatialFiltering, bool updateGui = true){
     spatialFiltering = sspatialFiltering;
     kinectgrabber.performInThread([sspatialFiltering](KinectGrabber & kg) {
         kg.setSpatialFiltering(sspatialFiltering);
     });
-	updateStatusGUI();
+	if (updateGui) {
+		updateStatusGUI();
+	}
 }
 
-void KinectProjector::setInPainting(bool inp) {
+bool KinectProjector::getSpatialFiltering() {
+	return spatialFiltering;
+}
+
+void KinectProjector::setInPainting(bool inp, bool updateGui = true) {
 	doInpainting = inp;
 	kinectgrabber.performInThread([inp](KinectGrabber & kg) {
 		kg.setInPainting(inp);
 	});
-	updateStatusGUI();
+	if (updateGui) {
+		updateStatusGUI();
+	}
 }
 
+bool KinectProjector::getInPainting() {
+	return doInpainting;
+}
 
-void KinectProjector::setFullFrameFiltering(bool ff)
+void KinectProjector::setFullFrameFiltering(bool ff, bool updateGui = true)
 {
 	doFullFrameFiltering = ff;
 	ofRectangle ROI = kinectROI;
 	kinectgrabber.performInThread([ff, ROI](KinectGrabber & kg) {
 		kg.setFullFrameFiltering(ff, ROI);
 	});
-	updateStatusGUI();
+	if (updateGui) {
+		updateStatusGUI();
+	}
 }
 
-void KinectProjector::setFollowBigChanges(bool sfollowBigChanges){
+bool KinectProjector::getFullFrameFiltering() {
+	return doFullFrameFiltering;
+}
+
+
+void KinectProjector::setFollowBigChanges(bool sfollowBigChanges, bool updateGui = true){
     followBigChanges = sfollowBigChanges;
     kinectgrabber.performInThread([sfollowBigChanges](KinectGrabber & kg) {
         kg.setFollowBigChange(sfollowBigChanges);
     });
-	updateStatusGUI();
+	if (updateGui) {
+		updateStatusGUI();
+	}
+}
+
+bool KinectProjector::getFollowBigChanges() {
+	return followBigChanges;
 }
 
 void KinectProjector::onButtonEvent(ofxDatGuiButtonEvent e){
@@ -1681,9 +1734,9 @@ void KinectProjector::StartManualROIDefinition()
 
 void KinectProjector::ResetSeaLevel()
 {
-	gui->getSlider("Tilt X")->setValue(0);
-	gui->getSlider("Tilt Y")->setValue(0);
-	gui->getSlider("Vertical offset")->setValue(0);
+	gui->getSlider(CMP_TILT_X)->setValue(0);
+	gui->getSlider(CMP_TILT_Y)->setValue(0);
+	gui->getSlider(CMP_VERTICAL_OFFSET)->setValue(0);
 	basePlaneNormal = basePlaneNormalBack;
 	basePlaneOffset = basePlaneOffsetBack;
 	basePlaneEq = getPlaneEquation(basePlaneOffset, basePlaneNormal);
@@ -1698,72 +1751,122 @@ void KinectProjector::showROIonProjector(bool show)
 	fboProjWindow.end();
 }
 
-bool KinectProjector::getDumpDebugFiles()
-{
+bool KinectProjector::getShowROIonProjector() {
+	return doShowROIonProjector;
+}
+
+void KinectProjector::setDumpDebugFiles(bool value) {
+	DumpDebugFiles = value;
+}
+
+bool KinectProjector::getDumpDebugFiles() {
 	return DumpDebugFiles;
 }
 
 void KinectProjector::onToggleEvent(ofxDatGuiToggleEvent e){
-    if (e.target->is("Spatial filtering")) {
-		setSpatialFiltering(e.checked);
-	}
-	else if (e.target->is("Quick reaction")) {
-		setFollowBigChanges(e.checked);
-	}
-	else if (e.target->is("Inpaint outliers")) {
-		setInPainting(e.checked);
-    } 
-	else if (e.target->is("Full Frame Filtering")) {
-		setFullFrameFiltering(e.checked);
-	}
-	else if (e.target->is("Draw kinect depth view")){
-        drawKinectView = e.checked;
-		if (drawKinectView)
-		{
-			drawKinectColorView = false;
-			gui->getToggle("Draw kinect color view")->setChecked(drawKinectColorView);
-		}
-    }
-	else if (e.target->is("Draw kinect color view")) {
-		drawKinectColorView = e.checked;
-		if (drawKinectColorView)
-		{
-			drawKinectView = false;
-			gui->getToggle("Draw kinect depth view")->setChecked(drawKinectView);
-		}
-	}
-	else if (e.target->is("Dump Debug"))
-	{
-		DumpDebugFiles = e.checked;
-	}
-	else if (e.target->is("Show ROI on sand"))
-	{
-		showROIonProjector(e.checked);
+	(e.target->is(CMP_SPATIAL_FILTERING)) ? setSpatialFiltering(e.checked) :
+	(e.target->is(CMP_QUICK_REACTION)) ? setFollowBigChanges(e.checked) :
+	(e.target->is(CMP_INPAINT_OUTLIERS)) ? setInPainting(e.checked) :
+	(e.target->is(CMP_FULL_FRAME_FILTERING)) ? setFullFrameFiltering(e.checked) :
+	(e.target->is(CMP_DRAW_KINECT_DEPTH_VIEW)) ? setDrawKinectDepthView(e.checked) :
+	(e.target->is(CMP_DRAW_KINECT_COLOR_VIEW)) ? setDrawKinectColorView(e.checked) :
+	(e.target->is(CMP_DUMP_DEBUG)) ? setDumpDebugFiles(e.checked) :
+	(e.target->is(CMP_SHOW_ROI_ON_SAND)) ? showROIonProjector(e.checked) : __noop;
+}
+
+
+void KinectProjector::setAveraging(float value) {
+	numAveragingSlots = value;
+	kinectgrabber.performInThread([value](KinectGrabber& kg) {
+		kg.setAveragingSlotsNumber(value);
+	});
+}
+
+void KinectProjector::setDrawKinectDepthView(bool value) {
+	drawKinectView = value;
+	if (drawKinectView) {
+		drawKinectColorView = false;
+		gui->getToggle(CMP_DRAW_KINECT_COLOR_VIEW)->setChecked(drawKinectColorView);
 	}
 }
 
+bool KinectProjector::getDrawKinectDepthView() {
+	return drawKinectView;
+}
+
+void KinectProjector::setDrawKinectColorView(bool value) {
+	drawKinectColorView = value;
+	if (drawKinectColorView) {
+		drawKinectView = false;
+		gui->getToggle(CMP_DRAW_KINECT_DEPTH_VIEW)->setChecked(drawKinectView);
+	}
+}
+
+bool KinectProjector::getDrawKinectColorView() {
+	return drawKinectColorView;
+}
+
+int KinectProjector::getAveraging() {
+	return numAveragingSlots;
+}
+
+void KinectProjector::setCeiling(float value) {
+	maxOffset = maxOffsetBack - value;
+	ofLogVerbose("KinectProjector") << "onSliderEvent(): maxOffset" << maxOffset;
+	kinectgrabber.performInThread([this](KinectGrabber& kg) {
+		kg.setMaxOffset(this->maxOffset);
+	});
+}
+
+float KinectProjector::getCeiling() {
+	return maxOffset - maxOffsetBack;
+}
+
+
+void KinectProjector::setTilt(float tiltX, float tiltY) {
+	//basePlaneNormal = basePlaneNormalBack.getRotated(gui->getSlider("Tilt X")->getValue(), ofVec3f(1, 0, 0));
+	//basePlaneNormal.rotate(gui->getSlider("Tilt Y")->getValue(), ofVec3f(0, 1, 0));
+	basePlaneNormal = basePlaneNormalBack.getRotated(tiltX, ofVec3f(1, 0, 0));
+	basePlaneNormal.rotate(tiltY, ofVec3f(0, 1, 0));
+	basePlaneEq = getPlaneEquation(basePlaneOffset, basePlaneNormal);
+	basePlaneUpdated = true;
+}
+
+void KinectProjector::setTiltX(float value) {
+	tiltX = value;
+	setTilt(tiltX, tiltY);
+}
+
+void KinectProjector::setTiltY(float value) {
+	tiltY = value;
+	setTilt(tiltX, tiltY);
+}
+
+float KinectProjector::getTiltX() {
+	return tiltX;
+}
+
+float KinectProjector::getTiltY() {
+	return tiltY;
+}
+
+void KinectProjector::setVerticalOffset(float value) {
+	verticalOffset = value;
+	basePlaneOffset.z = basePlaneOffsetBack.z + verticalOffset;
+	basePlaneEq = getPlaneEquation(basePlaneOffset, basePlaneNormal);
+	basePlaneUpdated = true;
+}
+
+float KinectProjector::getVerticalOffset() {
+	return verticalOffset;
+}
+
 void KinectProjector::onSliderEvent(ofxDatGuiSliderEvent e){
-    if (e.target->is("Tilt X") || e.target->is("Tilt Y")) {
-        basePlaneNormal = basePlaneNormalBack.getRotated(gui->getSlider("Tilt X")->getValue(), ofVec3f(1,0,0));
-        basePlaneNormal.rotate(gui->getSlider("Tilt Y")->getValue(), ofVec3f(0,1,0));
-        basePlaneEq = getPlaneEquation(basePlaneOffset,basePlaneNormal);
-        basePlaneUpdated = true;
-    } else if (e.target->is("Vertical offset")) {
-        basePlaneOffset.z = basePlaneOffsetBack.z + e.value;
-        basePlaneEq = getPlaneEquation(basePlaneOffset,basePlaneNormal);
-        basePlaneUpdated = true;
-    } else if (e.target->is("Ceiling")){
-        maxOffset = maxOffsetBack-e.value;
-        ofLogVerbose("KinectProjector") << "onSliderEvent(): maxOffset" << maxOffset ;
-        kinectgrabber.performInThread([this](KinectGrabber & kg) {
-            kg.setMaxOffset(this->maxOffset);
-        });
-    } else if(e.target->is("Averaging")){
-        numAveragingSlots = e.value;
-        kinectgrabber.performInThread([e](KinectGrabber & kg) {
-            kg.setAveragingSlotsNumber(e.value);
-        });
-    }
+	e.target->is(CMP_VERTICAL_OFFSET) ? setVerticalOffset(e.value) :
+	e.target->is(CMP_TILT_X) ? setTiltX(e.value) :
+	e.target->is(CMP_TILT_Y) ? setTiltY(e.value) :
+	e.target->is(CMP_CEILING) ? setCeiling(e.value) :
+	e.target->is(CMP_AVERAGING) ? setAveraging(e.value) : __noop;
 }
 
 void KinectProjector::onConfirmModalEvent(ofxModalEvent e)
@@ -2143,5 +2246,7 @@ void KinectProjector::SaveKinectColorImage()
 
 }
 
-
+ofxDatGui* KinectProjector::getGui() {
+	return gui;
+}
 

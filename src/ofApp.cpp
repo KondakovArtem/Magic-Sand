@@ -22,15 +22,18 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include "ofApp.h"
 
 void ofApp::setup() {
+
+	
 	// OF basics
 	ofSetFrameRate(60);
 	ofBackground(0);
 	ofSetVerticalSync(true);
-	ofSetLogLevel(OF_LOG_VERBOSE);
+	ofSetLogLevel(OF_LOG_NOTICE);
 	ofSetLogLevel("ofThread", OF_LOG_WARNING);
 	ofSetLogLevel("ofFbo", OF_LOG_ERROR);
 	ofSetLogLevel("ofShader", OF_LOG_ERROR);
 	ofSetLogLevel("ofxKinect", OF_LOG_WARNING);
+	ofSetLogLevel("ofxLibwebsockets", OF_LOG_ERROR);
 
 	// Setup kinectProjector
 	kinectProjector = std::make_shared<KinectProjector>(projWindow);
@@ -57,6 +60,8 @@ void ofApp::setup() {
 	boidGameController.setProjectorRes(projRes);
 	boidGameController.setKinectRes(kinectRes);
 	boidGameController.setKinectROI(kinectROI);
+
+	websocketServer = std::make_shared<WebsocketServer>(kinectProjector, boidGameController);
 
 }
 

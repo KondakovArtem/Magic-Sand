@@ -23,6 +23,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #ifndef _BoidGameController_h_
 #define _BoidGameController_h_
 
+
+constexpr auto CMP_OF_FISH = "# of fish";
+constexpr auto CMP_OF_RABBITS = "# of rabbits";
+constexpr auto CMP_OF_SHARKS = "# of sharks";
+
 #include "vehicle.h"
 #include "../KinectProjector/KinectProjector.h"
 
@@ -60,15 +65,30 @@ class CBoidGameController
 		void setDebug(bool flag);
 
 		void setupGui();
+		ofxDatGui* getGui();
 
 		bool isIdle();
+
+		
+
+		void adaptFish(int value);
+
+		void setFish(int value);
+		int getFish();
+		void adaptShark(int value);
+		void setSharks(int value);
+		int getSharks();
+		void adaptRabbits(int value);
+		void setRabbits(int value);
+
+		int getRabbits();
 
 	private:
 		
 		std::shared_ptr<KinectProjector> kinectProjector;
-
 		void onButtonEvent(ofxDatGuiButtonEvent e);
 		void onToggleEvent(ofxDatGuiToggleEvent e);
+		
 		void onSliderEvent(ofxDatGuiSliderEvent e);
 		void UpdateGUI();
 
@@ -165,6 +185,9 @@ class CBoidGameController
 		double Player1Skins;
 		double Player2Skins;
 
+		int ofFish;
+		int ofShark;
+		int ofRabbits;
 		// GUI
 		ofxDatGui* gui;
 };

@@ -21,12 +21,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 #pragma once
 
+#include "WebsocketServer/WebsocketServer.h";
 #include "ofMain.h"
 #include "ofxDatGui.h"
 #include "KinectProjector/KinectProjector.h"
 #include "SandSurfaceRenderer/SandSurfaceRenderer.h"
 #include "Games/MapGameController.h"
 #include "Games/BoidGameController.h"
+
 
 class ofApp : public ofBaseApp {
 
@@ -52,8 +54,12 @@ public:
 
 	std::shared_ptr<ofAppBaseWindow> projWindow;
 
+
+
+
 private:
 	std::shared_ptr<KinectProjector> kinectProjector;
+	std::shared_ptr<WebsocketServer> websocketServer;
 	SandSurfaceRenderer* sandSurfaceRenderer;
 	CMapGameController mapGameController;
 	CBoidGameController boidGameController;
