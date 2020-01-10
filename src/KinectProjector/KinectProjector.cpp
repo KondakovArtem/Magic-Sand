@@ -20,6 +20,7 @@ You should have received a copy of the GNU General Public License along
 with the Magic Sand; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ***********************************************************************/
+#define noop ((void)0)
 
 #include "KinectProjector.h"
 #include <sstream>
@@ -1772,7 +1773,7 @@ void KinectProjector::onToggleEvent(ofxDatGuiToggleEvent e){
 	(e.target->is(CMP_DRAW_KINECT_COLOR_VIEW)) ? setDrawKinectColorView(e.checked) :
 	(e.target->is(CMP_DUMP_DEBUG)) ? setDumpDebugFiles(e.checked) :
 	(e.target->is(CMP_SHOW_ROI_ON_SAND)) ? showROIonProjector(e.checked) : 
-	0;
+	noop;
 }
 
 
@@ -1868,7 +1869,7 @@ void KinectProjector::onSliderEvent(ofxDatGuiSliderEvent e){
 	e.target->is(CMP_TILT_Y) ? setTiltY(e.value) :
 	e.target->is(CMP_CEILING) ? setCeiling(e.value) :
 	e.target->is(CMP_AVERAGING) ? setAveraging(e.value) : 
-	0;
+	noop;
 }
 
 void KinectProjector::onConfirmModalEvent(ofxModalEvent e)
