@@ -1771,7 +1771,8 @@ void KinectProjector::onToggleEvent(ofxDatGuiToggleEvent e){
 	(e.target->is(CMP_DRAW_KINECT_DEPTH_VIEW)) ? setDrawKinectDepthView(e.checked) :
 	(e.target->is(CMP_DRAW_KINECT_COLOR_VIEW)) ? setDrawKinectColorView(e.checked) :
 	(e.target->is(CMP_DUMP_DEBUG)) ? setDumpDebugFiles(e.checked) :
-	(e.target->is(CMP_SHOW_ROI_ON_SAND)) ? showROIonProjector(e.checked) : __noop;
+	(e.target->is(CMP_SHOW_ROI_ON_SAND)) ? showROIonProjector(e.checked) : 
+	0;
 }
 
 
@@ -1866,7 +1867,8 @@ void KinectProjector::onSliderEvent(ofxDatGuiSliderEvent e){
 	e.target->is(CMP_TILT_X) ? setTiltX(e.value) :
 	e.target->is(CMP_TILT_Y) ? setTiltY(e.value) :
 	e.target->is(CMP_CEILING) ? setCeiling(e.value) :
-	e.target->is(CMP_AVERAGING) ? setAveraging(e.value) : __noop;
+	e.target->is(CMP_AVERAGING) ? setAveraging(e.value) : 
+	0;
 }
 
 void KinectProjector::onConfirmModalEvent(ofxModalEvent e)
