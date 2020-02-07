@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License along
 with the Augmented Reality Sandbox; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ***********************************************************************/
-
+#define noop ((void)0)
 
 #include "BoidGameController.h"
 
@@ -994,5 +994,5 @@ int CBoidGameController::getRabbits() {
 void CBoidGameController::onSliderEvent(ofxDatGuiSliderEvent e) {
 	e.target->is(CMP_OF_FISH) ? setFish(e.value) : 
 	e.target->is(CMP_OF_RABBITS) ? setRabbits(e.value) :
-	e.target->is(CMP_OF_SHARKS) ? setSharks(e.value) : __noop;
+	e.target->is(CMP_OF_SHARKS) ? setSharks(e.value) : noop;
 }
