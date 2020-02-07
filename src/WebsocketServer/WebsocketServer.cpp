@@ -48,7 +48,7 @@ void WebsocketServer::onMessage(ofxLibwebsockets::Event& args) {
 	if (!args.json.isNull()) {
 		const auto command = args.json.get(FL_COMMAND, "defaultCommand").asString();
 
-		
+		(command == CM_SET_STATE) ? resolveSetState(args) :
 		(command == CM_GET_STATE) ? resolveGetState(args) :
 		(command == CM_SET_VALUE) ? resolveSetValue(args) :
 		0;
@@ -83,8 +83,17 @@ void WebsocketServer::resolveResponse(ofxLibwebsockets::Event& args, int result,
 	message[FL_FIELD] = args.json.get(FL_FIELD, "FL_FIELD").asString();
 	message[FL_VALUE] = value;
 	message[FL_RESULT] = result;
-	Json::StyledWriter writer;
-	args.conn.send(writer.write(message));
+	sendMessage(args, message);
+}
+
+void WebsocketServer::resolveResponseState(ofxLibwebsockets::Event& args, int result, string error) {
+	Json::Value message;
+	message[FL_COMMAND] = args.json.get(FL_COMMAND, "FL_COMMAND").asString();
+	message[FL_VALUE] = args.json.get(FL_VALUE, "FL_VALUE").asString();
+	(!error.empty()) ? message[FL_ERROR] = error : 0;
+	message[FL_RESULT] = result;
+	
+	sendMessage(args, message);
 }
 
 void WebsocketServer::resolveGetState(ofxLibwebsockets::Event& args) {
@@ -110,8 +119,20 @@ void WebsocketServer::resolveGetState(ofxLibwebsockets::Event& args) {
 	message[FL_OF_FISH] = boidGameController.getFish();
 	message[FL_OF_RABBITS] = boidGameController.getRabbits();
 
-	Json::StyledWriter writer;
-	args.conn.send(writer.write(message));
+	sendMessage(args, message);
+}
+
+
+void WebsocketServer::resolveSetState(ofxLibwebsockets::Event& args) {
+	const auto kp = this->kinectProjector;
+	const auto value = args.json.get(FL_VALUE, "").asString();
+
+	if (value == CM_OP_START) {
+		string res = kp->startApplication(false);
+		int result = (res.empty()) ? 0 : 1;
+		resolveResponseState(args, result, res);
+	}
+
 }
 
 void WebsocketServer::resolveSetValue(ofxLibwebsockets::Event& args) {
@@ -139,6 +160,7 @@ void WebsocketServer::resolveSetValue(ofxLibwebsockets::Event& args) {
 	(field == FL_OF_SHARKS) ? resolveFloatValue(args, [this](float val) { this->boidGameController.setSharks(val); }, CMP_OF_SHARKS, getBoidGui()) :
 	(field == FL_OF_RABBITS) ? resolveFloatValue(args, [this](float val) { this->boidGameController.setRabbits(val); }, CMP_OF_RABBITS, getBoidGui()) :
 	0;
+	kp->externUpdate = true;
 }
 
 
@@ -161,3 +183,9 @@ void WebsocketServer::resolveFloatValue(ofxLibwebsockets::Event& args, Proc meth
 	resolveResponseFloat(args, 0);
 }
 
+void WebsocketServer::sendMessage(ofxLibwebsockets::Event& args, Json::Value message) {
+	Json::StyledWriter writer;
+	string str = writer.write(message);
+	cout << "send message " << str << endl;
+	args.conn.send(str);
+}

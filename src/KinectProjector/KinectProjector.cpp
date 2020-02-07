@@ -1484,25 +1484,32 @@ void KinectProjector::setupGui(){
 	StatusGUI->setAutoDraw(false);
 }
 
+string KinectProjector::startApplication() {
+	return startApplication(true);
+};
 
-void KinectProjector::startApplication()
-{
+
+string KinectProjector::startApplication(bool updateFlag = true){
+	
+	string message;
+
 	if (applicationState == APPLICATION_STATE_RUNNING)
 	{
 		applicationState = APPLICATION_STATE_SETUP;
-		updateStatusGUI();
-		return;
+		updateFlag ? updateStatusGUI() : 0;
+		return "";
 	}
 	if (applicationState == APPLICATION_STATE_CALIBRATING)
 	{
-		ofLogVerbose("KinectProjector") << "KinectProjector.startApplication(): we are calibrating ";
-		return;
+		ofLogVerbose("KinectProjector") << "KinectProjector.startApplication() : we are calibrating";
+		return "CALIBRATING";
 	}
 	if (!kinectOpened)
 	{
 		ofLogVerbose("KinectProjector") << "KinectProjector.startApplication(): Kinect is not running ";
-		return;
+		return "KINECT_NOT_RUNNING";
 	}
+
 
 	if (!projKinectCalibrated)
 	{
@@ -1515,12 +1522,12 @@ void KinectProjector::startApplication()
 			ofLogVerbose("KinectProjector") << "KinectProjector.setup(): kinectProjMatrix: " << kinectProjMatrix;
 			projKinectCalibrated = true;
 			projKinectCalibrationUpdated = true;
-			updateStatusGUI();
+			updateFlag ? updateStatusGUI() : 0;
 		}
 		else
 		{
 			ofLogVerbose("KinectProjector") << "KinectProjector.startApplication(): Calibration could not be loaded";
-			return;
+			return "NO_CALIBRATION";
 		}
 	}
 
@@ -1534,21 +1541,21 @@ void KinectProjector::startApplication()
 			setNewKinectROI();
 			ROIcalibrated = true;
 			basePlaneComputed = true;
-			setFullFrameFiltering(doFullFrameFiltering, true);
-			setInPainting(doInpainting, true);
-			setFollowBigChanges(followBigChanges, true);
-			setSpatialFiltering(spatialFiltering, true);
+			setFullFrameFiltering(doFullFrameFiltering, updateFlag);
+			setInPainting(doInpainting, updateFlag);
+			setFollowBigChanges(followBigChanges, updateFlag);
+			setSpatialFiltering(spatialFiltering, updateFlag);
 
 			int nAvg = numAveragingSlots;
 			kinectgrabber.performInThread([nAvg](KinectGrabber & kg) {
 				kg.setAveragingSlotsNumber(nAvg); });
 
-			updateStatusGUI();
+			updateFlag ? updateStatusGUI() : 0;
 		}
 		else 
 		{
-			ofLogVerbose("KinectProjector") << "KinectProjector.setup(): Settings could not be loaded ";
-			return;
+			ofLogVerbose("KinectProjector") << "KinectProjector.setup(): Settings could not be loaded";
+			return "SETTINGS_NOT_LOADED";
 		}
 	}
 
@@ -1561,9 +1568,10 @@ void KinectProjector::startApplication()
 	autoCalibState = AUTOCALIB_STATE_DONE;
 	drawKinectColorView = false;
 	drawKinectView = false;
-	gui->getToggle(CMP_DRAW_KINECT_COLOR_VIEW)->setChecked(drawKinectColorView);
-	gui->getToggle(CMP_DRAW_KINECT_DEPTH_VIEW)->setChecked(drawKinectView);
-	updateStatusGUI();
+	updateFlag ? gui->getToggle(CMP_DRAW_KINECT_COLOR_VIEW)->setChecked(drawKinectColorView) : 0;
+	updateFlag ? gui->getToggle(CMP_DRAW_KINECT_DEPTH_VIEW)->setChecked(drawKinectView) : 0;
+	updateFlag ? updateStatusGUI() : 0;
+	return "";
 }
 
 
@@ -1699,7 +1707,7 @@ void KinectProjector::onButtonEvent(ofxDatGuiButtonEvent e){
     } 
 	else if (e.target->is("Start Application"))
 	{
-		startApplication();
+		startApplication(true);
 	}
 	else if (e.target->is("Update ROI from calibration")) {
 		updateROIFromCalibration();

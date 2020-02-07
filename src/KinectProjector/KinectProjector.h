@@ -95,7 +95,8 @@ public:
     ofVec2f gradientAtKinectCoord(float x, float y);
 
 	// Try to start the application - assumes calibration has been done before
-	void startApplication();
+	string startApplication();
+    string startApplication(bool updateFlag);
 
     // Setup & calibration functions
     void startFullCalibration();
@@ -148,6 +149,8 @@ public:
 	void mouseReleased(int x, int y, int button);
 	void mouseDragged(int x, int y, int button);
 
+    bool externUpdate;
+
     // Functions for shaders
     void bind(){
         FilteredDepthImage.getTexture().bind();
@@ -199,6 +202,9 @@ public:
     }
     bool isBasePlaneUpdated(){ // To be called after update()
         return basePlaneUpdated;
+    }
+    void setBasePlaneUpdated(bool val) { // To be called after update()
+        basePlaneUpdated = val;
     }
     //bool isROIUpdated(){ // To be called after update()  // Could be set using manual mouse based drawing and cleared before the information was propagated to other modules
     //    return ROIUpdated;

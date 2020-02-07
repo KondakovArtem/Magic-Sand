@@ -69,6 +69,10 @@ void ofApp::setup() {
 void ofApp::update() {
     // Call kinectProjector->update() first during the update function()
 	kinectProjector->update();
+	if (kinectProjector->externUpdate == true) {
+		kinectProjector->externUpdate = false;
+		kinectProjector->setBasePlaneUpdated(true);
+	}
    	sandSurfaceRenderer->update();
     
     //if (kinectProjector->isROIUpdated())

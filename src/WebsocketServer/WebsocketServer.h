@@ -27,10 +27,17 @@ constexpr auto FL_OF_RABBITS = "ofRabbits";
 constexpr auto FL_FIELD = "field";
 constexpr auto FL_VALUE = "value";
 constexpr auto FL_RESULT = "result";
+constexpr auto FL_ERROR = "error";
 
 // commands
 constexpr auto CM_GET_STATE = "getState";
 constexpr auto CM_SET_VALUE = "setValue";
+constexpr auto CM_SET_STATE = "setState";
+
+
+constexpr auto CM_OP_START = "start";
+
+
 
 /*constexpr auto CM_SET_DRAW_KINECT_DEPTH_VIEW = "setDrawKinectDepthView";
 constexpr auto CM_SET_DRAW_KINECT_COLOR_VIEW = "setDrawKinectColorView";
@@ -72,14 +79,18 @@ public:
 private: 
     std::shared_ptr<KinectProjector> kinectProjector;
     CBoidGameController boidGameController;
+    
     //void setToggleComponentValue(string name, bool value);
     //void setSliderComponentValue(string name, float value);
     void resolveGetState(ofxLibwebsockets::Event& args);
-    void resolveSetValue(ofxLibwebsockets::Event& args);
+	void resolveSetState(ofxLibwebsockets::Event& args);
+	void resolveSetValue(ofxLibwebsockets::Event& args);
+    void sendMessage(ofxLibwebsockets::Event& args, Json::Value message);
     template <typename Proc>
     void resolveToggleValue(ofxLibwebsockets::Event& args, string componentName, Proc method);
     template<typename Proc>
     void resolveFloatValue(ofxLibwebsockets::Event& args, Proc method, string componentName, ofxDatGui* gui);
     template<typename T>
     void resolveResponse(ofxLibwebsockets::Event& args, int result, T p);
+    void resolveResponseState(ofxLibwebsockets::Event& args, int result, string error);
 };
