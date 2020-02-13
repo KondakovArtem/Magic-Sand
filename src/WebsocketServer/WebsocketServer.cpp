@@ -50,8 +50,8 @@ void WebsocketServer::onMessage(ofxLibwebsockets::Event& args) {
 		(command == CM_SET_STATE) ? resolveSetState(args) :
 		(command == CM_GET_STATE) ? resolveGetState(args) :
 		(command == CM_SET_VALUE) ? resolveSetValue(args) :
-
-		
+		(command == CM_GET_VALUE) ? resolveGetValue(args) :
+		0;
 	} else {
 		cout << "New message: " + args.message + " from " + args.conn.getClientName();
 		args.conn.send(args.message);
@@ -90,8 +90,17 @@ void WebsocketServer::resolveResponseState(ofxLibwebsockets::Event& args, int re
 	message[FL_VALUE] = args.json.get(FL_VALUE, "FL_VALUE").asString();
 	(!error.empty()) ? message[FL_ERROR] = error : 0;
 	message[FL_RESULT] = result;
-	
 	sendMessage(args, message);
+}
+
+template <typename T>
+void WebsocketServer::resolveResponseValue(ofxLibwebsockets::Event& args, T value, string error) {
+	Json::Value message;
+	message[FL_COMMAND] = args.json.get(FL_COMMAND, "FL_COMMAND").asString();
+	message[FL_FIELD] = args.json.get(FL_FIELD, "FL_FIELD").asString();
+	message[FL_VALUE] = value;
+	(!error.empty()) ? message[FL_ERROR] = error : 0;
+	sendMessage(args, message, true);
 }
 
 void WebsocketServer::resolveGetState(ofxLibwebsockets::Event& args) {
@@ -99,6 +108,8 @@ void WebsocketServer::resolveGetState(ofxLibwebsockets::Event& args) {
 	message[FL_COMMAND] = CM_GET_STATE;
 	
 	message[FL_APPLICATION_STATE] = kinectProjector->GetApplicationState();
+	message[FL_CALIBRATION_STATE] = kinectProjector->GetCalibrationState();
+	message[FL_AUTO_CALIBRATION_STATE] = kinectProjector->GetAutoCalibrationState();
 	message[FL_DRAW_KINECT_DEPTH_VIEW] = kinectProjector->getDrawKinectDepthView();
 	message[FL_DRAW_KINECT_COLOR_VIEW] = kinectProjector->getDrawKinectColorView();
 	message[FL_DUMP_DEBUG_FILES] = kinectProjector->getDumpDebugFiles();
@@ -113,6 +124,13 @@ void WebsocketServer::resolveGetState(ofxLibwebsockets::Event& args) {
 	message[FL_VERTICAL_OFFSET] = kinectProjector->getVerticalOffset();
 	message[FL_DO_SHOW_ROI_ON_PROJECTOR] = kinectProjector->getShowROIonProjector();
 	
+	Json::Value roi;
+	roi["x"] = kinectProjector->getKinectROI().getX();
+	roi["y"] = kinectProjector->getKinectROI().getY();
+	roi["width"] = kinectProjector->getKinectROI().getWidth();
+	roi["height"] = kinectProjector->getKinectROI().getHeight();
+	message[FL_KINECT_ROI] = roi;
+
 	message[FL_OF_SHARKS] = boidGameController.getSharks();
 	message[FL_OF_FISH] = boidGameController.getFish();
 	message[FL_OF_RABBITS] = boidGameController.getRabbits();
@@ -129,9 +147,38 @@ void WebsocketServer::resolveSetState(ofxLibwebsockets::Event& args) {
 		string res = kp->startApplication(false);
 		int result = (res.empty()) ? 0 : 1;
 		resolveResponseState(args, result, res);
+	} else
+	if (value == CM_OP_START_CALIB) {
+		string res = kp->startAutomaticKinectProjectorCalibration(false);
+		int result = (res.empty()) ? 0 : 1;
+		resolveResponseState(args, result, res);
 	}
-
 }
+
+
+void WebsocketServer::resolveGetValue(ofxLibwebsockets::Event& args) {
+	const auto kp = this->kinectProjector;
+	const auto field = args.json.get(FL_FIELD, "").asString();
+	string error;
+	if (field == FL_KINECT_COLOR_IMAGE) {
+		string image = kp->getKinectColorImage();
+		int result = (image.empty()) ? 0 : 1;
+		resolveResponseValue<string>(args, image, error);
+	}
+}
+
+
+void WebsocketServer::resolveSetKinectROI(ofxLibwebsockets::Event& args) {
+	const auto kp = this->kinectProjector;
+	const auto roi = args.json.get(FL_VALUE, "");
+	kp->setKinectROI(
+		roi["x"].asInt(), 
+		roi["y"].asInt(), 
+		roi["width"].asInt(), 
+		roi["height"].asInt()
+	);
+}
+
 
 void WebsocketServer::resolveSetValue(ofxLibwebsockets::Event& args) {
 
@@ -153,6 +200,7 @@ void WebsocketServer::resolveSetValue(ofxLibwebsockets::Event& args) {
 	(field == FL_TILT_Y) ? resolveFloatValue(args, [kp](float val) { kp->setTiltY(val); }, CMP_TILT_Y, getGui()) :
 	(field == FL_VERTICAL_OFFSET) ? resolveFloatValue(args, [kp](float val) { kp->setVerticalOffset(val); }, CMP_VERTICAL_OFFSET, getGui()) :
 	(field == FL_DO_SHOW_ROI_ON_PROJECTOR) ? resolveToggleValue(args, CMP_SHOW_ROI_ON_SAND, [kp](bool val) { kp->showROIonProjector(val); }) :
+	(field == FL_KINECT_ROI) ? resolveSetKinectROI(args) :
 
 	(field == FL_OF_FISH) ? resolveFloatValue(args, [this](float val) { this->boidGameController.setFish(val); }, CMP_OF_FISH, getBoidGui() ) :
 	(field == FL_OF_SHARKS) ? resolveFloatValue(args, [this](float val) { this->boidGameController.setSharks(val); }, CMP_OF_SHARKS, getBoidGui()) :
@@ -180,9 +228,19 @@ void WebsocketServer::resolveFloatValue(ofxLibwebsockets::Event& args, Proc meth
 	resolveResponseFloat(args, 0);
 }
 
+
 void WebsocketServer::sendMessage(ofxLibwebsockets::Event& args, Json::Value message) {
+	sendMessage(args, message, false);
+}
+
+void WebsocketServer::sendMessage(ofxLibwebsockets::Event& args, Json::Value message, bool noLog) {
 	Json::StyledWriter writer;
 	string str = writer.write(message);
-	cout << "send message " << str << endl;
+	if (!noLog) {
+		cout << "send message " << str << endl;
+	}
+	else {
+		cout << "send message " << message[FL_COMMAND].asString() << endl;
+	}
 	args.conn.send(str);
 }

@@ -34,6 +34,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include "KinectProjectorCalibration.h"
 #include "Utils.h"
 #include "TemporalFrameFilter.h"
+#include "Poco/Base64Encoder.h"
 
 // component names
 constexpr auto CMP_SPATIAL_FILTERING = "Spatial filtering";
@@ -101,6 +102,7 @@ public:
     // Setup & calibration functions
     void startFullCalibration();
     void startAutomaticROIDetection();
+    string startAutomaticKinectProjectorCalibration(bool updateGui);
     void startAutomaticKinectProjectorCalibration();
     void setSpatialFiltering(bool sspatialFiltering, bool updateGui);
     void setGradFieldResolution(int gradFieldResolution);
@@ -143,6 +145,7 @@ public:
     float getVerticalOffset();
     void onSliderEvent(ofxDatGuiSliderEvent e);
     void onConfirmModalEvent(ofxModalEvent e);
+    string onFlattenSandConfirm();
     void onCalibModalEvent(ofxModalEvent e);
 
 	void mousePressed(int x, int y, int button);
@@ -171,6 +174,10 @@ public:
     // Getter and setter
     ofTexture & getTexture(){
         return FilteredDepthImage.getTexture();
+    }
+    void setKinectROI(int x, int y, int width, int height) {
+        kinectROI = ofRectangle(x, y, width, height);
+        setNewKinectROI(false);
     }
     ofRectangle getKinectROI(){
         return kinectROI;
@@ -222,10 +229,29 @@ public:
 		APPLICATION_STATE_RUNNING = APP_STATE_RUNNING
 	};
 
+    enum Calibration_state
+    {
+        CALIBRATION_STATE_FULL_AUTO_CALIBRATION = 0,
+        CALIBRATION_STATE_ROI_AUTO_DETERMINATION = 1,
+        CALIBRATION_STATE_ROI_MANUAL_DETERMINATION = 2,
+        CALIBRATION_STATE_ROI_FROM_FILE = 3,
+        CALIBRATION_STATE_PROJ_KINECT_AUTO_CALIBRATION = 4,
+        CALIBRATION_STATE_PROJ_KINECT_MANUAL_CALIBRATION = 5
+    };
+
 	Application_state GetApplicationState()
 	{
 		return applicationState;
 	}
+
+    Calibration_state GetCalibrationState()
+    {
+        return calibrationState;
+    }
+
+    auto GetAutoCalibrationState() {
+        return autoCalibState;
+    }
 
 	bool getDumpDebugFiles();
 
@@ -234,20 +260,13 @@ public:
 	// Debug functions
 	void SaveFilteredDepthImage();
 	void SaveKinectColorImage();
+    string getKinectColorImage();
 
     ofxDatGui* getGui();
 
 private:
 
-    enum Calibration_state
-    {
-        CALIBRATION_STATE_FULL_AUTO_CALIBRATION,
-        CALIBRATION_STATE_ROI_AUTO_DETERMINATION,
-        CALIBRATION_STATE_ROI_MANUAL_DETERMINATION,
-		CALIBRATION_STATE_ROI_FROM_FILE,
-		CALIBRATION_STATE_PROJ_KINECT_AUTO_CALIBRATION,
-        CALIBRATION_STATE_PROJ_KINECT_MANUAL_CALIBRATION
-    };
+    
     enum Full_Calibration_state
     {
         FULL_CALIBRATION_STATE_ROI_DETERMINATION,
@@ -263,11 +282,11 @@ private:
     };
     enum Auto_calibration_state
     {
-        AUTOCALIB_STATE_INIT_FIRST_PLANE,
-        AUTOCALIB_STATE_INIT_POINT,
-        AUTOCALIB_STATE_NEXT_POINT,
-        AUTOCALIB_STATE_COMPUTE,
-        AUTOCALIB_STATE_DONE
+        AUTOCALIB_STATE_INIT_FIRST_PLANE =0,
+        AUTOCALIB_STATE_INIT_POINT = 1,
+        AUTOCALIB_STATE_NEXT_POINT = 2,
+        AUTOCALIB_STATE_COMPUTE = 3,
+        AUTOCALIB_STATE_DONE = 4
     };
 
    
@@ -286,6 +305,7 @@ private:
     void updateROIFromCalibration();
     void setMaxKinectGrabberROI();
     void setNewKinectROI();
+    void setNewKinectROI(bool updateGui);
     void updateKinectGrabberROI(ofRectangle ROI);
 
 	void updateProjKinectAutoCalibration();

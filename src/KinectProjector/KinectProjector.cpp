@@ -409,6 +409,18 @@ void KinectProjector::update()
 		ofVec2f UL = kinectCoordToProjCoord(kinectROI.getMinX(), kinectROI.getMinY());
 		ofVec2f LR = kinectCoordToProjCoord(kinectROI.getMaxX()-1, kinectROI.getMaxY()-1);
 
+		// projector resolution
+		ofVec2f pR = ofVec2f(projWindow->getWidth(), projWindow->getHeight());
+		// kinect resolution
+		ofVec2f kR = ofVec2f(kinectRes.x, kinectRes.y);
+
+		float adjX = pR.x / kR.x;
+		float adjY = pR.y / kR.y;
+
+		
+		ofSetColor(255, 255, 0);
+		ofDrawRectangle(kinectROI.getMinX() * adjX, kinectROI.getMinY()* adjY, kinectROI.getWidth()* adjX, kinectROI.getHeight()* adjY);
+
 		ofSetColor(255, 0, 0);
 		ofRectangle tempRect(ofPoint(UL.x, UL.y), ofPoint(LR.x, LR.y));
 		ofDrawRectangle(tempRect);		
@@ -716,7 +728,11 @@ void KinectProjector::setMaxKinectGrabberROI(){
     updateKinectGrabberROI(ofRectangle(0, 0, kinectRes.x, kinectRes.y));
 }
 
-void KinectProjector::setNewKinectROI()
+void KinectProjector::setNewKinectROI() {
+	setNewKinectROI(true);
+}
+
+void KinectProjector::setNewKinectROI(bool updateGui)
 {
 	CheckAndNormalizeKinectROI();
 
@@ -733,7 +749,9 @@ void KinectProjector::setNewKinectROI()
 //    ROIUpdated = true;
     saveCalibrationAndSettings();
     updateKinectGrabberROI(kinectROI);
-	updateStatusGUI();
+	if (updateGui) {
+		updateStatusGUI();
+	}
 }
 
 void KinectProjector::updateKinectGrabberROI(ofRectangle ROI){
@@ -1612,23 +1630,29 @@ void KinectProjector::startAutomaticROIDetection(){
 	updateStatusGUI();
 }
 
-void KinectProjector::startAutomaticKinectProjectorCalibration(){
+
+void KinectProjector::startAutomaticKinectProjectorCalibration() {
+	startAutomaticKinectProjectorCalibration(true);
+}
+
+string KinectProjector::startAutomaticKinectProjectorCalibration(bool updateGui = true){
 	if (!kinectOpened)
 	{
 		ofLogVerbose("KinectProjector") << "startAutomaticKinectProjectorCalibration(): Kinect not running";
-		return;
+		return "KINECT_NOT_RUNNING";
 	}
 	if (applicationState == APPLICATION_STATE_CALIBRATING)
 	{
 		applicationState = APPLICATION_STATE_SETUP;
+		confirmModal->hide();
 		calibrationText = "Terminated before completion";
-		updateStatusGUI();
-		return;
+		updateGui ? updateStatusGUI() : 0;
+		return "ALREADY_CALIBRATING";
 	}
 	if (!ROIcalibrated)
 	{
 		ofLogVerbose("KinectProjector") << "startAutomaticKinectProjectorCalibration(): ROI not defined";
-		return;
+		return "ROI_NOT_DEFINED";
 	}
 
 	calibrationText = "Starting projector/kinect calibration";
@@ -1640,7 +1664,8 @@ void KinectProjector::startAutomaticKinectProjectorCalibration(){
     calibModal->setTitle("Calibrate projector");
     askToFlattenSand();
     ofLogVerbose("KinectProjector") << "startAutomaticKinectProjectorCalibration(): Starting autocalib" ;
-	updateStatusGUI();
+	updateGui ? updateStatusGUI() : 0;
+	return "";
 }
 
 void KinectProjector::setSpatialFiltering(bool sspatialFiltering, bool updateGui = true){
@@ -1718,7 +1743,7 @@ void KinectProjector::onButtonEvent(ofxDatGuiButtonEvent e){
 		StartManualROIDefinition();
 	}
 	else if (e.target->is("Automatically calibrate kinect & projector")) {
-        startAutomaticKinectProjectorCalibration();
+        startAutomaticKinectProjectorCalibration(true);
     } else if (e.target->is("Manually calibrate kinect & projector")) {
         // Not implemented yet
     } else if (e.target->is("Reset sea level")){
@@ -1903,23 +1928,26 @@ void KinectProjector::onConfirmModalEvent(ofxModalEvent e)
     }
 	else if (e.type == ofxModalEvent::CONFIRM)
 	{
-		if (applicationState == APPLICATION_STATE_CALIBRATING)
-		{
-            if (waitingForFlattenSand)
-			{
-                waitingForFlattenSand = false;
-            }  
-			else if ((calibrationState == CALIBRATION_STATE_PROJ_KINECT_AUTO_CALIBRATION || (calibrationState == CALIBRATION_STATE_FULL_AUTO_CALIBRATION && fullCalibState == FULL_CALIBRATION_STATE_AUTOCALIB))
-                        && autoCalibState == AUTOCALIB_STATE_NEXT_POINT)
-			{
-                if (!upframe)
-				{
-                    upframe = true;
-                }
-            }
-        }
-        ofLogVerbose("KinectProjector") << "Modal confirm button pressed" ;
+		onFlattenSandConfirm();
     }
+}
+
+
+string KinectProjector::onFlattenSandConfirm() {
+	if (applicationState == APPLICATION_STATE_CALIBRATING) {
+		if (waitingForFlattenSand) {
+			waitingForFlattenSand = false;
+		} else 
+		if ((calibrationState == CALIBRATION_STATE_PROJ_KINECT_AUTO_CALIBRATION || 
+			(calibrationState == CALIBRATION_STATE_FULL_AUTO_CALIBRATION && fullCalibState == FULL_CALIBRATION_STATE_AUTOCALIB))
+			&& autoCalibState == AUTOCALIB_STATE_NEXT_POINT) {
+			if (!upframe) {
+				upframe = true;
+			}
+		}
+	}
+	ofLogVerbose("KinectProjector") << "Modal confirm button pressed";
+	return "";
 }
 
 void KinectProjector::onCalibModalEvent(ofxModalEvent e)
@@ -2255,6 +2283,36 @@ void KinectProjector::SaveKinectColorImage()
 		ofSaveImage(tempImage.getPixels(), MedianOutName);
 	}
 
+}
+
+
+static void removeCRLF(string& targetStr) {
+	const char CR = '\r';
+	const char LF = '\n';
+	string str;
+	for (const auto c : targetStr) {
+		if (c != CR && c != LF) {
+			str += c;
+		}
+	}
+	targetStr = std::move(str);
+}
+static string base64_encode(ofBuffer buffer) {
+	stringstream ss;
+	ss.str("");
+	Poco::Base64Encoder encoder(ss);
+	encoder << buffer;
+	encoder.close();
+	string str = ss.str();
+	removeCRLF(str);
+	return str;
+}
+
+string KinectProjector::getKinectColorImage() {
+	ofPixels pixels = kinectColorImage.getPixels();
+	ofBuffer imageBuffer;
+	ofSaveImage(pixels, imageBuffer);
+	return base64_encode(imageBuffer);
 }
 
 ofxDatGui* KinectProjector::getGui() {
