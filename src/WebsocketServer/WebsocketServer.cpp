@@ -1,5 +1,5 @@
 #include "WebsocketServer.h"
-
+#define noop (void)0
 
 
 WebsocketServer::WebsocketServer(
@@ -51,7 +51,7 @@ void WebsocketServer::onMessage(ofxLibwebsockets::Event& args) {
 		(command == CM_GET_STATE) ? resolveGetState(args) :
 		(command == CM_SET_VALUE) ? resolveSetValue(args) :
 		(command == CM_GET_VALUE) ? resolveGetValue(args) :
-		0;
+		noop;
 	} else {
 		cout << "New message: " + args.message + " from " + args.conn.getClientName();
 		args.conn.send(args.message);
@@ -215,6 +215,7 @@ void WebsocketServer::resolveSetValue(ofxLibwebsockets::Event& args) {
 	(field == FL_OF_FISH) ? resolveFloatValue(args, [this](float val) { this->boidGameController.setFish(val); }, CMP_OF_FISH, getBoidGui() ) :
 	(field == FL_OF_SHARKS) ? resolveFloatValue(args, [this](float val) { this->boidGameController.setSharks(val); }, CMP_OF_SHARKS, getBoidGui()) :
 	(field == FL_OF_RABBITS) ? resolveFloatValue(args, [this](float val) { this->boidGameController.setRabbits(val); }, CMP_OF_RABBITS, getBoidGui()) :
+	noop;
 	kp->externUpdate = true;
 }
 

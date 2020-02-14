@@ -1,5 +1,5 @@
 <KINECTSETTINGS>
-	<kinectROI>152, 147, 0, 324, 243</kinectROI>
+	<kinectROI>167, 161, 0, 278, 209</kinectROI>
 	<basePlaneNormalBack>0, 0, 1</basePlaneNormalBack>
 	<basePlaneOffsetBack>0, 0, 870</basePlaneOffsetBack>
 	<basePlaneEq>0, 0, 1, -870</basePlaneEq>

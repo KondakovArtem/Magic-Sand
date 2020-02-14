@@ -1515,7 +1515,7 @@ string KinectProjector::startApplication(bool updateFlag = true){
 	if (applicationState == APPLICATION_STATE_RUNNING)
 	{
 		applicationState = APPLICATION_STATE_SETUP;
-		updateFlag ? updateStatusGUI() : 0;
+		updateFlag ? updateStatusGUI() : noop;
 		return "";
 	}
 	if (applicationState == APPLICATION_STATE_CALIBRATING)
@@ -1541,7 +1541,7 @@ string KinectProjector::startApplication(bool updateFlag = true){
 			ofLogVerbose("KinectProjector") << "KinectProjector.setup(): kinectProjMatrix: " << kinectProjMatrix;
 			projKinectCalibrated = true;
 			projKinectCalibrationUpdated = true;
-			updateFlag ? updateStatusGUI() : 0;
+			updateFlag ? updateStatusGUI() : noop;
 		}
 		else
 		{
@@ -1569,7 +1569,7 @@ string KinectProjector::startApplication(bool updateFlag = true){
 			kinectgrabber.performInThread([nAvg](KinectGrabber & kg) {
 				kg.setAveragingSlotsNumber(nAvg); });
 
-			updateFlag ? updateStatusGUI() : 0;
+			updateFlag ? updateStatusGUI() : noop;
 		}
 		else 
 		{
@@ -1587,9 +1587,9 @@ string KinectProjector::startApplication(bool updateFlag = true){
 	autoCalibState = AUTOCALIB_STATE_DONE;
 	drawKinectColorView = false;
 	drawKinectView = false;
-	updateFlag ? gui->getToggle(CMP_DRAW_KINECT_COLOR_VIEW)->setChecked(drawKinectColorView) : 0;
-	updateFlag ? gui->getToggle(CMP_DRAW_KINECT_DEPTH_VIEW)->setChecked(drawKinectView) : 0;
-	updateFlag ? updateStatusGUI() : 0;
+	updateFlag ? gui->getToggle(CMP_DRAW_KINECT_COLOR_VIEW)->setChecked(drawKinectColorView) : noop;
+	updateFlag ? gui->getToggle(CMP_DRAW_KINECT_DEPTH_VIEW)->setChecked(drawKinectView) : noop;
+	updateFlag ? updateStatusGUI() : noop;
 	return "";
 }
 
@@ -1646,7 +1646,7 @@ string KinectProjector::startAutomaticKinectProjectorCalibration(bool updateGui 
 		applicationState = APPLICATION_STATE_SETUP;
 		confirmModal->hide();
 		calibrationText = "Terminated before completion";
-		updateGui ? updateStatusGUI() : 0;
+		updateGui ? updateStatusGUI() : noop;
 		return "ALREADY_CALIBRATING";
 	}
 	if (!ROIcalibrated)
@@ -1664,7 +1664,7 @@ string KinectProjector::startAutomaticKinectProjectorCalibration(bool updateGui 
     calibModal->setTitle("Calibrate projector");
     askToFlattenSand();
     ofLogVerbose("KinectProjector") << "startAutomaticKinectProjectorCalibration(): Starting autocalib" ;
-	updateGui ? updateStatusGUI() : 0;
+	updateGui ? updateStatusGUI() : noop;
 	return "";
 }
 
