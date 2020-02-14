@@ -152,6 +152,16 @@ void WebsocketServer::resolveSetState(ofxLibwebsockets::Event& args) {
 		string res = kp->startAutomaticKinectProjectorCalibration(false);
 		int result = (res.empty()) ? 0 : 1;
 		resolveResponseState(args, result, res);
+	} else 
+	if (value == CM_OP_CONTINUE_CALIB) {
+		string res = kp->onConfirmCalibration();
+		int result = (res.empty()) ? 0 : 1;
+		resolveResponseState(args, result, res);
+	} else 
+	if (value == CM_OP_CANCEL_CALIB) {
+		string res = kp->onCancelCalibration(false);
+		int result = (res.empty()) ? 0 : 1;
+		resolveResponseState(args, result, res);
 	}
 }
 

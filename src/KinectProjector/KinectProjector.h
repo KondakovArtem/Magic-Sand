@@ -145,7 +145,8 @@ public:
     float getVerticalOffset();
     void onSliderEvent(ofxDatGuiSliderEvent e);
     void onConfirmModalEvent(ofxModalEvent e);
-    string onFlattenSandConfirm();
+	string onCancelCalibration(bool updateGui);
+    string onConfirmCalibration();
     void onCalibModalEvent(ofxModalEvent e);
 
 	void mousePressed(int x, int y, int button);

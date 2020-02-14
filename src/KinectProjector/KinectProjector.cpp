@@ -1907,33 +1907,36 @@ void KinectProjector::onSliderEvent(ofxDatGuiSliderEvent e){
 
 void KinectProjector::onConfirmModalEvent(ofxModalEvent e)
 {
-    if (e.type == ofxModalEvent::SHOWN)
-	{
+    if (e.type == ofxModalEvent::SHOWN) {
         ofLogVerbose("KinectProjector") << "Confirm modal window is open" ;
-    }  
-	else if (e.type == ofxModalEvent::HIDDEN)
-	{
-		if (!kinectOpened)
-		{
+    } else
+	if (e.type == ofxModalEvent::HIDDEN) {
+		if (!kinectOpened) {
 			confirmModal->setMessage("Still no connection to Kinect. Please check that the kinect is (1) connected, (2) powerer and (3) not used by another application.");
 			confirmModal->show();
 		}
 		ofLogVerbose("KinectProjector") << "Confirm modal window is closed" ;
-    }   
-	else if (e.type == ofxModalEvent::CANCEL)
-	{
-		applicationState = APPLICATION_STATE_SETUP;
-        ofLogVerbose("KinectProjector") << "Modal cancel button pressed: Aborting" ;
-		updateStatusGUI();
-    }
-	else if (e.type == ofxModalEvent::CONFIRM)
-	{
-		onFlattenSandConfirm();
+    } else
+	if (e.type == ofxModalEvent::CANCEL) {
+		onCancelCalibration(true);
+    } else
+	if (e.type == ofxModalEvent::CONFIRM) {
+		onConfirmCalibration();
     }
 }
 
+string KinectProjector::onCancelCalibration(bool updateGui = true) {
+	applicationState = APPLICATION_STATE_SETUP;
+	ofLogVerbose("KinectProjector") << "Modal cancel button pressed: Aborting";
+	confirmModal->hide();
+	if (updateGui) {
+		updateStatusGUI();
+	}
+	return "";
+}
 
-string KinectProjector::onFlattenSandConfirm() {
+
+string KinectProjector::onConfirmCalibration() {
 	if (applicationState == APPLICATION_STATE_CALIBRATING) {
 		if (waitingForFlattenSand) {
 			waitingForFlattenSand = false;

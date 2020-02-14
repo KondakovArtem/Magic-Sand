@@ -42,7 +42,8 @@ constexpr auto CM_GET_VALUE = "getValue";
 
 constexpr auto CM_OP_START = "start";
 constexpr auto CM_OP_START_CALIB = "startCalibration";
-
+constexpr auto CM_OP_CANCEL_CALIB = "cancelCalibration";
+constexpr auto CM_OP_CONTINUE_CALIB = "continueCalibration";
 
 /*constexpr auto CM_SET_DRAW_KINECT_DEPTH_VIEW = "setDrawKinectDepthView";
 constexpr auto CM_SET_DRAW_KINECT_COLOR_VIEW = "setDrawKinectColorView";
