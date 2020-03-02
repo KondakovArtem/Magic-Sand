@@ -14,6 +14,8 @@ WebsocketServer::WebsocketServer(
 	server.addListener(this);
 	kinectProjector = kp;
 	boidGameController = bgc;
+	kp->setBroadcastMethod([this](Json::Value message) { broadcast(message); });
+	kp->setBroadcastStateMethod([this]() { broadcast(getStateMessage()); });
 }
 
 
@@ -25,6 +27,7 @@ void WebsocketServer::onConnect(ofxLibwebsockets::Event& args) {
 //--------------------------------------------------------------
 void WebsocketServer::onOpen(ofxLibwebsockets::Event& args) {
 	cout << "new connection open" << endl;
+	sendMessage(args, getStateMessage());
 	//messages.push_back("New connection from " + args.conn.getClientIP() + ", " + args.conn.getClientName());
 }
 
@@ -64,13 +67,10 @@ void WebsocketServer::onBroadcast(ofxLibwebsockets::Event& args) {
 	cout << "got broadcast " << args.message << endl;
 }
 
-void WebSocketServer::broadcast(message) {
+void WebsocketServer::broadcast(Json::Value message) {
 	vector<ofxLibwebsockets::Connection *> connections = server.getConnections();
     for ( int i=0; i<connections.size(); i++){
-		connections[i]->send( args.message );
-        if ( (*connections[i]) != args.conn ){
-            connections[i]->send( args.message );
-        }
+		sendMessageToConnection(connections[i], message, false);
     }
 }
 
@@ -145,10 +145,11 @@ Json::Value WebsocketServer::getStateMessage() {
 	message[FL_OF_SHARKS] = boidGameController.getSharks();
 	message[FL_OF_FISH] = boidGameController.getFish();
 	message[FL_OF_RABBITS] = boidGameController.getRabbits();
+	return message;
 }
 
 void WebsocketServer::resolveGetState(ofxLibwebsockets::Event& args) {
-	sendMessage(args, getStateMessage);
+	sendMessage(args, getStateMessage());
 }
 
 
@@ -254,9 +255,14 @@ void WebsocketServer::resolveFloatValue(ofxLibwebsockets::Event& args, Proc meth
 
 void WebsocketServer::sendMessage(ofxLibwebsockets::Event& args, Json::Value message) {
 	sendMessage(args, message, false);
+	sendMessageToConnection(args.conn, message, false);
 }
 
 void WebsocketServer::sendMessage(ofxLibwebsockets::Event& args, Json::Value message, bool noLog) {
+	sendMessageToConnection(args.conn, message, noLog);
+}
+
+void WebsocketServer::sendMessageToConnection(ofxLibwebsockets::Connection conn, Json::Value message, bool noLog) {
 	Json::StyledWriter writer;
 	string str = writer.write(message);
 	if (!noLog) {
@@ -265,7 +271,17 @@ void WebsocketServer::sendMessage(ofxLibwebsockets::Event& args, Json::Value mes
 	else {
 		cout << "send message " << message[FL_COMMAND].asString() << endl;
 	}
-	args.conn.send(str);
+	conn.send(str);
 }
 
-void WebsocketServer::sendToConnection()
+void WebsocketServer::sendMessageToConnection(ofxLibwebsockets::Connection* conn, Json::Value message, bool noLog) {
+	Json::StyledWriter writer;
+	string str = writer.write(message);
+	if (!noLog) {
+		cout << "send message " << str << endl;
+	}
+	else {
+		cout << "send message " << message[FL_COMMAND].asString() << endl;
+	}
+	conn->send(str);
+}

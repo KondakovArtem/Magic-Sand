@@ -567,7 +567,7 @@ void KinectProjector::updateFullAutoCalibration()
 		if (ROICalibState == ROI_CALIBRATION_STATE_DONE)
 		{
 			fullCalibState = FULL_CALIBRATION_STATE_AUTOCALIB;
-			autoCalibState = AUTOCALIB_STATE_INIT_FIRST_PLANE;
+			setAutoCalibState(AUTOCALIB_STATE_INIT_FIRST_PLANE);
 		}
 	}
 	else if (fullCalibState == FULL_CALIBRATION_STATE_AUTOCALIB)
@@ -845,6 +845,14 @@ bool KinectProjector::savePointPair()
 	return true;
 }
 
+void KinectProjector::setAutoCalibState(KinectProjector::Auto_calibration_state newState) {
+	auto oldState = autoCalibState;
+	autoCalibState = newState;
+	if (oldState != newState) {
+		broadcastState();
+	}
+}
+
 void KinectProjector::updateProjKinectAutoCalibration()
 {
 	if (autoCalibState == AUTOCALIB_STATE_INIT_FIRST_PLANE)
@@ -853,7 +861,7 @@ void KinectProjector::updateProjKinectAutoCalibration()
 			kg.setMaxOffset(0);
 		});
 		calibrationText = "Stabilizing acquisition";
-		autoCalibState = AUTOCALIB_STATE_INIT_POINT;
+		setAutoCalibState(AUTOCALIB_STATE_INIT_POINT);
 		updateStatusGUI();
 	}
 	else if (autoCalibState == AUTOCALIB_STATE_INIT_POINT && imageStabilized)
@@ -899,7 +907,7 @@ void KinectProjector::updateProjKinectAutoCalibration()
 		ofPoint dispPt = ofPoint(projRes.x / 2, projRes.y / 2) + autoCalibPts[currentCalibPts]; //
 		drawChessboard(dispPt.x, dispPt.y, chessboardSize);										// We can now draw the next chess board
 
-		autoCalibState = AUTOCALIB_STATE_NEXT_POINT;
+		setAutoCalibState(AUTOCALIB_STATE_NEXT_POINT);
 	}
 	else if (autoCalibState == AUTOCALIB_STATE_NEXT_POINT && imageStabilized)
 	{
@@ -964,7 +972,7 @@ void KinectProjector::updateProjKinectAutoCalibration()
 			}
 			updateStatusGUI();
 		}
-		autoCalibState = AUTOCALIB_STATE_DONE;
+		setAutoCalibState(AUTOCALIB_STATE_DONE);
 	}
 	else if (!imageStabilized)
 	{
@@ -1145,7 +1153,7 @@ void KinectProjector::CalibrateNextPoint()
 		{ // We are done
 			calibrationText = "Updating acquisition ceiling";
 			updateMaxOffset(); // Find max offset
-			autoCalibState = AUTOCALIB_STATE_COMPUTE;
+			setAutoCalibState(AUTOCALIB_STATE_COMPUTE);
 			updateStatusGUI();
 		}
 		else
@@ -1731,7 +1739,7 @@ string KinectProjector::startAutomaticKinectProjectorCalibration(bool updateGui 
 	calibrationText = "Starting projector/kinect calibration";
 	applicationState = APPLICATION_STATE_CALIBRATING;
 	calibrationState = CALIBRATION_STATE_PROJ_KINECT_AUTO_CALIBRATION;
-	autoCalibState = AUTOCALIB_STATE_INIT_POINT;
+	setAutoCalibState(AUTOCALIB_STATE_INIT_POINT);
 	confirmModal->setTitle("Calibrate projector");
 	calibModal->setTitle("Calibrate projector");
 	askToFlattenSandFlag = true;
@@ -2436,3 +2444,14 @@ ofxDatGui *KinectProjector::getGui()
 {
 	return gui;
 }
+
+void KinectProjector::setBroadcastMethod(std::function<void(Json::Value)> method)
+ {
+ 	broadcast = method;
+ }
+
+void KinectProjector::setBroadcastStateMethod(std::function<void()> fn)
+{
+	broadcastState = fn;
+}
+

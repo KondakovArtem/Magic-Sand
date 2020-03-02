@@ -35,6 +35,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include "Utils.h"
 #include "TemporalFrameFilter.h"
 #include "Poco/Base64Encoder.h"
+#include <ofxLibwebsockets\libs\jsoncpp\json\json.h>
+
 
 // component names
 constexpr auto CMP_SPATIAL_FILTERING = "Spatial filtering";
@@ -265,8 +267,13 @@ public:
 
     ofxDatGui* getGui();
 
-private:
+    void setBroadcastMethod(std::function<void(Json::Value)>);
+    void setBroadcastStateMethod(std::function<void()>);
 
+private:
+    
+    std::function<void(Json::Value)> broadcast;
+    std::function<void()> broadcastState;
     
     enum Full_Calibration_state
     {
@@ -455,7 +462,9 @@ private:
 	std::string DebugFileOutDir;
 	std::string GetTimeAndDateString();
 	bool savePointPair();
-	void SaveFilteredDepthImageDebug();
+    void setAutoCalibState(KinectProjector::Auto_calibration_state newState);
+    void SaveFilteredDepthImageDebug();
+    
 };
 
 
