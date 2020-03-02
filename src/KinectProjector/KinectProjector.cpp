@@ -1780,9 +1780,6 @@ void KinectProjector::ResetSeaLevel()
 void KinectProjector::showROIonProjector(bool show)
 {
 	doShowROIonProjector = show;
-	fboProjWindow.begin();
-	ofClear(255, 255, 255, 0);
-	fboProjWindow.end();
 }
 
 bool KinectProjector::getShowROIonProjector() {

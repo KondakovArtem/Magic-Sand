@@ -1,0 +1,685 @@
+
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘virtual void ofxDatGuiGroup::draw()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:93:50: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                     for(int i=0; i<children.size(); i++) {
+                                                  ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:97:50: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                         if (i == children.size()-1) break;
+                                                  ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:103:50: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                     for(int i=0; i<children.size(); i++) children[i]->drawColorPicker();
+                                                  ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘void ofxDatGuiGroup::layout()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:117:43: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<children.size(); i++) {
+                                           ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:125:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                 if (i == children.size()-1) mHeight -= mStyle.vMargin;
+                                          ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h: In member function ‘void ofxDatGuiScrollView::onMouseScrolled(ofMouseEventArgs&)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h:276:50: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                     for(int i=0; i<children.size(); i++) children[i]->setPosition(0, mY + (btnH * i));
+                                                  ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h: In member function ‘void ofxDatGuiScrollView::onButtonEvent(ofxDatGuiButtonEvent)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h:285:22: warning: statement has no effect [-Wunused-value]
+                 for(i; i<children.size(); i++) if (children[i] == e.target) break;
+                      ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h:285:40: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                 for(i; i<children.size(); i++) if (children[i] == e.target) break;
+                                        ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h: In member function ‘bool ofxDatGuiScrollView::isValidIndex(int)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h:304:56: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             return index >= 0 && index < children.size();
+                                                        ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘virtual void ofxDatGuiFolder::drawColorPicker()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:189:41: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<pickers.size(); i++) pickers[i]->drawColorPicker();
+                                         ^
+In file included from /home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/ofxDatGui.h:24:0,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h:25,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalConfirm.h:24,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModal.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.h:32,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/WebsocketServer/WebsocketServer.h:3,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/WebsocketServer/WebsocketServer.cpp:1:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘virtual void ofxDatGuiGroup::draw()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:93:50: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                     for(int i=0; i<children.size(); i++) {
+                                                  ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:97:50: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                         if (i == children.size()-1) break;
+                                                  ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:103:50: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                     for(int i=0; i<children.size(); i++) children[i]->drawColorPicker();
+                                                  ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘void ofxDatGuiGroup::layout()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:117:43: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<children.size(); i++) {
+                                           ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:125:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                 if (i == children.size()-1) mHeight -= mStyle.vMargin;
+                                          ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘ofxDatGuiComponent* ofxDatGuiFolder::getComponent(ofxDatGuiType, std::string)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:396:43: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<children.size(); i++) {
+                                           ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In constructor ‘ofxDatGuiDropdown::ofxDatGuiDropdown(std::string, const std::vector<std::basic_string<char> >&)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:446:41: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<options.size(); i++){
+                                         ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘void ofxDatGuiDropdown::select(int)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:475:55: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             if (cIndex < 0 || cIndex >= children.size()){
+                                                       ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘void ofxDatGuiDropdown::setOptions(const std::vector<std::basic_string<char> >&)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:491:41: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<options.size(); i++){
+                                         ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘void ofxDatGuiDropdown::onOptionSelected(ofxDatGuiButtonEvent)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:515:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<children.size(); i++) if (e.target == children[i]) mOption = i;
+                                          ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘virtual void ofxDatGuiFolder::drawColorPicker()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:189:41: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<pickers.size(); i++) pickers[i]->drawColorPicker();
+                                         ^
+In file included from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalConfirm.h:24:0,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModal.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.h:32,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.cpp:25:
+/home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h: In member function ‘void ofxModalWindow::removeListener(ofxModalEvent::EventType)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h:80:45: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<e_callbacks.size(); i++){
+                                             ^
+In file included from /home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.cpp:24:0:
+/home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.h: In constructor ‘ofxParagraph::ofxParagraph(std::string, int, ofxParagraph::Alignment)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.h:81:39: warning: ‘ofxParagraph::mFont’ will be initialized after [-Wreorder]
+         std::shared_ptr<ofxSmartFont> mFont;
+                                       ^
+/home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.h:78:17: warning:   ‘ofColor ofxParagraph::mColor’ [-Wreorder]
+         ofColor mColor;
+                 ^
+/home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.cpp:26:1: warning:   when initialized here [-Wreorder]
+ ofxParagraph::ofxParagraph(std::string text, int width, Alignment align)
+ ^
+In file included from /home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.cpp:24:0:
+/home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.h:78:17: warning: ‘ofxParagraph::mColor’ will be initialized after [-Wreorder]
+         ofColor mColor;
+                 ^
+/home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.h:73:13: warning:   ‘int ofxParagraph::mIndent’ [-Wreorder]
+         int mIndent;
+             ^
+/home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.cpp:26:1: warning:   when initialized here [-Wreorder]
+ ofxParagraph::ofxParagraph(std::string text, int width, Alignment align)
+ ^
+In file included from /home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.cpp:24:0:
+/home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.h:75:13: warning: ‘ofxParagraph::mSpacing’ will be initialized after [-Wreorder]
+         int mSpacing;
+             ^
+/home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.h:74:13: warning:   ‘int ofxParagraph::mLeading’ [-Wreorder]
+         int mLeading;
+             ^
+/home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.cpp:26:1: warning:   when initialized here [-Wreorder]
+ ofxParagraph::ofxParagraph(std::string text, int width, Alignment align)
+ ^
+/home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.cpp: In member function ‘void ofxParagraph::draw()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.cpp:47:37: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+         for (int i=0; i<mWords.size(); i++) {
+                                     ^
+/home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.cpp: In member function ‘void ofxParagraph::render()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.cpp:193:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+     while ( position != std::string::npos )
+                                      ^
+/home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.cpp:212:33: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+     for (int i=0; i<mWords.size(); i++) {
+                                 ^
+/home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.cpp:234:36: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+         for(int i=0; i<mLines.size(); i++) {
+                                    ^
+/home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.cpp:236:43: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int j=0; j<mLines[i].size(); j++) {
+                                           ^
+/home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.cpp:242:43: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int j=0; j<mLines[i].size(); j++) mLines[i][j]->rect.x += offset;
+                                           ^
+/home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.cpp:245:36: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+         for(int i=0; i<mLines.size(); i++) {
+                                    ^
+/home/propesok/sand/of_v0.9.8/addons/ofxParagraph/src/ofxParagraph.cpp:249:43: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int j=0; j<mLines[i].size(); j++) mLines[i][j]->rect.x += offset;
+                                           ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘ofxDatGuiComponent* ofxDatGuiFolder::getComponent(ofxDatGuiType, std::string)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:396:43: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<children.size(); i++) {
+                                           ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In constructor ‘ofxDatGuiDropdown::ofxDatGuiDropdown(std::string, const std::vector<std::basic_string<char> >&)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:446:41: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<options.size(); i++){
+                                         ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘void ofxDatGuiDropdown::select(int)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:475:55: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             if (cIndex < 0 || cIndex >= children.size()){
+                                                       ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘void ofxDatGuiDropdown::setOptions(const std::vector<std::basic_string<char> >&)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:491:41: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<options.size(); i++){
+                                         ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘void ofxDatGuiDropdown::onOptionSelected(ofxDatGuiButtonEvent)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:515:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<children.size(); i++) if (e.target == children[i]) mOption = i;
+                                          ^
+In file included from /home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:26:0,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/ofxDatGui.h:24,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h:25,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalConfirm.h:24,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModal.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.h:32,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/WebsocketServer/WebsocketServer.h:3,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/ofApp.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/ofApp.cpp:22:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiSlider.h: In member function ‘void ofxDatGuiSlider::setTextInput()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiSlider.h:348:55: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                 while(v.length() - p < (mPrecision + 1)) v+='0';
+                                                       ^
+In file included from /home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:26:0,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/ofxDatGui.h:24,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h:25,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalConfirm.h:24,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModal.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/../KinectProjector/KinectProjector.h:32,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/MapGameController.h:29,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/MapGameController.cpp:23:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiSlider.h: In member function ‘void ofxDatGuiSlider::setTextInput()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiSlider.h:348:55: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                 while(v.length() - p < (mPrecision + 1)) v+='0';
+                                                       ^
+In file included from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalConfirm.h:24:0,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModal.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/../KinectProjector/KinectProjector.h:32,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/vehicle.h:27,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/vehicle.cpp:22:
+/home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h: In member function ‘void ofxModalWindow::removeListener(ofxModalEvent::EventType)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h:80:45: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<e_callbacks.size(); i++){
+                                             ^
+In file included from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalConfirm.h:24:0,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModal.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.h:32,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/WebsocketServer/WebsocketServer.h:3,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/WebsocketServer/WebsocketServer.cpp:1:
+/home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h: In member function ‘void ofxModalWindow::removeListener(ofxModalEvent::EventType)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h:80:45: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<e_callbacks.size(); i++){
+                                             ^
+In file included from /home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:31:0,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/ofxDatGui.h:24,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h:25,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalConfirm.h:24,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModal.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.h:32,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/WebsocketServer/WebsocketServer.h:3,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/ofApp.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/ofApp.cpp:22:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h: In member function ‘virtual void ofxDatGuiMatrix::setWidth(int, float)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h:179:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<btns.size(); i++){
+                                      ^
+In file included from /home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:31:0,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/ofxDatGui.h:24,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h:25,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalConfirm.h:24,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModal.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/../KinectProjector/KinectProjector.h:32,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/MapGameController.h:29,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/MapGameController.cpp:23:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h: In member function ‘virtual void ofxDatGuiMatrix::setWidth(int, float)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h:179:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<btns.size(); i++){
+                                      ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h: In member function ‘virtual bool ofxDatGuiMatrix::hitTest(ofPoint)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h:203:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                 for(int i=0; i<btns.size(); i++) btns[i].hitTest(m, mMouseDown);
+                                          ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h:206:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                 for(int i=0; i<btns.size(); i++) btns[i].onMouseOut();
+                                          ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h: In member function ‘virtual void ofxDatGuiMatrix::draw()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h:218:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                 for(int i=0; i<btns.size(); i++) btns[i].draw(x+mLabel.width, y);
+                                          ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h: In member function ‘void ofxDatGuiMatrix::clear()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h:224:39: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<btns.size(); i++) btns[i].setSelected(false);
+                                       ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h: In member function ‘void ofxDatGuiMatrix::setSelected(std::vector<int>)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h:230:36: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<v.size(); i++) btns[v[i]].setSelected(true);
+                                    ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h: In member function ‘std::vector<int> ofxDatGuiMatrix::getSelected()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h:236:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<btns.size(); i++) if (btns[i].getSelected()) selected.push_back(i);
+                                      ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h: In member function ‘virtual bool ofxDatGuiMatrix::hitTest(ofPoint)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h:203:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                 for(int i=0; i<btns.size(); i++) btns[i].hitTest(m, mMouseDown);
+                                          ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h:206:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                 for(int i=0; i<btns.size(); i++) btns[i].onMouseOut();
+                                          ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h: In member function ‘virtual void ofxDatGuiMatrix::onMouseRelease(ofPoint)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h:253:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<btns.size(); i++) btns[i].onMouseRelease(m);
+                                      ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h: In member function ‘void ofxDatGuiMatrix::onButtonSelected(ofxDatGuiInternalEvent)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h:260:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                 for(int i=0; i<btns.size(); i++) btns[i].setSelected(e.index == i);
+                                          ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h: In member function ‘virtual void ofxDatGuiMatrix::draw()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h:218:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                 for(int i=0; i<btns.size(); i++) btns[i].draw(x+mLabel.width, y);
+                                          ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h: In member function ‘void ofxDatGuiMatrix::clear()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h:224:39: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<btns.size(); i++) btns[i].setSelected(false);
+                                       ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h: In member function ‘void ofxDatGuiMatrix::setSelected(std::vector<int>)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h:230:36: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<v.size(); i++) btns[v[i]].setSelected(true);
+                                    ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h: In member function ‘std::vector<int> ofxDatGuiMatrix::getSelected()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h:236:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<btns.size(); i++) if (btns[i].getSelected()) selected.push_back(i);
+                                      ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h: In member function ‘virtual void ofxDatGuiMatrix::onMouseRelease(ofPoint)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h:253:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<btns.size(); i++) btns[i].onMouseRelease(m);
+                                      ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h: In member function ‘void ofxDatGuiMatrix::onButtonSelected(ofxDatGuiInternalEvent)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h:260:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                 for(int i=0; i<btns.size(); i++) btns[i].setSelected(e.index == i);
+                                          ^
+In file included from /home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:32:0,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/ofxDatGui.h:24,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h:25,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalConfirm.h:24,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModal.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.h:32,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/WebsocketServer/WebsocketServer.h:3,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/ofApp.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/ofApp.cpp:22:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h: In member function ‘void ofxDatGuiTimeGraph::drawFilled()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h:91:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<pts.size(); i++) {
+                                      ^
+In file included from /home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:32:0,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/ofxDatGui.h:24,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h:25,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalConfirm.h:24,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModal.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/../KinectProjector/KinectProjector.h:32,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/MapGameController.h:29,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/MapGameController.cpp:23:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h: In member function ‘void ofxDatGuiTimeGraph::drawFilled()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h:91:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<pts.size(); i++) {
+                                      ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h: In member function ‘void ofxDatGuiTimeGraph::drawOutline()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h:105:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<pts.size(); i++) glVertex2f(px+pts[i].x, py+pts[i].y);
+                                      ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h: In member function ‘void ofxDatGuiTimeGraph::drawLines()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h:116:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<pts.size(); i++) glVertex2f(px+pts[i].x, py+pts[i].y);
+                                      ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h: In member function ‘void ofxDatGuiTimeGraph::drawPoints()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h:127:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<pts.size(); i++) glVertex2f(px+pts[i].x, py+pts[i].y);
+                                      ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h: In member function ‘void ofxDatGuiTimeGraph::drawOutline()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h:105:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<pts.size(); i++) glVertex2f(px+pts[i].x, py+pts[i].y);
+                                      ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h: In member function ‘void ofxDatGuiTimeGraph::drawLines()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h:116:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<pts.size(); i++) glVertex2f(px+pts[i].x, py+pts[i].y);
+                                      ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h: In member function ‘void ofxDatGuiTimeGraph::drawPoints()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h:127:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<pts.size(); i++) glVertex2f(px+pts[i].x, py+pts[i].y);
+                                      ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h: In member function ‘virtual void ofxDatGuiValuePlotter::update(bool)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h:286:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<pts.size(); i++) pts[i].x -= mSpeed;
+                                      ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h:288:32: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             while(i < pts.size())
+                                ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h: In member function ‘virtual void ofxDatGuiValuePlotter::update(bool)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h:286:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<pts.size(); i++) pts[i].x -= mSpeed;
+                                      ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h:288:32: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             while(i < pts.size())
+                                ^
+In file included from /home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:33:0,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/ofxDatGui.h:24,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h:25,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalConfirm.h:24,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModal.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/../KinectProjector/KinectProjector.h:32,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/MapGameController.h:29,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/MapGameController.cpp:23:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h: In member function ‘void ofxDatGuiScrollView::move(ofxDatGuiComponent*, int)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h:101:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<children.size(); i++){
+                                          ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h: In member function ‘void ofxDatGuiScrollView::remove(ofxDatGuiComponent*)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h:125:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<children.size(); i++){
+                                          ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h: In member function ‘void ofxDatGuiScrollView::onMouseScrolled(ofMouseEventArgs&)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h:276:50: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                     for(int i=0; i<children.size(); i++) children[i]->setPosition(0, mY + (btnH * i));
+                                                  ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h: In member function ‘void ofxDatGuiScrollView::onButtonEvent(ofxDatGuiButtonEvent)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h:285:22: warning: statement has no effect [-Wunused-value]
+                 for(i; i<children.size(); i++) if (children[i] == e.target) break;
+                      ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h:285:40: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                 for(i; i<children.size(); i++) if (children[i] == e.target) break;
+                                        ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h: In member function ‘bool ofxDatGuiScrollView::isValidIndex(int)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h:304:56: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             return index >= 0 && index < children.size();
+                                                        ^
+In file included from /home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/ofxDatGui.h:24:0,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h:25,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalConfirm.h:24,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModal.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/../KinectProjector/KinectProjector.h:32,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/MapGameController.h:29,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/MapGameController.cpp:23:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘virtual void ofxDatGuiGroup::draw()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:93:50: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                     for(int i=0; i<children.size(); i++) {
+                                                  ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:97:50: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                         if (i == children.size()-1) break;
+                                                  ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:103:50: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                     for(int i=0; i<children.size(); i++) children[i]->drawColorPicker();
+                                                  ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘void ofxDatGuiGroup::layout()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:117:43: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<children.size(); i++) {
+                                           ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:125:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                 if (i == children.size()-1) mHeight -= mStyle.vMargin;
+                                          ^
+In file included from /home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:33:0,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/ofxDatGui.h:24,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h:25,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalConfirm.h:24,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModal.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.h:32,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/WebsocketServer/WebsocketServer.h:3,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/ofApp.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/ofApp.cpp:22:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h: In member function ‘void ofxDatGuiScrollView::move(ofxDatGuiComponent*, int)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h:101:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<children.size(); i++){
+                                          ^
+In file included from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.cpp:25:0:
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.h: At global scope:
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.h:253:34: warning: ‘GetAutoCalibrationState’ function uses ‘auto’ type specifier without trailing return type [enabled by default]
+     auto GetAutoCalibrationState() {
+                                  ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h: In member function ‘void ofxDatGuiScrollView::remove(ofxDatGuiComponent*)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h:125:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<children.size(); i++){
+                                          ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘virtual void ofxDatGuiFolder::drawColorPicker()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:189:41: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<pickers.size(); i++) pickers[i]->drawColorPicker();
+                                         ^
+In file included from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.cpp:25:0:
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.h:70:7: internal compiler error: in gen_type_die_with_usage, at dwarf2out.c:19493
+ class KinectProjector {
+       ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h: In member function ‘void ofxDatGuiScrollView::onMouseScrolled(ofMouseEventArgs&)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h:276:50: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                     for(int i=0; i<children.size(); i++) children[i]->setPosition(0, mY + (btnH * i));
+                                                  ^
+Please submit a full bug report,
+with preprocessed source if appropriate.
+See <file:///usr/share/doc/gcc-4.8/README.Bugs> for instructions.
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h: In member function ‘void ofxDatGuiScrollView::onButtonEvent(ofxDatGuiButtonEvent)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h:285:22: warning: statement has no effect [-Wunused-value]
+                 for(i; i<children.size(); i++) if (children[i] == e.target) break;
+                      ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h:285:40: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                 for(i; i<children.size(); i++) if (children[i] == e.target) break;
+                                        ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h: In member function ‘bool ofxDatGuiScrollView::isValidIndex(int)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h:304:56: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             return index >= 0 && index < children.size();
+                                                        ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘ofxDatGuiComponent* ofxDatGuiFolder::getComponent(ofxDatGuiType, std::string)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:396:43: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<children.size(); i++) {
+                                           ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In constructor ‘ofxDatGuiDropdown::ofxDatGuiDropdown(std::string, const std::vector<std::basic_string<char> >&)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:446:41: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<options.size(); i++){
+                                         ^
+In file included from /home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/ofxDatGui.h:24:0,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h:25,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalConfirm.h:24,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModal.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.h:32,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/WebsocketServer/WebsocketServer.h:3,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/ofApp.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/ofApp.cpp:22:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘virtual void ofxDatGuiGroup::draw()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:93:50: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                     for(int i=0; i<children.size(); i++) {
+                                                  ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:97:50: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                         if (i == children.size()-1) break;
+                                                  ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘void ofxDatGuiDropdown::select(int)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:475:55: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             if (cIndex < 0 || cIndex >= children.size()){
+                                                       ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:103:50: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                     for(int i=0; i<children.size(); i++) children[i]->drawColorPicker();
+                                                  ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘void ofxDatGuiGroup::layout()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:117:43: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<children.size(); i++) {
+                                           ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:125:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+                 if (i == children.size()-1) mHeight -= mStyle.vMargin;
+                                          ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘void ofxDatGuiDropdown::setOptions(const std::vector<std::basic_string<char> >&)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:491:41: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<options.size(); i++){
+                                         ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘void ofxDatGuiDropdown::onOptionSelected(ofxDatGuiButtonEvent)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:515:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<children.size(); i++) if (e.target == children[i]) mOption = i;
+                                          ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘virtual void ofxDatGuiFolder::drawColorPicker()’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:189:41: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<pickers.size(); i++) pickers[i]->drawColorPicker();
+                                         ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘ofxDatGuiComponent* ofxDatGuiFolder::getComponent(ofxDatGuiType, std::string)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:396:43: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (int i=0; i<children.size(); i++) {
+                                           ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In constructor ‘ofxDatGuiDropdown::ofxDatGuiDropdown(std::string, const std::vector<std::basic_string<char> >&)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:446:41: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<options.size(); i++){
+                                         ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘void ofxDatGuiDropdown::select(int)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:475:55: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             if (cIndex < 0 || cIndex >= children.size()){
+                                                       ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘void ofxDatGuiDropdown::setOptions(const std::vector<std::basic_string<char> >&)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:491:41: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<options.size(); i++){
+                                         ^
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h: In member function ‘void ofxDatGuiDropdown::onOptionSelected(ofxDatGuiButtonEvent)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxDatGui/src/components/ofxDatGuiGroups.h:515:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<children.size(); i++) if (e.target == children[i]) mOption = i;
+                                          ^
+In file included from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalConfirm.h:24:0,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModal.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/../KinectProjector/KinectProjector.h:32,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/MapGameController.h:29,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/MapGameController.cpp:23:
+/home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h: In member function ‘void ofxModalWindow::removeListener(ofxModalEvent::EventType)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h:80:45: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<e_callbacks.size(); i++){
+                                             ^
+In file included from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalConfirm.h:24:0,
+                 from /home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModal.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.h:32,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/WebsocketServer/WebsocketServer.h:3,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/ofApp.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/ofApp.cpp:22:
+/home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h: In member function ‘void ofxModalWindow::removeListener(ofxModalEvent::EventType)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxModal/src/ofxModalWindow.h:80:45: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for(int i=0; i<e_callbacks.size(); i++){
+                                             ^
+In file included from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/vehicle.h:27:0,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/vehicle.cpp:22:
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/../KinectProjector/KinectProjector.h: At global scope:
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/../KinectProjector/KinectProjector.h:253:34: warning: ‘GetAutoCalibrationState’ function uses ‘auto’ type specifier without trailing return type [enabled by default]
+     auto GetAutoCalibrationState() {
+                                  ^
+In file included from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/vehicle.h:27:0,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/vehicle.cpp:22:
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/../KinectProjector/KinectProjector.h:70:7: internal compiler error: in gen_type_die_with_usage, at dwarf2out.c:19493
+ class KinectProjector {
+       ^
+Please submit a full bug report,
+with preprocessed source if appropriate.
+See <file:///usr/share/doc/gcc-4.8/README.Bugs> for instructions.
+In file included from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/MapGameController.h:29:0,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/MapGameController.cpp:23:
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/../KinectProjector/KinectProjector.h: At global scope:
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/../KinectProjector/KinectProjector.h:253:34: warning: ‘GetAutoCalibrationState’ function uses ‘auto’ type specifier without trailing return type [enabled by default]
+     auto GetAutoCalibrationState() {
+                                  ^
+In file included from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/MapGameController.h:29:0,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/MapGameController.cpp:23:
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/Games/../KinectProjector/KinectProjector.h:70:7: internal compiler error: in gen_type_die_with_usage, at dwarf2out.c:19493
+ class KinectProjector {
+       ^
+Please submit a full bug report,
+with preprocessed source if appropriate.
+See <file:///usr/share/doc/gcc-4.8/README.Bugs> for instructions.
+/home/propesok/sand/of_v0.9.8/addons/ofxXmlSettings/src/ofxXmlSettings.cpp: In member function ‘virtual void ofxXmlSettings::serialize(const ofAbstractParameter&)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxXmlSettings/src/ofxXmlSettings.cpp:426:28: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   for(int i=0;i<group.size();i++){
+                            ^
+/home/propesok/sand/of_v0.9.8/addons/ofxXmlSettings/src/ofxXmlSettings.cpp: In member function ‘virtual void ofxXmlSettings::deserialize(ofAbstractParameter&)’:
+/home/propesok/sand/of_v0.9.8/addons/ofxXmlSettings/src/ofxXmlSettings.cpp:446:29: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+    for(int i=0;i<group.size();i++){
+                             ^
+In file included from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/WebsocketServer/WebsocketServer.h:3:0,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/WebsocketServer/WebsocketServer.cpp:1:
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.h: At global scope:
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.h:253:34: warning: ‘GetAutoCalibrationState’ function uses ‘auto’ type specifier without trailing return type [enabled by default]
+     auto GetAutoCalibrationState() {
+                                  ^
+In file included from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/WebsocketServer/WebsocketServer.h:3:0,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/WebsocketServer/WebsocketServer.cpp:1:
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.h:70:7: internal compiler error: in gen_type_die_with_usage, at dwarf2out.c:19493
+ class KinectProjector {
+       ^
+Please submit a full bug report,
+with preprocessed source if appropriate.
+See <file:///usr/share/doc/gcc-4.8/README.Bugs> for instructions.
+In file included from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/WebsocketServer/WebsocketServer.h:3:0,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/ofApp.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/ofApp.cpp:22:
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.h: At global scope:
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.h:253:34: warning: ‘GetAutoCalibrationState’ function uses ‘auto’ type specifier without trailing return type [enabled by default]
+     auto GetAutoCalibrationState() {
+                                  ^
+In file included from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/WebsocketServer/WebsocketServer.h:3:0,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/ofApp.h:24,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/ofApp.cpp:22:
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.h:70:7: internal compiler error: in gen_type_die_with_usage, at dwarf2out.c:19493
+ class KinectProjector {
+       ^
+Please submit a full bug report,
+with preprocessed source if appropriate.
+See <file:///usr/share/doc/gcc-4.8/README.Bugs> for instructions.
+In file included from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectGrabber.h:28:0,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectGrabber.cpp:22:
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/Utils.h: At global scope:
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/Utils.h:67:15: warning: ‘float ofxCSG::areaOfTriangle(ofVec3f, ofVec3f, ofVec3f)’ defined but not used [-Wunused-function]
+  static float areaOfTriangle(ofVec3f p0, ofVec3f p1, ofVec3f p2)
+               ^
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/Utils.h:72:15: warning: ‘float ofxCSG::areaOfTriangleSquared(ofVec3f, ofVec3f, ofVec3f)’ defined but not used [-Wunused-function]
+  static float areaOfTriangleSquared(ofVec3f p0, ofVec3f p1, ofVec3f p2)
+               ^
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/Utils.h:77:15: warning: ‘float ofxCSG::signedDistanceToPlane(ofVec3f, ofVec3f, ofVec3f)’ defined but not used [-Wunused-function]
+  static float signedDistanceToPlane(ofVec3f point, ofVec3f planePos, ofVec3f planeNormal)
+               ^
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/Utils.h:84:15: warning: ‘float ofxCSG::distanceToPlane(ofVec3f, ofVec3f, ofVec3f)’ defined but not used [-Wunused-function]
+  static float distanceToPlane(ofVec3f point, ofVec3f planePos, ofVec3f planeNormal)
+               ^
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/Utils.h:110:24: warning: ‘ofxCSG::Classification ofxCSG::classifyPointWithPlane(ofVec3f, ofVec3f, ofVec3f)’ defined but not used [-Wunused-function]
+  static Classification classifyPointWithPlane( ofVec3f point, ofVec3f planePos, ofVec3f planeNormal)
+                        ^
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/Utils.h:154:14: warning: ‘bool ofxCSG::getBaryCentricCoords(ofVec3f, ofVec3f, ofVec3f, ofVec3f, float&, float&)’ defined but not used [-Wunused-function]
+  static bool getBaryCentricCoords(ofVec3f p, ofVec3f t0, ofVec3f t1, ofVec3f t2, float &u, float &v)
+              ^
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/Utils.h:166:17: warning: ‘ofVec3f ofxCSG::closestPointOnLineSegment(ofVec3f, ofVec3f, ofVec3f)’ defined but not used [-Wunused-function]
+  static ofVec3f closestPointOnLineSegment(ofVec3f p, ofVec3f l0, ofVec3f l1)
+                 ^
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/Utils.h:240:14: warning: ‘bool ofxCSG::intersectLineSegments(ofVec3f, ofVec3f, ofVec3f, ofVec3f, ofVec3f*)’ defined but not used [-Wunused-function]
+  static bool intersectLineSegments(ofVec3f a0, ofVec3f a1, ofVec3f b0, ofVec3f b1, ofVec3f* intersection=NULL)
+              ^
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/Utils.h:255:14: warning: ‘bool ofxCSG::splitLineSegmentWithPlane(ofVec3f, ofVec3f, ofVec3f, float, ofVec3f*)’ defined but not used [-Wunused-function]
+  static bool splitLineSegmentWithPlane( ofVec3f l0, ofVec3f l1, ofVec3f planeNormal, float w, ofVec3f* intersection)
+              ^
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/Utils.h:272:13: warning: ‘int ofxCSG::intersectLineSegmentPlane(ofVec3f, ofVec3f, ofVec3f, ofVec3f, ofVec3f*)’ defined but not used [-Wunused-function]
+  static int intersectLineSegmentPlane(ofVec3f p0, ofVec3f p1, ofVec3f planePos, ofVec3f planeNormal, ofVec3f* intersection = NULL)
+             ^
+In file included from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectGrabber.h:28:0,
+                 from /home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/KinectGrabber.cpp:22:
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/Utils.h:317:14: warning: ‘bool ofxCSG::isPointOnPlane(ofVec3f, ofVec3f, float, float)’ defined but not used [-Wunused-function]
+  static bool isPointOnPlane( ofVec3f p, ofVec3f planeNormal, float w, float epsilon = EPSILON)
+              ^
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/Utils.h:323:14: warning: ‘bool ofxCSG::isPointInTriangle(ofVec3f, ofVec3f, ofVec3f, ofVec3f, ofVec3f, float)’ defined but not used [-Wunused-function]
+  static bool isPointInTriangle(ofVec3f p, ofVec3f a, ofVec3f b, ofVec3f c, ofVec3f normal, float epsilon )
+              ^
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/Utils.h:344:14: warning: ‘bool ofxCSG::intersectRayTriangle(ofVec3f, ofVec3f, ofVec3f, ofVec3f, ofVec3f, ofVec3f*)’ defined but not used [-Wunused-function]
+  static bool intersectRayTriangle(ofVec3f rayOrigin, ofVec3f rayDir, ofVec3f t0, ofVec3f t1, ofVec3f t2, ofVec3f* intersection=NULL)
+              ^
+/home/propesok/sand/of_v0.9.8/apps/myApps/Magic-Sand/src/KinectProjector/Utils.h:372:20: warning: ‘ofVec4f ofxCSG::plane_from_points(ofVec3f*, int)’ defined but not used [-Wunused-function]
+     static ofVec4f plane_from_points(ofVec3f* points, int n) {
+                    ^
+Preprocessed source stored into /tmp/ccAvkfl1.out file, please attach this to your bugreport.
+Preprocessed source stored into /tmp/ccsDOGgi.out file, please attach this to your bugreport.
+ERROR: Cannot create report: [Errno 17] File exists: '/var/crash/_usr_lib_gcc_x86_64-linux-gnu_4.8_cc1plus.1000.crash'
+make[1]: *** [obj/linux64/Debug/src/KinectProjector/KinectProjector.o] Ошибка 1
+make[1]: *** [obj/linux64/Debug/src/Games/MapGameController.o] Ошибка 1
+Preprocessed source stored into /tmp/ccmlXNwC.out file, please attach this to your bugreport.
+ERROR: Cannot create report: [Errno 17] File exists: '/var/crash/_usr_lib_gcc_x86_64-linux-gnu_4.8_cc1plus.1000.crash'
+make[1]: *** [obj/linux64/Debug/src/WebsocketServer/WebsocketServer.o] Ошибка 1
+Preprocessed source stored into /tmp/ccRiblEQ.out file, please attach this to your bugreport.
+ERROR: Cannot create report: [Errno 17] File exists: '/var/crash/_usr_lib_gcc_x86_64-linux-gnu_4.8_cc1plus.1000.crash'
+make[1]: *** [obj/linux64/Debug/src/Games/vehicle.o] Ошибка 1
+Preprocessed source stored into /tmp/cc4utVkW.out file, please attach this to your bugreport.
+ERROR: Cannot create report: [Errno 17] File exists: '/var/crash/_usr_lib_gcc_x86_64-linux-gnu_4.8_cc1plus.1000.crash'
+make[1]: *** [obj/linux64/Debug/src/ofApp.o] Ошибка 1
+make: *** [Debug] Ошибка 2
+The terminal process terminated with exit code: 1
+
+Terminal will be reused by tasks, press any key to close it.
