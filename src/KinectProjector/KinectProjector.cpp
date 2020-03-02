@@ -567,7 +567,7 @@ void KinectProjector::updateFullAutoCalibration()
 		if (ROICalibState == ROI_CALIBRATION_STATE_DONE)
 		{
 			fullCalibState = FULL_CALIBRATION_STATE_AUTOCALIB;
-			autoCalibState = AUTOCALIB_STATE_INIT_FIRST_PLANE;
+			setAutoCalibrationState(AUTOCALIB_STATE_INIT_FIRST_PLANE);
 		}
 	}
 	else if (fullCalibState == FULL_CALIBRATION_STATE_AUTOCALIB)
@@ -853,7 +853,7 @@ void KinectProjector::updateProjKinectAutoCalibration()
 			kg.setMaxOffset(0);
 		});
 		calibrationText = "Stabilizing acquisition";
-		autoCalibState = AUTOCALIB_STATE_INIT_POINT;
+		setAutoCalibrationState(AUTOCALIB_STATE_INIT_POINT);
 		updateStatusGUI();
 	}
 	else if (autoCalibState == AUTOCALIB_STATE_INIT_POINT && imageStabilized)
@@ -899,7 +899,7 @@ void KinectProjector::updateProjKinectAutoCalibration()
 		ofPoint dispPt = ofPoint(projRes.x / 2, projRes.y / 2) + autoCalibPts[currentCalibPts]; //
 		drawChessboard(dispPt.x, dispPt.y, chessboardSize);										// We can now draw the next chess board
 
-		autoCalibState = AUTOCALIB_STATE_NEXT_POINT;
+		setAutoCalibrationState(AUTOCALIB_STATE_NEXT_POINT);
 	}
 	else if (autoCalibState == AUTOCALIB_STATE_NEXT_POINT && imageStabilized)
 	{
@@ -964,7 +964,7 @@ void KinectProjector::updateProjKinectAutoCalibration()
 			}
 			updateStatusGUI();
 		}
-		autoCalibState = AUTOCALIB_STATE_DONE;
+		setAutoCalibrationState(AUTOCALIB_STATE_DONE);
 	}
 	else if (!imageStabilized)
 	{
@@ -1145,7 +1145,7 @@ void KinectProjector::CalibrateNextPoint()
 		{ // We are done
 			calibrationText = "Updating acquisition ceiling";
 			updateMaxOffset(); // Find max offset
-			autoCalibState = AUTOCALIB_STATE_COMPUTE;
+			setAutoCalibrationState(AUTOCALIB_STATE_COMPUTE);
 			updateStatusGUI();
 		}
 		else
@@ -1885,6 +1885,16 @@ void KinectProjector::setDumpDebugFiles(bool value)
 	DumpDebugFiles = value;
 }
 
+void KinectProjector::setAutoCalibrationState(Auto_calibration_state newValue)
+{
+	auto oldvalue = autoCalibState;
+	autoCalibState = newValue;
+	
+	if (oldvalue != newValue && broadcastState) {
+		broadcastState();
+	}
+}
+
 bool KinectProjector::getDumpDebugFiles()
 {
 	return DumpDebugFiles;
@@ -2436,3 +2446,13 @@ ofxDatGui *KinectProjector::getGui()
 {
 	return gui;
 }
+
+//void KinectProjector::setBroadcastMethod(std::function<void(Json::Value)> method)
+//{
+//	broadcast = method;
+//}
+
+//void KinectProjector::setBroadcastStateMethod(std::function<void()> fn)
+//{
+//	broadcastState = fn;
+//}

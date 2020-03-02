@@ -24,12 +24,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #ifndef __GreatSand__KinectProjector__
 #define __GreatSand__KinectProjector__
 
+#include "ofxLibwebsockets.h"
 #include <iostream>
 #include "ofMain.h"
 #include "ofxOpenCv.h"
 #include "ofxCv.h"
 #include "KinectGrabber.h"
 #include "ofxModal.h"
+
 
 #include "KinectProjectorCalibration.h"
 #include "Utils.h"
@@ -240,6 +242,15 @@ public:
         CALIBRATION_STATE_PROJ_KINECT_MANUAL_CALIBRATION = 5
     };
 
+    enum Auto_calibration_state
+    {
+        AUTOCALIB_STATE_INIT_FIRST_PLANE = 0,
+        AUTOCALIB_STATE_INIT_POINT = 1,
+        AUTOCALIB_STATE_NEXT_POINT = 2,
+        AUTOCALIB_STATE_COMPUTE = 3,
+        AUTOCALIB_STATE_DONE = 4
+    };
+
 	Application_state GetApplicationState()
 	{
 		return applicationState;
@@ -250,6 +261,7 @@ public:
         return calibrationState;
     }
 
+    void setAutoCalibrationState(Auto_calibration_state newValue);
     auto GetAutoCalibrationState() {
         return autoCalibState;
     }
@@ -264,6 +276,12 @@ public:
     string getKinectColorImage();
 
     ofxDatGui* getGui();
+
+    //void setBroadcastMethod(std::function<void(Json::Value)> method);
+    //void setBroadcastStateMethod(std::function<void()> fn);
+
+    std::function<void(Json::Value)> broadcast;
+    std::function<void()> broadcastState;
 
 private:
 
@@ -281,14 +299,7 @@ private:
         ROI_CALIBRATION_STATE_MOVE_UP,
         ROI_CALIBRATION_STATE_DONE
     };
-    enum Auto_calibration_state
-    {
-        AUTOCALIB_STATE_INIT_FIRST_PLANE =0,
-        AUTOCALIB_STATE_INIT_POINT = 1,
-        AUTOCALIB_STATE_NEXT_POINT = 2,
-        AUTOCALIB_STATE_COMPUTE = 3,
-        AUTOCALIB_STATE_DONE = 4
-    };
+    
 
    
     void exit(ofEventArgs& e);

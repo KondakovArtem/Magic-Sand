@@ -80,6 +80,7 @@ public:
     void onIdle(ofxLibwebsockets::Event& args);
     void onMessage(ofxLibwebsockets::Event& args);
     void onBroadcast(ofxLibwebsockets::Event& args);
+    void broadcast(Json::Value message);
     void resolveResponseBool(ofxLibwebsockets::Event& args, int result);
     void resolveResponseFloat(ofxLibwebsockets::Event& args, int result);
 private: 
@@ -96,6 +97,8 @@ private:
     void resolveSetValue(ofxLibwebsockets::Event& args);
     void sendMessage(ofxLibwebsockets::Event& args, Json::Value message);
     void sendMessage(ofxLibwebsockets::Event& args, Json::Value message, bool noLog);
+    void sendToConnection(ofxLibwebsockets::Connection& connection, Json::Value message, bool noLog);
+    void sendToConnection(ofxLibwebsockets::Connection* connection, Json::Value message, bool noLog);
     template <typename Proc>
     void resolveToggleValue(ofxLibwebsockets::Event& args, string componentName, Proc method);
     template<typename Proc>
