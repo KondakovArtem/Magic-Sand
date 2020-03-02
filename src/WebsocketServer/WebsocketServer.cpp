@@ -64,6 +64,17 @@ void WebsocketServer::onBroadcast(ofxLibwebsockets::Event& args) {
 	cout << "got broadcast " << args.message << endl;
 }
 
+void WebSocketServer::broadcast(message) {
+	vector<ofxLibwebsockets::Connection *> connections = server.getConnections();
+    for ( int i=0; i<connections.size(); i++){
+		connections[i]->send( args.message );
+        if ( (*connections[i]) != args.conn ){
+            connections[i]->send( args.message );
+        }
+    }
+}
+
+
 void WebsocketServer::resolveResponseBool(ofxLibwebsockets::Event& args, int result) {
 	bool value = args.json.get(FL_VALUE, false).asBool();
 	resolveResponse<bool>(args, result, value);
@@ -103,7 +114,7 @@ void WebsocketServer::resolveResponseValue(ofxLibwebsockets::Event& args, T valu
 	sendMessage(args, message, true);
 }
 
-void WebsocketServer::resolveGetState(ofxLibwebsockets::Event& args) {
+Json::Value WebsocketServer::getStateMessage() {
 	Json::Value message;
 	message[FL_COMMAND] = CM_GET_STATE;
 	
@@ -134,15 +145,16 @@ void WebsocketServer::resolveGetState(ofxLibwebsockets::Event& args) {
 	message[FL_OF_SHARKS] = boidGameController.getSharks();
 	message[FL_OF_FISH] = boidGameController.getFish();
 	message[FL_OF_RABBITS] = boidGameController.getRabbits();
+}
 
-	sendMessage(args, message);
+void WebsocketServer::resolveGetState(ofxLibwebsockets::Event& args) {
+	sendMessage(args, getStateMessage);
 }
 
 
 void WebsocketServer::resolveSetState(ofxLibwebsockets::Event& args) {
 	const auto kp = this->kinectProjector;
 	const auto value = args.json.get(FL_VALUE, "").asString();
-
 	if (value == CM_OP_START) {
 		string res = kp->startApplication(false);
 		int result = (res.empty()) ? 0 : 1;
@@ -255,3 +267,5 @@ void WebsocketServer::sendMessage(ofxLibwebsockets::Event& args, Json::Value mes
 	}
 	args.conn.send(str);
 }
+
+void WebsocketServer::sendToConnection()

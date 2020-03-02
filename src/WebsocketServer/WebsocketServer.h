@@ -88,6 +88,7 @@ private:
     
     //void setToggleComponentValue(string name, bool value);
     //void setSliderComponentValue(string name, float value);
+    Json::Value WebsocketServer::getStateMessage();
     void resolveGetState(ofxLibwebsockets::Event& args);
 	void resolveSetState(ofxLibwebsockets::Event& args);
     void resolveGetValue(ofxLibwebsockets::Event& args);

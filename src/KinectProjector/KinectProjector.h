@@ -319,6 +319,7 @@ private:
     void updateMaxOffset();
     void updateBasePlane();
     void askToFlattenSand();
+    bool askToFlattenSandFlag;
 
     void drawChessboard(int x, int y, int chessboardSize);
     void drawArrow(ofVec2f projectedPoint, ofVec2f v1);
