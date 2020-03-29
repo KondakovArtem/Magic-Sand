@@ -284,7 +284,9 @@ public:
     std::function<void()> broadcastState;
 
     
-    void updateState();
+    void updateStateEvent();
+    void updateStateEvent(bool value);
+    bool isUpdateStateEvent();
 
 private:
 
@@ -470,7 +472,7 @@ private:
 	std::string GetTimeAndDateString();
 	bool savePointPair();
 	void SaveFilteredDepthImageDebug();
-    bool updateStateEvent;
+    bool stateEvent;
 };
 
 

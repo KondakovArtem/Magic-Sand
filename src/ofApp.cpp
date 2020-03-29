@@ -62,6 +62,7 @@ void ofApp::setup() {
 	boidGameController.setKinectROI(kinectROI);
 
 	websocketServer = std::make_shared<WebsocketServer>(kinectProjector, boidGameController);
+	needSendUpdateState = false;
 }
 
 
@@ -84,6 +85,18 @@ void ofApp::update() {
 
 	mapGameController.update();
 	boidGameController.update();
+
+	
+
+	if (kinectProjector->isUpdateStateEvent()) {
+		initUpdateTimeStamp = std::time(0);
+		needSendUpdateState = true;
+		kinectProjector->updateStateEvent(false);
+	}
+	if (needSendUpdateState && (std::time(0) > (initUpdateTimeStamp + 1))) {
+		needSendUpdateState = false;
+		kinectProjector->broadcastState();
+	}
 }
 
 

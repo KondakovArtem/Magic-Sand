@@ -51,8 +51,6 @@ KinectProjector::KinectProjector(std::shared_ptr<ofAppBaseWindow> const &p)
 	DebugFileOutDir = "DebugFiles//";
 	forceGuiUpdate = false;
 	askToFlattenSandFlag = false;
-	updateStateEvent = false;
-
 }
 
 void KinectProjector::setup(bool sdisplayGui)
@@ -2451,10 +2449,20 @@ ofxDatGui *KinectProjector::getGui()
 	return gui;
 }
 
-
-void updateState() {
-	updateStateEvent = true;
+void KinectProjector::updateStateEvent()
+{
+	updateStateEvent(true);
 }
+
+void KinectProjector::updateStateEvent(bool value)
+{
+	stateEvent = value;
+}
+
+bool KinectProjector::isUpdateStateEvent() {
+	return stateEvent;
+}
+
 //void KinectProjector::setBroadcastMethod(std::function<void(Json::Value)> method)
 //{
 //	broadcast = method;

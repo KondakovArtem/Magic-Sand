@@ -66,4 +66,8 @@ private:
 
 	// Main window ROI 
 	ofRectangle mainWindowROI;
+
+	bool needSendUpdateState;
+	int initUpdateTimeStamp;
+
 };
