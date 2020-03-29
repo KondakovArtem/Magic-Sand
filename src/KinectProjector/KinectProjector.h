@@ -283,6 +283,9 @@ public:
     std::function<void(Json::Value)> broadcast;
     std::function<void()> broadcastState;
 
+    
+    void updateState();
+
 private:
 
     
@@ -467,6 +470,7 @@ private:
 	std::string GetTimeAndDateString();
 	bool savePointPair();
 	void SaveFilteredDepthImageDebug();
+    bool updateStateEvent;
 };
 
 

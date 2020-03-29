@@ -38,7 +38,7 @@ KinectProjector::KinectProjector(std::shared_ptr<ofAppBaseWindow> const &p)
 	  imageStabilized(false),
 	  waitingForFlattenSand(false),
 	  drawKinectView(false),
-	  drawKinectColorView(true)
+	  drawKinectColorView(true),
 {
 	doShowROIonProjector = false;
 	tiltX = 0;
@@ -51,6 +51,8 @@ KinectProjector::KinectProjector(std::shared_ptr<ofAppBaseWindow> const &p)
 	DebugFileOutDir = "DebugFiles//";
 	forceGuiUpdate = false;
 	askToFlattenSandFlag = false;
+	updateStateEvent = false;
+
 }
 
 void KinectProjector::setup(bool sdisplayGui)
@@ -1970,12 +1972,14 @@ void KinectProjector::setTilt(float tiltX, float tiltY)
 	basePlaneNormal.rotate(tiltY, ofVec3f(0, 1, 0));
 	basePlaneEq = getPlaneEquation(basePlaneOffset, basePlaneNormal);
 	basePlaneUpdated = true;
+	
 }
 
 void KinectProjector::setTiltX(float value)
 {
 	tiltX = value;
 	setTilt(tiltX, tiltY);
+	updateState();
 }
 
 void KinectProjector::setTiltY(float value)
@@ -2447,6 +2451,10 @@ ofxDatGui *KinectProjector::getGui()
 	return gui;
 }
 
+
+void updateState() {
+	updateStateEvent = true;
+}
 //void KinectProjector::setBroadcastMethod(std::function<void(Json::Value)> method)
 //{
 //	broadcast = method;
