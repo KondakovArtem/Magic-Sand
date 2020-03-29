@@ -89,14 +89,19 @@ void ofApp::update() {
 	
 
 	if (kinectProjector->isUpdateStateEvent()) {
-		initUpdateTimeStamp = std::time(0);
+		initUpdateTimeStamp = timeSinceEpochMillisec();
 		needSendUpdateState = true;
 		kinectProjector->updateStateEvent(false);
 	}
-	if (needSendUpdateState && (std::time(0) > (initUpdateTimeStamp + 1))) {
+	if (needSendUpdateState && (timeSinceEpochMillisec() > (initUpdateTimeStamp + 100))) {
 		needSendUpdateState = false;
 		kinectProjector->broadcastState();
 	}
+}
+
+uint64_t timeSinceEpochMillisec() {
+	using namespace std::chrono;
+	return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 }
 
 
