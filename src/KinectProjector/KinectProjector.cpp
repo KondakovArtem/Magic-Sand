@@ -38,7 +38,7 @@ KinectProjector::KinectProjector(std::shared_ptr<ofAppBaseWindow> const &p)
 	  imageStabilized(false),
 	  waitingForFlattenSand(false),
 	  drawKinectView(false),
-	  drawKinectColorView(true),
+	  drawKinectColorView(true)
 {
 	doShowROIonProjector = false;
 	tiltX = 0;
@@ -1977,7 +1977,7 @@ void KinectProjector::setTiltX(float value)
 {
 	tiltX = value;
 	setTilt(tiltX, tiltY);
-	updateState();
+	updateStateEvent();
 }
 
 void KinectProjector::setTiltY(float value)
