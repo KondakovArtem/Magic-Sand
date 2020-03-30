@@ -97,9 +97,14 @@ void ofApp::update() {
 	}
 
 	auto error = kinectProjector->getErrorEvent();
-	if (!error.empty()) {
-		websocketServer->broadcastError(error);
+	if (!needSendErrorState && !error.empty()) {
+		initErrorTimeStamp = timeSinceEpochMillisec();
+		needSendErrorState = true;
+	}
+	if (needSendErrorState && (timeSinceEpochMillisec() > (initErrorTimeStamp + 100))) {
+		needSendErrorState = false;
 		kinectProjector->updateErrorEvent("");
+		websocketServer->broadcastError(error);
 	}
 
 }

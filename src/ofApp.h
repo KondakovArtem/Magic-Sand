@@ -70,5 +70,9 @@ private:
 
 	bool needSendUpdateState;
 	uint64_t initUpdateTimeStamp;
+
+	bool needSendErrorState;
+	uint64_t initErrorTimeStamp;
+
 	uint64_t timeSinceEpochMillisec();
 };

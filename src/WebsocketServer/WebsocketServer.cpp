@@ -80,7 +80,7 @@ void WebsocketServer::broadcastError(string error) {
 	Json::Value message;
 
 	message[FL_COMMAND] = FL_ERROR;
-	message[FL_RESULT] = error;
+	message[FL_ERROR] = error;
 
 	for (int i = 0; i < connections.size(); i++) {
 		sendToConnection(connections[i], message, false);
@@ -114,7 +114,7 @@ void WebsocketServer::resolveResponseState(ofxLibwebsockets::Event& args, int re
 	Json::Value message;
 	message[FL_COMMAND] = args.json.get(FL_COMMAND, "FL_COMMAND").asString();
 	message[FL_VALUE] = args.json.get(FL_VALUE, "FL_VALUE").asString();
-	(!error.empty()) ? message[FL_ERROR] = error : 0;
+	//(!error.empty()) ? message[FL_ERROR] = error : 0;
 	message[FL_RESULT] = result;
 	sendMessage(args, message);
 }

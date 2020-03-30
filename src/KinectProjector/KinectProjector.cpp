@@ -1597,11 +1597,13 @@ string KinectProjector::startApplication(bool updateFlag = true)
 	if (applicationState == APPLICATION_STATE_CALIBRATING)
 	{
 		ofLogVerbose("KinectProjector") << "KinectProjector.startApplication() : we are calibrating";
+		updateErrorEvent("CALIBRATING");
 		return "CALIBRATING";
 	}
 	if (!kinectOpened)
 	{
 		ofLogVerbose("KinectProjector") << "KinectProjector.startApplication(): Kinect is not running ";
+		updateErrorEvent("KINECT_NOT_RUNNING");
 		return "KINECT_NOT_RUNNING";
 	}
 
@@ -1622,6 +1624,7 @@ string KinectProjector::startApplication(bool updateFlag = true)
 		else
 		{
 			ofLogVerbose("KinectProjector") << "KinectProjector.startApplication(): Calibration could not be loaded";
+			updateErrorEvent("NO_CALIBRATION");
 			return "NO_CALIBRATION";
 		}
 	}
@@ -1649,6 +1652,7 @@ string KinectProjector::startApplication(bool updateFlag = true)
 		else
 		{
 			ofLogVerbose("KinectProjector") << "KinectProjector.setup(): Settings could not be loaded";
+			updateErrorEvent("SETTINGS_NOT_LOADED");
 			return "SETTINGS_NOT_LOADED";
 		}
 	}
@@ -1718,6 +1722,7 @@ string KinectProjector::startAutomaticKinectProjectorCalibration(bool updateGui 
 	if (!kinectOpened)
 	{
 		ofLogVerbose("KinectProjector") << "startAutomaticKinectProjectorCalibration(): Kinect not running";
+		updateErrorEvent("KINECT_NOT_RUNNING");
 		return "KINECT_NOT_RUNNING";
 	}
 	if (applicationState == APPLICATION_STATE_CALIBRATING)
@@ -1727,11 +1732,13 @@ string KinectProjector::startAutomaticKinectProjectorCalibration(bool updateGui 
 		calibrationText = "Terminated before completion";
 		updateGui ? updateStatusGUI() : noop;
 		updateStateEvent();
+		updateErrorEvent("ALREADY_CALIBRATING");
 		return "ALREADY_CALIBRATING";
 	}
 	if (!ROIcalibrated)
 	{
 		ofLogVerbose("KinectProjector") << "startAutomaticKinectProjectorCalibration(): ROI not defined";
+		updateErrorEvent("ROI_NOT_DEFINED");
 		return "ROI_NOT_DEFINED";
 	}
 
