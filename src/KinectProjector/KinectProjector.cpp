@@ -798,6 +798,7 @@ void KinectProjector::setNewKinectROI(bool updateGui)
 	{
 		updateStatusGUI();
 	}
+	updateStateEvent();
 }
 
 void KinectProjector::updateKinectGrabberROI(ofRectangle ROI)
@@ -1589,6 +1590,7 @@ string KinectProjector::startApplication(bool updateFlag = true)
 	if (applicationState == APPLICATION_STATE_RUNNING)
 	{
 		applicationState = APPLICATION_STATE_SETUP;
+		updateStateEvent();
 		updateFlag ? updateStatusGUI() : noop;
 		return "";
 	}
@@ -1614,6 +1616,7 @@ string KinectProjector::startApplication(bool updateFlag = true)
 			ofLogVerbose("KinectProjector") << "KinectProjector.setup(): kinectProjMatrix: " << kinectProjMatrix;
 			projKinectCalibrated = true;
 			projKinectCalibrationUpdated = true;
+			updateStateEvent();
 			updateFlag ? updateStatusGUI() : noop;
 		}
 		else
@@ -1640,7 +1643,7 @@ string KinectProjector::startApplication(bool updateFlag = true)
 
 			int nAvg = numAveragingSlots;
 			kinectgrabber.performInThread([nAvg](KinectGrabber &kg) { kg.setAveragingSlotsNumber(nAvg); });
-
+            
 			updateFlag ? updateStatusGUI() : noop;
 		}
 		else
@@ -1662,6 +1665,7 @@ string KinectProjector::startApplication(bool updateFlag = true)
 	updateFlag ? gui->getToggle(CMP_DRAW_KINECT_COLOR_VIEW)->setChecked(drawKinectColorView) : noop;
 	updateFlag ? gui->getToggle(CMP_DRAW_KINECT_DEPTH_VIEW)->setChecked(drawKinectView) : noop;
 	updateFlag ? updateStatusGUI() : noop;
+	updateStateEvent();
 	return "";
 }
 
@@ -1687,6 +1691,7 @@ void KinectProjector::startFullCalibration()
 	askToFlattenSand();
 	ofLogVerbose("KinectProjector") << "startFullCalibration(): Starting full calibration";
 	updateStatusGUI();
+	updateStateEvent();
 }
 
 void KinectProjector::startAutomaticROIDetection()
@@ -1700,6 +1705,7 @@ void KinectProjector::startAutomaticROIDetection()
 	askToFlattenSand();
 	ofLogVerbose("KinectProjector") << "startAutomaticROIDetection(): starting ROI detection";
 	updateStatusGUI();
+	updateStateEvent();
 }
 
 void KinectProjector::startAutomaticKinectProjectorCalibration()
@@ -1720,6 +1726,7 @@ string KinectProjector::startAutomaticKinectProjectorCalibration(bool updateGui 
 		confirmModal->hide();
 		calibrationText = "Terminated before completion";
 		updateGui ? updateStatusGUI() : noop;
+		updateStateEvent();
 		return "ALREADY_CALIBRATING";
 	}
 	if (!ROIcalibrated)
@@ -1737,6 +1744,7 @@ string KinectProjector::startAutomaticKinectProjectorCalibration(bool updateGui 
 	askToFlattenSandFlag = true;
 	ofLogVerbose("KinectProjector") << "startAutomaticKinectProjectorCalibration(): Starting autocalib";
 	updateGui ? updateStatusGUI() : noop;
+	updateStateEvent();
 	return "";
 }
 
@@ -1750,6 +1758,7 @@ void KinectProjector::setSpatialFiltering(bool sspatialFiltering, bool updateGui
 	{
 		updateStatusGUI();
 	}
+	updateStateEvent();
 }
 
 bool KinectProjector::getSpatialFiltering()
@@ -1767,6 +1776,7 @@ void KinectProjector::setInPainting(bool inp, bool updateGui = true)
 	{
 		updateStatusGUI();
 	}
+	updateStateEvent();
 }
 
 bool KinectProjector::getInPainting()
@@ -1785,6 +1795,7 @@ void KinectProjector::setFullFrameFiltering(bool ff, bool updateGui = true)
 	{
 		updateStatusGUI();
 	}
+	updateStateEvent();
 }
 
 bool KinectProjector::getFullFrameFiltering()
@@ -1868,11 +1879,13 @@ void KinectProjector::ResetSeaLevel()
 	basePlaneOffset = basePlaneOffsetBack;
 	basePlaneEq = getPlaneEquation(basePlaneOffset, basePlaneNormal);
 	basePlaneUpdated = true;
+	updateStateEvent();
 }
 
 void KinectProjector::showROIonProjector(bool show)
 {
 	doShowROIonProjector = show;
+	updateStateEvent();
 }
 
 bool KinectProjector::getShowROIonProjector()
@@ -1883,6 +1896,7 @@ bool KinectProjector::getShowROIonProjector()
 void KinectProjector::setDumpDebugFiles(bool value)
 {
 	DumpDebugFiles = value;
+	updateStateEvent();
 }
 
 void KinectProjector::setAutoCalibrationState(Auto_calibration_state newValue)
@@ -1891,7 +1905,7 @@ void KinectProjector::setAutoCalibrationState(Auto_calibration_state newValue)
 	autoCalibState = newValue;
 	
 	if (oldvalue != newValue && broadcastState) {
-		broadcastState();
+		updateStateEvent();
 	}
 }
 
@@ -1911,6 +1925,7 @@ void KinectProjector::setAveraging(float value)
 	kinectgrabber.performInThread([value](KinectGrabber &kg) {
 		kg.setAveragingSlotsNumber(value);
 	});
+	updateStateEvent();
 }
 
 void KinectProjector::setDrawKinectDepthView(bool value)
@@ -1921,6 +1936,7 @@ void KinectProjector::setDrawKinectDepthView(bool value)
 		drawKinectColorView = false;
 		gui->getToggle(CMP_DRAW_KINECT_COLOR_VIEW)->setChecked(drawKinectColorView);
 	}
+	updateStateEvent();
 }
 
 bool KinectProjector::getDrawKinectDepthView()
@@ -1936,6 +1952,7 @@ void KinectProjector::setDrawKinectColorView(bool value)
 		drawKinectView = false;
 		gui->getToggle(CMP_DRAW_KINECT_DEPTH_VIEW)->setChecked(drawKinectView);
 	}
+	updateStateEvent();
 }
 
 bool KinectProjector::getDrawKinectColorView()
@@ -1955,6 +1972,7 @@ void KinectProjector::setCeiling(float value)
 	kinectgrabber.performInThread([this](KinectGrabber &kg) {
 		kg.setMaxOffset(this->maxOffset);
 	});
+	updateStateEvent();
 }
 
 float KinectProjector::getCeiling()
@@ -1970,14 +1988,13 @@ void KinectProjector::setTilt(float tiltX, float tiltY)
 	basePlaneNormal.rotate(tiltY, ofVec3f(0, 1, 0));
 	basePlaneEq = getPlaneEquation(basePlaneOffset, basePlaneNormal);
 	basePlaneUpdated = true;
-	
+	updateStateEvent();
 }
 
 void KinectProjector::setTiltX(float value)
 {
 	tiltX = value;
 	setTilt(tiltX, tiltY);
-	updateStateEvent();
 }
 
 void KinectProjector::setTiltY(float value)
@@ -2002,6 +2019,7 @@ void KinectProjector::setVerticalOffset(float value)
 	basePlaneOffset.z = basePlaneOffsetBack.z + verticalOffset;
 	basePlaneEq = getPlaneEquation(basePlaneOffset, basePlaneNormal);
 	basePlaneUpdated = true;
+	updateStateEvent();
 }
 
 float KinectProjector::getVerticalOffset()
@@ -2028,6 +2046,7 @@ void KinectProjector::onConfirmModalEvent(ofxModalEvent e)
 			confirmModal->show();
 		}
 		ofLogVerbose("KinectProjector") << "Confirm modal window is closed";
+		
 	}
 	else if (e.type == ofxModalEvent::CANCEL)
 	{
@@ -2037,6 +2056,7 @@ void KinectProjector::onConfirmModalEvent(ofxModalEvent e)
 	{
 		onConfirmCalibration();
 	}
+	updateStateEvent();
 }
 
 string KinectProjector::onCancelCalibration(bool updateGui = true)
@@ -2090,6 +2110,7 @@ void KinectProjector::onCalibModalEvent(ofxModalEvent e)
 		ofLogVerbose("KinectProjector") << "Modal cancel button pressed: Aborting";
 		updateStatusGUI();
 	}
+	updateStateEvent();
 }
 
 void KinectProjector::saveCalibrationAndSettings()
@@ -2462,6 +2483,8 @@ void KinectProjector::updateStateEvent(bool value)
 bool KinectProjector::isUpdateStateEvent() {
 	return stateEvent;
 }
+
+
 
 //void KinectProjector::setBroadcastMethod(std::function<void(Json::Value)> method)
 //{

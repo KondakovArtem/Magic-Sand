@@ -88,6 +88,8 @@ void WebsocketServer::resolveResponseFloat(ofxLibwebsockets::Event& args, int re
 template <typename T>
 void WebsocketServer::resolveResponse(ofxLibwebsockets::Event& args, int result, T value) {
 	Json::Value message;
+
+	
 	message[FL_COMMAND] = args.json.get(FL_COMMAND, "FL_COMMAND").asString();
 	message[FL_FIELD] = args.json.get(FL_FIELD, "FL_FIELD").asString();
 	message[FL_VALUE] = value;
@@ -194,9 +196,15 @@ void WebsocketServer::resolveGetValue(ofxLibwebsockets::Event& args) {
 void WebsocketServer::resolveSetKinectROI(ofxLibwebsockets::Event& args) {
 	const auto kp = this->kinectProjector;
 	const auto roi = args.json.get(FL_VALUE, "");
+	auto x = roi["x"].asInt();
+    auto y = roi["y"].asInt();
+	if (x > 640) x = 640;
+	if (y > 480) x = 480;
+	
+
 	kp->setKinectROI(
-		roi["x"].asInt(), 
-		roi["y"].asInt(), 
+		x, 
+		y, 
 		roi["width"].asInt(), 
 		roi["height"].asInt()
 	);

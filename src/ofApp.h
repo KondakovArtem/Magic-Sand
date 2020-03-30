@@ -69,6 +69,6 @@ private:
 	ofRectangle mainWindowROI;
 
 	bool needSendUpdateState;
-	int initUpdateTimeStamp;
-
+	uint64_t initUpdateTimeStamp;
+	uint64_t timeSinceEpochMillisec();
 };
