@@ -31,6 +31,7 @@ constexpr auto FL_FIELD = "field";
 constexpr auto FL_VALUE = "value";
 constexpr auto FL_RESULT = "result";
 constexpr auto FL_ERROR = "error";
+constexpr auto FL_MESSAGE = "message";
 
 constexpr auto FL_KINECT_COLOR_IMAGE = "kinectColorImage";
 
@@ -81,6 +82,7 @@ public:
     void onMessage(ofxLibwebsockets::Event& args);
     void onBroadcast(ofxLibwebsockets::Event& args);
     void broadcast(Json::Value message);
+    void broadcastError(string error);
     void resolveResponseBool(ofxLibwebsockets::Event& args, int result);
     void resolveResponseFloat(ofxLibwebsockets::Event& args, int result);
 private: 

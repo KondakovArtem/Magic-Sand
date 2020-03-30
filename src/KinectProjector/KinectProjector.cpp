@@ -2485,6 +2485,13 @@ bool KinectProjector::isUpdateStateEvent() {
 }
 
 
+void KinectProjector::updateErrorEvent(string error) {
+	errorEvent = error;
+}
+
+string KinectProjector::getErrorEvent() {
+	return errorEvent;
+}
 
 //void KinectProjector::setBroadcastMethod(std::function<void(Json::Value)> method)
 //{

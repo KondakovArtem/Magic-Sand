@@ -288,6 +288,9 @@ public:
     void updateStateEvent(bool value);
     bool isUpdateStateEvent();
 
+    void updateErrorEvent(string error);
+    string getErrorEvent();
+
 private:
 
     
@@ -305,7 +308,7 @@ private:
         ROI_CALIBRATION_STATE_DONE
     };
     
-
+    
    
     void exit(ofEventArgs& e);
     void setupGradientField();
@@ -473,6 +476,7 @@ private:
 	bool savePointPair();
 	void SaveFilteredDepthImageDebug();
     bool stateEvent;
+    string errorEvent;
 };
 
 

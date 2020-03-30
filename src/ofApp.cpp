@@ -86,8 +86,6 @@ void ofApp::update() {
 	mapGameController.update();
 	boidGameController.update();
 
-	
-
 	if (kinectProjector->isUpdateStateEvent()) {
 		initUpdateTimeStamp = timeSinceEpochMillisec();
 		needSendUpdateState = true;
@@ -97,6 +95,13 @@ void ofApp::update() {
 		needSendUpdateState = false;
 		kinectProjector->broadcastState();
 	}
+
+	auto error = kinectProjector->getErrorEvent();
+	if (!error.empty()) {
+		websocketServer->broadcastError(error);
+		kinectProjector->updateErrorEvent("");
+	}
+
 }
 
 uint64_t ofApp::timeSinceEpochMillisec() {

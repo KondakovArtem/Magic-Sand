@@ -74,6 +74,19 @@ void WebsocketServer::broadcast(Json::Value message) {
     }
 }
 
+void WebsocketServer::broadcastError(string error) {
+	vector<ofxLibwebsockets::Connection*> connections = server.getConnections();
+
+	Json::Value message;
+
+	message[FL_COMMAND] = FL_ERROR;
+	message[FL_RESULT] = error;
+
+	for (int i = 0; i < connections.size(); i++) {
+		sendToConnection(connections[i], message, false);
+	}
+}
+
 
 void WebsocketServer::resolveResponseBool(ofxLibwebsockets::Event& args, int result) {
 	bool value = args.json.get(FL_VALUE, false).asBool();
