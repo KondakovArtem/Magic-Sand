@@ -266,6 +266,12 @@ public:
         ROI_CALIBRATION_STATE_DONE = 3
     };
 
+    enum ConfirmModal_State
+    {
+        CONFIRM_MODAL_CLOSED = 0,
+        CONFIRM_MODAL_OPENED = 1
+    };
+
 
 
     auto GetROICalibState() {
@@ -287,14 +293,27 @@ public:
         return calibrationState;
     }
 
+    auto GetConfirmModalState()
+    {
+        return confirmModalState;
+    }
+
+    auto GetConfirmModalMessage()
+    {
+        return confirmModalMessage;
+    }
+
+    auto GetAutoCalibrationState() {
+        return autoCalibState;
+    }
+
+
     void setAutoCalibrationState(Auto_calibration_state newValue);
     void setCalibrationState(Calibration_state newValue);
     void setFullCalibState(Full_Calibration_state newValue);
     void setApplicationState(Application_state newValue);
     void setROICalibState(ROI_calibration_state newValue);
-    auto GetAutoCalibrationState() {
-        return autoCalibState;
-    }
+    void setConfirmModalMessage(string message);
 
 	bool getDumpDebugFiles();
 
@@ -320,6 +339,9 @@ public:
 
     void updateErrorEvent(string error);
     string getErrorEvent();
+
+    void setConfirmModalState(ConfirmModal_State state);
+    
 
 private:
 
@@ -481,6 +503,8 @@ private:
     // GUI Modal window & interface
 	bool displayGui;
     shared_ptr<ofxModalConfirm>   confirmModal;
+    ConfirmModal_State confirmModalState;
+    string confirmModalMessage;
     shared_ptr<ofxModalAlert>   calibModal;
     shared_ptr<ofxModalThemeProjKinect>   modalTheme;
     ofxDatGui* gui;

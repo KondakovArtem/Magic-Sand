@@ -44,6 +44,8 @@ KinectProjector::KinectProjector(std::shared_ptr<ofAppBaseWindow> const &p)
 	tiltX = 0;
 	tiltY = 0;
 	applicationState = APPLICATION_STATE_SETUP;
+	confirmModalState = CONFIRM_MODAL_CLOSED;
+	confirmModalMessage = "";
 	projWindow = p;
 	TemporalFilteringType = 1;
 	verticalOffset = 0;
@@ -720,8 +722,9 @@ void KinectProjector::updateROIFromDepthImage()
 			ofLogVerbose("KinectProjector") << "Calibration failed: The sandbox walls could not be found";
 			calibModal->hide();
 			confirmModal->setTitle("Calibration failed");
-			confirmModal->setMessage("The sandbox walls could not be found.");
-			confirmModal->show();
+			setConfirmModalMessage("SANDBOX_WALLS_NOT_FOUND");
+			// confirmModal->setMessage("The sandbox walls could not be found.");
+			setConfirmModalState(CONFIRM_MODAL_OPENED);
 			//            calibrating = false;
 			setApplicationState(APPLICATION_STATE_SETUP);
 			updateStatusGUI();
@@ -1152,8 +1155,9 @@ void KinectProjector::CalibrateNextPoint()
 		else
 		{ // We ask for higher points
 			calibModal->hide();
-			confirmModal->show();
-			confirmModal->setMessage("Please cover the sandbox with a board and press ok.");
+			setConfirmModalState(CONFIRM_MODAL_OPENED);
+			setConfirmModalMessage("COVER_SANDBOX_WITH_BOARD");
+			// confirmModal->setMessage("Please cover the sandbox with a board and press ok.");
 		}
 	}
 }
@@ -1301,8 +1305,9 @@ void KinectProjector::askToFlattenSand()
 	fboProjWindow.begin();
 	ofBackground(255);
 	fboProjWindow.end();
-	confirmModal->setMessage("Please flatten the sand surface.");
-	confirmModal->show();
+	setConfirmModalMessage("FLATTEN_SAND");
+	// confirmModal->setMessage("Please flatten the sand surface.");
+	setConfirmModalState(CONFIRM_MODAL_OPENED);
 	waitingForFlattenSand = true;
 }
 
@@ -1729,7 +1734,7 @@ string KinectProjector::startAutomaticKinectProjectorCalibration(bool updateGui 
 	if (GetApplicationState() == APPLICATION_STATE_CALIBRATING)
 	{
 		setApplicationState(APPLICATION_STATE_SETUP);
-		confirmModal->hide();
+		setConfirmModalState(CONFIRM_MODAL_CLOSED);
 		calibrationText = "Terminated before completion";
 		updateGui ? updateStatusGUI() : noop;
 		updateStateEvent();
@@ -1949,6 +1954,33 @@ void KinectProjector::setROICalibState(ROI_calibration_state newValue) {
 	}
 }
 
+void KinectProjector::setConfirmModalMessage(string message)
+{
+	auto oldvalue = confirmModalMessage;
+	confirmModalMessage = message;
+	if (!oldvalue.compare(confirmModalMessage) && broadcastState) {
+		confirmModal->setMessage(message);
+		updateStateEvent();
+	}
+}
+
+void KinectProjector::setConfirmModalState(ConfirmModal_State state)
+{
+	auto oldvalue = confirmModalState;
+	confirmModalState = state;
+	if (oldvalue != state && broadcastState) {
+		updateStateEvent();
+		if (confirmModalState == CONFIRM_MODAL_CLOSED) {
+			confirmModal->hide();
+		}
+		if (confirmModalState == CONFIRM_MODAL_OPENED) {
+			confirmModal->show();
+		}
+		updateStateEvent();
+	}
+}
+
+
 
 
 bool KinectProjector::getDumpDebugFiles()
@@ -1996,6 +2028,7 @@ void KinectProjector::setDrawKinectColorView(bool value)
 	}
 	updateStateEvent();
 }
+
 
 bool KinectProjector::getDrawKinectColorView()
 {
@@ -2076,26 +2109,24 @@ void KinectProjector::onSliderEvent(ofxDatGuiSliderEvent e)
 
 void KinectProjector::onConfirmModalEvent(ofxModalEvent e)
 {
-	if (e.type == ofxModalEvent::SHOWN)
-	{
+	if (e.type == ofxModalEvent::SHOWN) {
 		ofLogVerbose("KinectProjector") << "Confirm modal window is open";
-	}
-	else if (e.type == ofxModalEvent::HIDDEN)
-	{
-		if (!kinectOpened)
-		{
-			confirmModal->setMessage("Still no connection to Kinect. Please check that the kinect is (1) connected, (2) powerer and (3) not used by another application.");
-			confirmModal->show();
+		setConfirmModalState(CONFIRM_MODAL_OPENED);
+	} else 
+	if (e.type == ofxModalEvent::HIDDEN) {
+		if (!kinectOpened) {
+			setConfirmModalMessage("STILL_NO_CONNECTION_KINECT");
+			// confirmModal->setMessage("Still no connection to Kinect. Please check that the kinect is (1) connected, (2) powerer and (3) not used by another application.");
+			setConfirmModalState(CONFIRM_MODAL_OPENED);
 		}
 		ofLogVerbose("KinectProjector") << "Confirm modal window is closed";
-		
-	}
-	else if (e.type == ofxModalEvent::CANCEL)
-	{
+	} else
+	if (e.type == ofxModalEvent::CANCEL) {
+		setConfirmModalState(CONFIRM_MODAL_CLOSED);
 		onCancelCalibration(true);
-	}
-	else if (e.type == ofxModalEvent::CONFIRM)
-	{
+	} else
+	if (e.type == ofxModalEvent::CONFIRM) {
+		setConfirmModalState(CONFIRM_MODAL_CLOSED);
 		onConfirmCalibration();
 	}
 	updateStateEvent();
@@ -2105,7 +2136,7 @@ string KinectProjector::onCancelCalibration(bool updateGui = true)
 {
 	setApplicationState(APPLICATION_STATE_SETUP);
 	ofLogVerbose("KinectProjector") << "Modal cancel button pressed: Aborting";
-	confirmModal->hide();
+	setConfirmModalState(CONFIRM_MODAL_CLOSED);
 	if (updateGui)
 	{
 		updateStatusGUI();
@@ -2534,6 +2565,9 @@ void KinectProjector::updateErrorEvent(string error) {
 string KinectProjector::getErrorEvent() {
 	return errorEvent;
 }
+
+
+
 
 //void KinectProjector::setBroadcastMethod(std::function<void(Json::Value)> method)
 //{
