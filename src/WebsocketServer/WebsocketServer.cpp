@@ -289,6 +289,8 @@ void WebsocketServer::sendToConnection(ofxLibwebsockets::Connection& connection,
 	Json::StyledWriter writer;
 	string str = writer.write(message);
 	if (!noLog) {
+		
+
 		cout << "send message " << str << endl;
 	}
 	else {
