@@ -136,6 +136,9 @@ Json::Value WebsocketServer::getStateMessage() {
 	message[FL_APPLICATION_STATE] = kinectProjector->GetApplicationState();
 	message[FL_CALIBRATION_STATE] = kinectProjector->GetCalibrationState();
 	message[FL_AUTO_CALIBRATION_STATE] = kinectProjector->GetAutoCalibrationState();
+	message[FL_FULL_CALIB_STATE] = kinectProjector->GetFullCalibState();
+	message[FL_ROI_CALIB_STATE] = kinectProjector->GetROICalibState();
+
 	message[FL_DRAW_KINECT_DEPTH_VIEW] = kinectProjector->getDrawKinectDepthView();
 	message[FL_DRAW_KINECT_COLOR_VIEW] = kinectProjector->getDrawKinectColorView();
 	message[FL_DUMP_DEBUG_FILES] = kinectProjector->getDumpDebugFiles();

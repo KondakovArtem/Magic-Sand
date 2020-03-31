@@ -251,17 +251,47 @@ public:
         AUTOCALIB_STATE_DONE = 4
     };
 
-	Application_state GetApplicationState()
+    enum Full_Calibration_state
+    {
+        FULL_CALIBRATION_STATE_ROI_DETERMINATION,
+        FULL_CALIBRATION_STATE_AUTOCALIB,
+        FULL_CALIBRATION_STATE_DONE
+    };
+
+    enum ROI_calibration_state
+    {
+        ROI_CALIBRATION_STATE_INIT,
+        ROI_CALIBRATION_STATE_READY_TO_MOVE_UP,
+        ROI_CALIBRATION_STATE_MOVE_UP,
+        ROI_CALIBRATION_STATE_DONE
+    };
+
+
+
+    auto GetROICalibState() {
+        return ROICalibState;
+     }
+
+    auto GetFullCalibState()
+    {
+        return fullCalibState;
+    }
+
+    auto GetApplicationState()
 	{
 		return applicationState;
 	}
 
-    Calibration_state GetCalibrationState()
+    auto GetCalibrationState()
     {
         return calibrationState;
     }
 
     void setAutoCalibrationState(Auto_calibration_state newValue);
+    void setCalibrationState(Calibration_state newValue);
+    void setFullCalibState(Full_Calibration_state newValue);
+    void setApplicationState(Application_state newValue);
+    void setROICalibState(ROI_calibration_state newValue);
     auto GetAutoCalibrationState() {
         return autoCalibState;
     }
@@ -294,19 +324,7 @@ public:
 private:
 
     
-    enum Full_Calibration_state
-    {
-        FULL_CALIBRATION_STATE_ROI_DETERMINATION,
-        FULL_CALIBRATION_STATE_AUTOCALIB,
-        FULL_CALIBRATION_STATE_DONE
-    };
-    enum ROI_calibration_state
-    {
-        ROI_CALIBRATION_STATE_INIT,
-        ROI_CALIBRATION_STATE_READY_TO_MOVE_UP,
-        ROI_CALIBRATION_STATE_MOVE_UP,
-        ROI_CALIBRATION_STATE_DONE
-    };
+    
     
     
    

@@ -55,8 +55,8 @@ KinectProjector::KinectProjector(std::shared_ptr<ofAppBaseWindow> const &p)
 
 void KinectProjector::setup(bool sdisplayGui)
 {
-	applicationState = APPLICATION_STATE_SETUP;
-
+	setApplicationState(APPLICATION_STATE_SETUP);
+	
 	ofAddListener(ofEvents().exit, this, &KinectProjector::exit);
 
 	// instantiate the modal windows //
@@ -235,9 +235,9 @@ void KinectProjector::updateStatusGUI()
 	StatusGUI->getLabel("Projector Status")->setLabel("Projector " + ofToString(projRes.x) + " x " + ofToString(projRes.y));
 
 	std::string AppStatus = "Setup";
-	if (applicationState == APPLICATION_STATE_CALIBRATING)
+	if (GetApplicationState() == APPLICATION_STATE_CALIBRATING)
 		AppStatus = "Calibrating";
-	else if (applicationState == APPLICATION_STATE_RUNNING)
+	else if (GetApplicationState() == APPLICATION_STATE_RUNNING)
 		AppStatus = "Running";
 
 	StatusGUI->getLabel("Application Status")->setLabel("Application state: " + AppStatus);
@@ -355,7 +355,7 @@ void KinectProjector::update()
 		imageStabilized = kinectgrabber.isImageStabilized();
 
 		// Are we calibrating ?
-		if (applicationState == APPLICATION_STATE_CALIBRATING && !waitingForFlattenSand)
+		if (GetApplicationState() == APPLICATION_STATE_CALIBRATING && !waitingForFlattenSand)
 		{
 			updateCalibration();
 		}
@@ -385,7 +385,7 @@ void KinectProjector::update()
 				ofSetColor(255, 0, 0);
 				ofDrawRectangle(1, 1, kinectRes.x - 1, kinectRes.y - 1);
 
-				if (calibrationState == CALIBRATION_STATE_ROI_MANUAL_DETERMINATION && ROICalibState == ROI_CALIBRATION_STATE_INIT)
+				if (GetCalibrationState() == CALIBRATION_STATE_ROI_MANUAL_DETERMINATION && GetROICalibState() == ROI_CALIBRATION_STATE_INIT)
 				{
 					int xmin = std::min((int)ROIStartPoint.x, (int)ROICurrentPoint.x);
 					int xmax = std::max((int)ROIStartPoint.x, (int)ROICurrentPoint.x);
@@ -410,7 +410,7 @@ void KinectProjector::update()
 
 	fboProjWindow.begin();
 
-	if (applicationState != APPLICATION_STATE_CALIBRATING)
+	if (GetApplicationState() != APPLICATION_STATE_CALIBRATING)
 	{
 		ofClear(255, 255, 255, 0);
 	}
@@ -454,7 +454,7 @@ void KinectProjector::update()
 		tempRect2 = ofRectangle(ofPoint(UL.x - 2, UL.y - 2), ofPoint(UL.x + 2, UL.y + 2));
 		ofDrawRectangle(tempRect2);
 	}
-	else if (applicationState == APPLICATION_STATE_SETUP)
+	else if (GetApplicationState() == APPLICATION_STATE_SETUP)
 	{
 		ofBackground(255); // Set to white in setup mode
 	}
@@ -463,7 +463,7 @@ void KinectProjector::update()
 
 void KinectProjector::mousePressed(int x, int y, int button)
 {
-	if (calibrationState == CALIBRATION_STATE_ROI_MANUAL_DETERMINATION && ROICalibState == ROI_CALIBRATION_STATE_INIT)
+	if (GetCalibrationState() == CALIBRATION_STATE_ROI_MANUAL_DETERMINATION && GetROICalibState() == ROI_CALIBRATION_STATE_INIT)
 	{
 		ROIStartPoint.x = x;
 		ROIStartPoint.y = y;
@@ -483,7 +483,7 @@ void KinectProjector::mousePressed(int x, int y, int button)
 
 void KinectProjector::mouseReleased(int x, int y, int button)
 {
-	if (calibrationState == CALIBRATION_STATE_ROI_MANUAL_DETERMINATION && ROICalibState == ROI_CALIBRATION_STATE_INIT)
+	if (GetCalibrationState() == CALIBRATION_STATE_ROI_MANUAL_DETERMINATION && GetROICalibState() == ROI_CALIBRATION_STATE_INIT)
 	{
 		if (ROIStartPoint.x >= 0)
 		{
@@ -503,7 +503,7 @@ void KinectProjector::mouseReleased(int x, int y, int button)
 			ofRectangle tempRect(xmin, ymin, xmax - xmin, ymax - ymin);
 			kinectROI = tempRect;
 			setNewKinectROI();
-			ROICalibState = ROI_CALIBRATION_STATE_DONE;
+			setROICalibState(ROI_CALIBRATION_STATE_DONE);
 			calibrationText = "Manual ROI defined";
 			updateStatusGUI();
 		}
@@ -512,7 +512,7 @@ void KinectProjector::mouseReleased(int x, int y, int button)
 
 void KinectProjector::mouseDragged(int x, int y, int button)
 {
-	if (calibrationState == CALIBRATION_STATE_ROI_MANUAL_DETERMINATION && ROICalibState == ROI_CALIBRATION_STATE_INIT)
+	if (GetCalibrationState() == CALIBRATION_STATE_ROI_MANUAL_DETERMINATION && GetROICalibState() == ROI_CALIBRATION_STATE_INIT)
 	{
 		x = std::max(0, x);
 		x = std::min((int)kinectRes.x - 1, x);
@@ -532,50 +532,50 @@ bool KinectProjector::getProjectionFlipped()
 void KinectProjector::updateCalibration()
 {
 	
-	if (calibrationState == CALIBRATION_STATE_FULL_AUTO_CALIBRATION)
+	if (GetCalibrationState() == CALIBRATION_STATE_FULL_AUTO_CALIBRATION)
 	{
-		std::cout << "updateCalibration calibrationState = "<< calibrationState << std::endl;
+		std::cout << "updateCalibration calibrationState = "<< GetCalibrationState() << std::endl;
 		updateFullAutoCalibration();
 	}
-	else if (calibrationState == CALIBRATION_STATE_ROI_AUTO_DETERMINATION)
+	else if (GetCalibrationState() == CALIBRATION_STATE_ROI_AUTO_DETERMINATION)
 	{
-		std::cout << "updateCalibration calibrationState = "<< calibrationState << std::endl;
+		std::cout << "updateCalibration calibrationState = "<< GetCalibrationState() << std::endl;
 		updateROIAutoCalibration();
 	}
 	//else if (calibrationState == CALIBRATION_STATE_ROI_MANUAL_DETERMINATION)
 	//{
 	//       updateROIManualCalibration();
 	//   }
-	else if (calibrationState == CALIBRATION_STATE_PROJ_KINECT_AUTO_CALIBRATION)
+	else if (GetCalibrationState() == CALIBRATION_STATE_PROJ_KINECT_AUTO_CALIBRATION)
 	{
 		//std::cout << "updateCalibration calibrationState = "<< calibrationState << std::endl;
 		updateProjKinectAutoCalibration();
 	}
-	else if (calibrationState == CALIBRATION_STATE_PROJ_KINECT_MANUAL_CALIBRATION)
+	else if (GetCalibrationState() == CALIBRATION_STATE_PROJ_KINECT_MANUAL_CALIBRATION)
 	{
-		std::cout << "updateCalibration calibrationState = "<< calibrationState << std::endl;
+		std::cout << "updateCalibration calibrationState = "<< GetCalibrationState() << std::endl;
 		updateProjKinectManualCalibration();
 	}
 }
 
 void KinectProjector::updateFullAutoCalibration()
 {
-	if (fullCalibState == FULL_CALIBRATION_STATE_ROI_DETERMINATION)
+	if (GetFullCalibState() == FULL_CALIBRATION_STATE_ROI_DETERMINATION)
 	{
 		//        updateROIAutoCalibration();
 		updateROIFromFile();
-		if (ROICalibState == ROI_CALIBRATION_STATE_DONE)
+		if (GetROICalibState() == ROI_CALIBRATION_STATE_DONE)
 		{
-			fullCalibState = FULL_CALIBRATION_STATE_AUTOCALIB;
+			setFullCalibState(FULL_CALIBRATION_STATE_AUTOCALIB);
 			setAutoCalibrationState(AUTOCALIB_STATE_INIT_FIRST_PLANE);
 		}
 	}
-	else if (fullCalibState == FULL_CALIBRATION_STATE_AUTOCALIB)
+	else if (GetFullCalibState() == FULL_CALIBRATION_STATE_AUTOCALIB)
 	{
 		updateProjKinectAutoCalibration();
-		if (autoCalibState == AUTOCALIB_STATE_DONE)
+		if (GetAutoCalibrationState() == AUTOCALIB_STATE_DONE)
 		{
-			fullCalibState = FULL_CALIBRATION_STATE_DONE;
+			setFullCalibState(FULL_CALIBRATION_STATE_DONE);
 		}
 	}
 }
@@ -610,13 +610,13 @@ void KinectProjector::updateROIFromColorImage()
 	fboProjWindow.begin();
 	ofBackground(255);
 	fboProjWindow.end();
-	if (ROICalibState == ROI_CALIBRATION_STATE_INIT)
+	if (GetROICalibState() == ROI_CALIBRATION_STATE_INIT)
 	{ // set kinect to max depth range
-		ROICalibState = ROI_CALIBRATION_STATE_MOVE_UP;
+		setROICalibState(ROI_CALIBRATION_STATE_MOVE_UP);
 		large = ofPolyline();
 		threshold = 90;
 	}
-	else if (ROICalibState == ROI_CALIBRATION_STATE_MOVE_UP)
+	else if (GetROICalibState() == ROI_CALIBRATION_STATE_MOVE_UP)
 	{
 		while (threshold < 255)
 		{
@@ -652,10 +652,10 @@ void KinectProjector::updateROIFromColorImage()
 		kinectROI = large.getBoundingBox();
 		kinectROI.standardize();
 		ofLogVerbose("KinectProjector") << "updateROIFromColorImage(): kinectROI : " << kinectROI;
-		ROICalibState = ROI_CALIBRATION_STATE_DONE;
+		setROICalibState(ROI_CALIBRATION_STATE_DONE);
 		setNewKinectROI();
 	}
-	else if (ROICalibState == ROI_CALIBRATION_STATE_DONE)
+	else if (GetROICalibState() == ROI_CALIBRATION_STATE_DONE)
 	{
 	}
 }
@@ -663,18 +663,18 @@ void KinectProjector::updateROIFromColorImage()
 void KinectProjector::updateROIFromDepthImage()
 {
 	int counter = 0;
-	if (ROICalibState == ROI_CALIBRATION_STATE_INIT)
+	if (GetROICalibState() == ROI_CALIBRATION_STATE_INIT)
 	{
 		calibModal->setMessage("Enlarging acquisition area & resetting buffers.");
 		setMaxKinectGrabberROI();
 		calibModal->setMessage("Stabilizing acquisition.");
-		ROICalibState = ROI_CALIBRATION_STATE_READY_TO_MOVE_UP;
+		setROICalibState(ROI_CALIBRATION_STATE_READY_TO_MOVE_UP);
 	}
-	else if (ROICalibState == ROI_CALIBRATION_STATE_READY_TO_MOVE_UP && imageStabilized)
+	else if (GetROICalibState() == ROI_CALIBRATION_STATE_READY_TO_MOVE_UP && imageStabilized)
 	{
 		calibModal->setMessage("Scanning depth field to find sandbox walls.");
 		ofLogVerbose("KinectProjector") << "updateROIFromDepthImage(): ROI_CALIBRATION_STATE_READY_TO_MOVE_UP: got a stable depth image";
-		ROICalibState = ROI_CALIBRATION_STATE_MOVE_UP;
+		setROICalibState(ROI_CALIBRATION_STATE_MOVE_UP);
 		large = ofPolyline();
 		ofxCvFloatImage temp;
 		temp.setFromPixels(FilteredDepthImage.getFloatPixelsRef().getData(), kinectRes.x, kinectRes.y);
@@ -683,7 +683,7 @@ void KinectProjector::updateROIFromDepthImage()
 		thresholdedImage.setFromPixels(temp.getFloatPixelsRef());
 		threshold = 0; // We go from the higher distance to the kinect (lower position) to the lower distance
 	}
-	else if (ROICalibState == ROI_CALIBRATION_STATE_MOVE_UP)
+	else if (GetROICalibState() == ROI_CALIBRATION_STATE_MOVE_UP)
 	{
 		ofLogVerbose("KinectProjector") << "updateROIFromDepthImage(): ROI_CALIBRATION_STATE_MOVE_UP";
 		while (threshold < 255)
@@ -723,7 +723,7 @@ void KinectProjector::updateROIFromDepthImage()
 			confirmModal->setMessage("The sandbox walls could not be found.");
 			confirmModal->show();
 			//            calibrating = false;
-			applicationState = APPLICATION_STATE_SETUP;
+			setApplicationState(APPLICATION_STATE_SETUP);
 			updateStatusGUI();
 		}
 		else
@@ -734,17 +734,17 @@ void KinectProjector::updateROIFromDepthImage()
 			calibModal->setMessage("Sand area successfully detected");
 			ofLogVerbose("KinectProjector") << "updateROIFromDepthImage(): final kinectROI : " << kinectROI;
 			setNewKinectROI();
-			if (calibrationState == CALIBRATION_STATE_ROI_AUTO_DETERMINATION)
+			if (GetCalibrationState() == CALIBRATION_STATE_ROI_AUTO_DETERMINATION)
 			{
-				applicationState = APPLICATION_STATE_SETUP;
+				setApplicationState(APPLICATION_STATE_SETUP);
 				//                calibrating = false;
 				calibModal->hide();
 				updateStatusGUI();
 			}
 		}
-		ROICalibState = ROI_CALIBRATION_STATE_DONE;
+		setROICalibState(ROI_CALIBRATION_STATE_DONE);
 	}
-	else if (ROICalibState == ROI_CALIBRATION_STATE_DONE)
+	else if (GetROICalibState() == ROI_CALIBRATION_STATE_DONE)
 	{
 	}
 }
@@ -759,11 +759,11 @@ void KinectProjector::updateROIFromFile()
 		xml.setTo("KINECTSETTINGS");
 		kinectROI = xml.getValue<ofRectangle>("kinectROI");
 		setNewKinectROI();
-		ROICalibState = ROI_CALIBRATION_STATE_DONE;
+		setROICalibState(ROI_CALIBRATION_STATE_DONE);
 		return;
 	}
 	ofLogVerbose("KinectProjector") << "updateROIFromFile(): could not read settings/kinectProjectorSettings.xml";
-	applicationState = APPLICATION_STATE_SETUP;
+	setApplicationState(APPLICATION_STATE_SETUP);
 	updateStatusGUI();
 }
 
@@ -864,7 +864,7 @@ void KinectProjector::updateProjKinectAutoCalibration()
 		updateBasePlane(); // Find base plane
 		if (!basePlaneComputed)
 		{
-			applicationState = APPLICATION_STATE_SETUP;
+			setApplicationState(APPLICATION_STATE_SETUP);
 			calibrationText = "Failed to acquire sea level plane";
 			updateStatusGUI();
 			return;
@@ -924,7 +924,7 @@ void KinectProjector::updateProjKinectAutoCalibration()
 		{
 			ofLogVerbose("KinectProjector") << "autoCalib(): Error: No points acquired !!";
 			calibrationText = "Calibration failed: No points acquired";
-			applicationState = APPLICATION_STATE_SETUP;
+			setApplicationState(APPLICATION_STATE_SETUP);
 			updateStatusGUI();
 		}
 		else
@@ -941,7 +941,7 @@ void KinectProjector::updateProjKinectAutoCalibration()
 				ofLogVerbose("KinectProjector") << "autoCalib(): ReprojectionError too big. Something wrong with projection matrix";
 				projKinectCalibrated = false;
 				projKinectCalibrationUpdated = false;
-				applicationState = APPLICATION_STATE_SETUP;
+				setApplicationState(APPLICATION_STATE_SETUP);
 				calibrationText = "Calibration failed - reprojection error too big";
 				updateStatusGUI();
 				return;
@@ -951,7 +951,7 @@ void KinectProjector::updateProjKinectAutoCalibration()
 			// updateROIFromCalibration(); // Compute the limite of the ROI according to the projected area
 			projKinectCalibrated = true; // Update states variables
 			projKinectCalibrationUpdated = true;
-			applicationState = APPLICATION_STATE_SETUP;
+			setApplicationState(APPLICATION_STATE_SETUP);
 			calibrationText = "Calibration successful";
 
 			//saveCalibrationAndSettings(); // Already done in updateROIFromCalibration
@@ -1587,14 +1587,14 @@ string KinectProjector::startApplication(bool updateFlag = true)
 
 	string message;
 
-	if (applicationState == APPLICATION_STATE_RUNNING)
+	if (GetApplicationState() == APPLICATION_STATE_RUNNING)
 	{
-		applicationState = APPLICATION_STATE_SETUP;
+		setApplicationState(APPLICATION_STATE_SETUP);
 		updateStateEvent();
 		updateFlag ? updateStatusGUI() : noop;
 		return "";
 	}
-	if (applicationState == APPLICATION_STATE_CALIBRATING)
+	if (GetApplicationState() == APPLICATION_STATE_CALIBRATING)
 	{
 		ofLogVerbose("KinectProjector") << "KinectProjector.startApplication() : we are calibrating";
 		updateErrorEvent("CALIBRATING");
@@ -1660,10 +1660,11 @@ string KinectProjector::startApplication(bool updateFlag = true)
 	ResetSeaLevel();
 
 	// If all is well we are running
-	applicationState = APPLICATION_STATE_RUNNING;
-	fullCalibState = FULL_CALIBRATION_STATE_DONE;
-	ROICalibState = ROI_CALIBRATION_STATE_DONE;
-	autoCalibState = AUTOCALIB_STATE_DONE;
+	setApplicationState(APPLICATION_STATE_RUNNING);
+	setFullCalibState(FULL_CALIBRATION_STATE_DONE);
+	setROICalibState(ROI_CALIBRATION_STATE_DONE);
+	setAutoCalibrationState(AUTOCALIB_STATE_DONE);
+	
 	drawKinectColorView = false;
 	drawKinectView = false;
 	updateFlag ? gui->getToggle(CMP_DRAW_KINECT_COLOR_VIEW)->setChecked(drawKinectColorView) : noop;
@@ -1680,16 +1681,16 @@ void KinectProjector::startFullCalibration()
 		ofLogVerbose("KinectProjector") << "startFullCalibration(): Kinect not running";
 		return;
 	}
-	if (applicationState == APPLICATION_STATE_CALIBRATING)
+	if (GetApplicationState() == APPLICATION_STATE_CALIBRATING)
 	{
 		ofLogVerbose("KinectProjector") << "startFullCalibration(): we are already calibrating";
 		return;
 	}
 
-	applicationState = APPLICATION_STATE_CALIBRATING;
-	calibrationState = CALIBRATION_STATE_FULL_AUTO_CALIBRATION;
-	fullCalibState = FULL_CALIBRATION_STATE_ROI_DETERMINATION;
-	ROICalibState = ROI_CALIBRATION_STATE_INIT;
+	setApplicationState(APPLICATION_STATE_CALIBRATING);
+	setCalibrationState(CALIBRATION_STATE_FULL_AUTO_CALIBRATION);
+	setFullCalibState(FULL_CALIBRATION_STATE_ROI_DETERMINATION);
+	setROICalibState(ROI_CALIBRATION_STATE_INIT);
 	confirmModal->setTitle("Full calibration");
 	calibModal->setTitle("Full calibration");
 	askToFlattenSand();
@@ -1700,9 +1701,9 @@ void KinectProjector::startFullCalibration()
 
 void KinectProjector::startAutomaticROIDetection()
 {
-	applicationState = APPLICATION_STATE_CALIBRATING;
-	calibrationState = CALIBRATION_STATE_ROI_AUTO_DETERMINATION;
-	ROICalibState = ROI_CALIBRATION_STATE_INIT;
+	setApplicationState(APPLICATION_STATE_CALIBRATING);
+	setCalibrationState(CALIBRATION_STATE_ROI_AUTO_DETERMINATION);
+	setROICalibState(ROI_CALIBRATION_STATE_INIT);
 	ofLogVerbose("KinectProjector") << "onButtonEvent(): Finding ROI";
 	confirmModal->setTitle("Detect sand region");
 	calibModal->setTitle("Detect sand region");
@@ -1725,9 +1726,9 @@ string KinectProjector::startAutomaticKinectProjectorCalibration(bool updateGui 
 		updateErrorEvent("KINECT_NOT_RUNNING");
 		return "KINECT_NOT_RUNNING";
 	}
-	if (applicationState == APPLICATION_STATE_CALIBRATING)
+	if (GetApplicationState() == APPLICATION_STATE_CALIBRATING)
 	{
-		applicationState = APPLICATION_STATE_SETUP;
+		setApplicationState(APPLICATION_STATE_SETUP);
 		confirmModal->hide();
 		calibrationText = "Terminated before completion";
 		updateGui ? updateStatusGUI() : noop;
@@ -1743,8 +1744,8 @@ string KinectProjector::startAutomaticKinectProjectorCalibration(bool updateGui 
 	}
 
 	calibrationText = "Starting projector/kinect calibration";
-	applicationState = APPLICATION_STATE_CALIBRATING;
-	calibrationState = CALIBRATION_STATE_PROJ_KINECT_AUTO_CALIBRATION;
+	setApplicationState(APPLICATION_STATE_CALIBRATING);
+	setCalibrationState(CALIBRATION_STATE_PROJ_KINECT_AUTO_CALIBRATION);
 	autoCalibState = AUTOCALIB_STATE_INIT_POINT;
 	confirmModal->setTitle("Calibrate projector");
 	calibModal->setTitle("Calibrate projector");
@@ -1869,8 +1870,8 @@ void KinectProjector::onButtonEvent(ofxDatGuiButtonEvent e)
 
 void KinectProjector::StartManualROIDefinition()
 {
-	calibrationState = CALIBRATION_STATE_ROI_MANUAL_DETERMINATION;
-	ROICalibState = ROI_CALIBRATION_STATE_INIT;
+	setCalibrationState(CALIBRATION_STATE_ROI_MANUAL_DETERMINATION);
+	setROICalibState(ROI_CALIBRATION_STATE_INIT);
 	ROIStartPoint.x = -1;
 	ROIStartPoint.y = -1;
 	calibrationText = "Manually defining sand region";
@@ -1910,11 +1911,45 @@ void KinectProjector::setAutoCalibrationState(Auto_calibration_state newValue)
 {
 	auto oldvalue = autoCalibState;
 	autoCalibState = newValue;
-	
 	if (oldvalue != newValue && broadcastState) {
 		updateStateEvent();
 	}
 }
+
+void KinectProjector::setCalibrationState(Calibration_state newValue) {	
+	auto oldvalue = calibrationState;
+	calibrationState = newValue;
+	if (oldvalue != newValue && broadcastState) {
+		updateStateEvent();
+	}
+}
+
+
+void KinectProjector::setFullCalibState(Full_Calibration_state newValue) {
+	auto oldvalue = fullCalibState;
+	fullCalibState = newValue;
+	if (oldvalue != newValue && broadcastState) {
+		updateStateEvent();
+	}
+}
+
+void KinectProjector::setApplicationState(Application_state newValue) {
+	auto oldvalue = applicationState;
+	applicationState = newValue;
+	if (oldvalue != newValue && broadcastState) {
+		updateStateEvent();
+	}
+}
+
+void KinectProjector::setROICalibState(ROI_calibration_state newValue) {
+	auto oldvalue = ROICalibState;
+	ROICalibState = newValue;
+	if (oldvalue != newValue && broadcastState) {
+		updateStateEvent();
+	}
+}
+
+
 
 bool KinectProjector::getDumpDebugFiles()
 {
@@ -2068,7 +2103,7 @@ void KinectProjector::onConfirmModalEvent(ofxModalEvent e)
 
 string KinectProjector::onCancelCalibration(bool updateGui = true)
 {
-	applicationState = APPLICATION_STATE_SETUP;
+	setApplicationState(APPLICATION_STATE_SETUP);
 	ofLogVerbose("KinectProjector") << "Modal cancel button pressed: Aborting";
 	confirmModal->hide();
 	if (updateGui)
@@ -2080,16 +2115,16 @@ string KinectProjector::onCancelCalibration(bool updateGui = true)
 
 string KinectProjector::onConfirmCalibration()
 {
-	if (applicationState == APPLICATION_STATE_CALIBRATING)
+	if (GetApplicationState() == APPLICATION_STATE_CALIBRATING)
 	{
 		if (waitingForFlattenSand)
 		{
 			waitingForFlattenSand = false;
 			calibModal->hide();
 		}
-		else if ((calibrationState == CALIBRATION_STATE_PROJ_KINECT_AUTO_CALIBRATION ||
-				  (calibrationState == CALIBRATION_STATE_FULL_AUTO_CALIBRATION && fullCalibState == FULL_CALIBRATION_STATE_AUTOCALIB)) &&
-				 autoCalibState == AUTOCALIB_STATE_NEXT_POINT)
+		else if ((GetCalibrationState() == CALIBRATION_STATE_PROJ_KINECT_AUTO_CALIBRATION ||
+				  (GetCalibrationState() == CALIBRATION_STATE_FULL_AUTO_CALIBRATION && GetFullCalibState() == FULL_CALIBRATION_STATE_AUTOCALIB)) &&
+				 GetAutoCalibrationState() == AUTOCALIB_STATE_NEXT_POINT)
 		{
 			if (!upframe)
 			{
@@ -2113,7 +2148,7 @@ void KinectProjector::onCalibModalEvent(ofxModalEvent e)
 	}
 	else if (e.type == ofxModalEvent::CONFIRM)
 	{
-		applicationState = APPLICATION_STATE_SETUP;
+		setApplicationState(APPLICATION_STATE_SETUP);
 		ofLogVerbose("KinectProjector") << "Modal cancel button pressed: Aborting";
 		updateStatusGUI();
 	}
