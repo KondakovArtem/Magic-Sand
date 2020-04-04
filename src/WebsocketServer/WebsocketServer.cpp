@@ -282,7 +282,7 @@ void WebsocketServer::resolveToggleValue(ofxLibwebsockets::Event& args, string c
 	method(value);
 	kinectProjector->setForceGuiUpdate(true);
 	sandSurfaceRenderer->setForceGuiUpdate(true);
-	boidGameController.setForceGuiUpdate(true);
+	boidGameController->setForceGuiUpdate(true);
 	resolveResponseBool(args, 0);
 }
 
@@ -294,7 +294,7 @@ void WebsocketServer::resolveFloatValue(ofxLibwebsockets::Event& args, Proc meth
 		auto slider = gui->getSlider(componentName);
 		kinectProjector->setForceGuiUpdate(true);
 		sandSurfaceRenderer->setForceGuiUpdate(true);
-		boidGameController.setForceGuiUpdate(true);
+		boidGameController->setForceGuiUpdate(true);
 	}
 	resolveResponseFloat(args, 0);
 }
