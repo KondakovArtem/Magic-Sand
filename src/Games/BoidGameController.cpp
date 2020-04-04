@@ -166,9 +166,7 @@ void CBoidGameController::updateGuiValue()
 {
 	if (forceGuiUpdate)
 	{
-		gui->getSlider(CMP_OF_FISH)->setValue(getFish());
-		gui->getSlider(CMP_OF_RABBITS)->setValue(getRabbits());
-		gui->getSlider(CMP_OF_SHARKS)->setValue(getSharks());
+		UpdateGUI();
 		setForceGuiUpdate(false);
 	}
 }
@@ -828,6 +826,10 @@ void CBoidGameController::drawMotherRabbit()
 	ofSetColor(255);
 }
 
+
+
+
+
 void CBoidGameController::setupGui() {
 	// instantiate and position the gui //
 	gui = new ofxDatGui();
@@ -845,9 +847,9 @@ void CBoidGameController::setupGui() {
 	gui->addSlider(CMP_OF_FISH, 0, 200, ofFish)->setPrecision(0);
 	gui->addSlider(CMP_OF_RABBITS, 0, 50, ofRabbits)->setPrecision(0);
 	gui->addSlider(CMP_OF_SHARKS, 0, 10, ofShark)->setPrecision(0);
-	gui->addToggle("Mother fish", showMotherFish);
-	gui->addToggle("Mother rabbit", showMotherRabbit);
-	gui->addToggle("Draw flipped", doFlippedDrawing);
+	gui->addToggle(CMP_MOTHER_FISH, showMotherFish);
+	gui->addToggle(CMP_MOTHER_RABBIT, showMotherRabbit);
+	gui->addToggle(CMP_DO_FLIPPED_DRAWING, doFlippedDrawing);
 	gui->addButton("Remove all animals");
 
 	gui->addHeader(":: Games ::", false);
@@ -872,8 +874,8 @@ void CBoidGameController::UpdateGUI()
 	gui->getSlider(CMP_OF_FISH)->setValue(ofFish);
 	gui->getSlider(CMP_OF_RABBITS)->setValue(ofRabbits);
 	gui->getSlider(CMP_OF_SHARKS)->setValue(ofShark);
-	gui->getToggle("Mother fish")->setEnabled(showMotherFish);
-	gui->getToggle("Mother rabbit")->setEnabled(showMotherRabbit);
+	gui->getToggle(CMP_MOTHER_FISH)->setEnabled(showMotherFish);
+	gui->getToggle(CMP_MOTHER_RABBIT)->setEnabled(showMotherRabbit);
 }
 
 bool CBoidGameController::isIdle()
@@ -893,8 +895,8 @@ void CBoidGameController::onButtonEvent(ofxDatGuiButtonEvent e) {
 		showMotherRabbit = false;
 		gui->getSlider(CMP_OF_FISH)->setValue(0);
 		gui->getSlider(CMP_OF_RABBITS)->setValue(0);
-		gui->getToggle("Mother fish")->setChecked(false);
-		gui->getToggle("Mother rabbit")->setChecked(false);
+		gui->getToggle(CMP_MOTHER_FISH)->setChecked(false);
+		gui->getToggle(CMP_MOTHER_RABBIT)->setChecked(false);
 	}
 	//else if (e.target->is("Start Sandimal game"))
 	//{
@@ -907,7 +909,7 @@ void CBoidGameController::onButtonEvent(ofxDatGuiButtonEvent e) {
 }
 
 void CBoidGameController::onToggleEvent(ofxDatGuiToggleEvent e) {
-	if (e.target->is("Mother fish")) {
+	if (e.target->is(CMP_MOTHER_FISH)) {
 		if (!showMotherFish) {
 			if (!addMotherFish())
 				e.target->setChecked(false);
@@ -916,7 +918,7 @@ void CBoidGameController::onToggleEvent(ofxDatGuiToggleEvent e) {
 			showMotherFish = e.checked;
 		}
 	}
-	else if (e.target->is("Mother rabbit")) {
+	else if (e.target->is(CMP_MOTHER_RABBIT)) {
 		if (!showMotherRabbit) {
 			if (!addMotherRabbit())
 				e.target->setChecked(false);
@@ -925,7 +927,7 @@ void CBoidGameController::onToggleEvent(ofxDatGuiToggleEvent e) {
 			showMotherRabbit = e.checked;
 		}
 	}
-	else if (e.target->is("Draw flipped")) {
+	else if (e.target->is(CMP_DO_FLIPPED_DRAWING)) {
 		doFlippedDrawing = e.checked;
 	}
 }
@@ -956,6 +958,15 @@ void CBoidGameController::updateStateEvent(bool value)
 
 bool CBoidGameController::isUpdateStateEvent() {
 	return stateEvent;
+}
+
+
+void CBoidGameController::setDoFlippedDrawing(bool newValue) {
+	auto oldValue = doFlippedDrawing;
+	doFlippedDrawing = newValue;
+	if (oldValue != newValue) {
+		updateStateEvent();
+	}
 }
 
 void CBoidGameController::setFish(int newValue) {

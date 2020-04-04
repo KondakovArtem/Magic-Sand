@@ -35,6 +35,9 @@ constexpr auto FL_KINECT_ROI = "kinectROI";
 constexpr auto FL_OF_FISH = "ofFish";
 constexpr auto FL_OF_SHARKS = "ofSharks";
 constexpr auto FL_OF_RABBITS = "ofRabbits";
+constexpr auto FL_SHOW_MOTHER_FISH = "showMotherFish";
+constexpr auto FL_SHOW_MOTHER_RABBIT = "showMotherRabbit";
+constexpr auto FL_DO_FLIPPED_DRAWING = "doFlippedDrawing";
 
 constexpr auto FL_FIELD = "field";
 constexpr auto FL_VALUE = "value";

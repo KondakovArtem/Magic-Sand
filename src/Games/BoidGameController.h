@@ -27,6 +27,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 constexpr auto CMP_OF_FISH = "# of fish";
 constexpr auto CMP_OF_RABBITS = "# of rabbits";
 constexpr auto CMP_OF_SHARKS = "# of sharks";
+constexpr auto CMP_MOTHER_FISH = "Mother fish";
+constexpr auto CMP_MOTHER_RABBIT = "Mother rabbit";
+constexpr auto CMP_DO_FLIPPED_DRAWING = "Draw flipped";
+
+
 
 #include "vehicle.h"
 #include "../KinectProjector/KinectProjector.h"
@@ -69,7 +74,17 @@ class CBoidGameController
 
 		bool isIdle();
 
-		
+		bool GetShowMotherFish() {
+			return showMotherFish;
+		}
+
+		bool GetShowMotherRabbit() {
+			return showMotherRabbit;
+		}
+
+		bool GetDoFlippedDrawing() {
+			return doFlippedDrawing;
+		}
 
 		void adaptFish(int value);
 
@@ -78,6 +93,8 @@ class CBoidGameController
 		void updateStateEvent(bool value);
 
 		bool isUpdateStateEvent();
+
+		void setDoFlippedDrawing(bool newValue);
 
 		void setFish(int value);
 		int getFish();

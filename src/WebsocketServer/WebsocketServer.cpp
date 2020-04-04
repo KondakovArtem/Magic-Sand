@@ -176,6 +176,9 @@ Json::Value WebsocketServer::getStateMessage() {
 	message[FL_OF_SHARKS] = boidGameController->getSharks();
 	message[FL_OF_FISH] = boidGameController->getFish();
 	message[FL_OF_RABBITS] = boidGameController->getRabbits();
+	message[FL_SHOW_MOTHER_FISH] = boidGameController->GetShowMotherFish();
+	message[FL_SHOW_MOTHER_RABBIT] = boidGameController->GetShowMotherRabbit();
+	message[FL_DO_FLIPPED_DRAWING] = boidGameController->GetDoFlippedDrawing();
 	return message;
 }
 
@@ -267,6 +270,8 @@ void WebsocketServer::resolveSetValue(ofxLibwebsockets::Event& args) {
 	(field == FL_OF_FISH) ? resolveFloatValue(args, [this](float val) { this->boidGameController->setFish(val); }, CMP_OF_FISH, getBoidGui() ) :
 	(field == FL_OF_SHARKS) ? resolveFloatValue(args, [this](float val) { this->boidGameController->setSharks(val); }, CMP_OF_SHARKS, getBoidGui()) :
 	(field == FL_OF_RABBITS) ? resolveFloatValue(args, [this](float val) { this->boidGameController->setRabbits(val); }, CMP_OF_RABBITS, getBoidGui()) :
+	(field == FL_DO_FLIPPED_DRAWING) ? resolveToggleValue(args, CMP_DO_FLIPPED_DRAWING, [this](bool val) { this->boidGameController->setDoFlippedDrawing(val); }) :
+		
 
 	(field == FL_DRAW_CONTOUR_LINES) ? resolveToggleValue(args, CMP_FULL_FRAME_FILTERING, [ssr](bool val) { ssr->setDrawContourLines(val); }) :
 	(field == FL_CONTOUR_LINE_DISTANCE) ? resolveFloatValue(args, [this](float val) { this->sandSurfaceRenderer->setContourLineDistance(val); }, CMP_CONTOUR_LINE_DISTANCE, getSSRGui()) :
@@ -282,7 +287,7 @@ void WebsocketServer::resolveToggleValue(ofxLibwebsockets::Event& args, string c
 	method(value);
 	kinectProjector->setForceGuiUpdate(true);
 	sandSurfaceRenderer->setForceGuiUpdate(true);
-	boidGameController.setForceGuiUpdate(true);
+	boidGameController->setForceGuiUpdate(true);
 	resolveResponseBool(args, 0);
 }
 
@@ -294,7 +299,7 @@ void WebsocketServer::resolveFloatValue(ofxLibwebsockets::Event& args, Proc meth
 		auto slider = gui->getSlider(componentName);
 		kinectProjector->setForceGuiUpdate(true);
 		sandSurfaceRenderer->setForceGuiUpdate(true);
-		boidGameController.setForceGuiUpdate(true);
+		boidGameController->setForceGuiUpdate(true);
 	}
 	resolveResponseFloat(args, 0);
 }

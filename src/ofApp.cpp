@@ -61,7 +61,7 @@ void ofApp::setup() {
 	boidGameController.setKinectRes(kinectRes);
 	boidGameController.setKinectROI(kinectROI);
 
-	websocketServer = std::make_shared<WebsocketServer>(kinectProjector, boidGameController, sandSurfaceRenderer);
+	websocketServer = std::make_shared<WebsocketServer>(kinectProjector, &boidGameController, sandSurfaceRenderer);
 	needSendUpdateState = false;
 }
 
