@@ -292,6 +292,7 @@ void WebsocketServer::resolveFloatValue(ofxLibwebsockets::Event& args, Proc meth
 	if (gui != nullptr) {
 		auto slider = gui->getSlider(componentName);
 		kinectProjector->setForceGuiUpdate(true);
+		sandSurfaceRenderer->setForceGuiUpdate(true);
 	}
 	resolveResponseFloat(args, 0);
 }
