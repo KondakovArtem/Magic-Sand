@@ -209,6 +209,12 @@ void WebsocketServer::resolveSetState(ofxLibwebsockets::Event& args) {
 		string res = kp->onCancelCalibration(false);
 		int result = (res.empty()) ? 0 : 1;
 		resolveResponseState(args, result, res);
+	} else
+	if (value == CM_OP_RESET_SEA_LEVEL) {
+		kp->setVerticalOffset(0);
+	}
+	if (value == CM_OP_CLEAR_ANIMALS) {
+		this->boidGameController->clearAnimals();
 	}
 }
 
@@ -271,7 +277,8 @@ void WebsocketServer::resolveSetValue(ofxLibwebsockets::Event& args) {
 	(field == FL_OF_SHARKS) ? resolveFloatValue(args, [this](float val) { this->boidGameController->setSharks(val); }, CMP_OF_SHARKS, getBoidGui()) :
 	(field == FL_OF_RABBITS) ? resolveFloatValue(args, [this](float val) { this->boidGameController->setRabbits(val); }, CMP_OF_RABBITS, getBoidGui()) :
 	(field == FL_DO_FLIPPED_DRAWING) ? resolveToggleValue(args, CMP_DO_FLIPPED_DRAWING, [this](bool val) { this->boidGameController->setDoFlippedDrawing(val); }) :
-		
+	(field == FL_SHOW_MOTHER_FISH) ? resolveToggleValue(args, CMP_MOTHER_FISH, [this](bool val) { this->boidGameController->setShowMotherFish(val); }) :
+	(field == FL_SHOW_MOTHER_RABBIT) ? resolveToggleValue(args, CMP_MOTHER_RABBIT, [this](bool val) { this->boidGameController->setShowMotherRabbit(val); }) :
 
 	(field == FL_DRAW_CONTOUR_LINES) ? resolveToggleValue(args, CMP_FULL_FRAME_FILTERING, [ssr](bool val) { ssr->setDrawContourLines(val); }) :
 	(field == FL_CONTOUR_LINE_DISTANCE) ? resolveFloatValue(args, [this](float val) { this->sandSurfaceRenderer->setContourLineDistance(val); }, CMP_CONTOUR_LINE_DISTANCE, getSSRGui()) :

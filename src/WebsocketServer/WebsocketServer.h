@@ -57,6 +57,8 @@ constexpr auto CM_OP_START = "start";
 constexpr auto CM_OP_START_CALIB = "startCalibration";
 constexpr auto CM_OP_CANCEL_CALIB = "cancelCalibration";
 constexpr auto CM_OP_CONTINUE_CALIB = "continueCalibration";
+constexpr auto CM_OP_RESET_SEA_LEVEL = "resetSeaLevel";
+constexpr auto CM_OP_CLEAR_ANIMALS = "clearAnimals";
 
 /*constexpr auto CM_SET_DRAW_KINECT_DEPTH_VIEW = "setDrawKinectDepthView";
 constexpr auto CM_SET_DRAW_KINECT_COLOR_VIEW = "setDrawKinectColorView";

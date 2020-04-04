@@ -96,6 +96,10 @@ class CBoidGameController
 
 		void setDoFlippedDrawing(bool newValue);
 
+		void setShowMotherFish(bool newValue);
+
+		void setShowMotherRabbit(bool newValue);
+
 		void setFish(int value);
 		int getFish();
 		void setForceGuiUpdate(bool value);
@@ -110,6 +114,7 @@ class CBoidGameController
 	private:
 		
 		std::shared_ptr<KinectProjector> kinectProjector;
+		void clearAnimals();
 		void onButtonEvent(ofxDatGuiButtonEvent e);
 		void onToggleEvent(ofxDatGuiToggleEvent e);
 		

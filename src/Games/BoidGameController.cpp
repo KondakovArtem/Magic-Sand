@@ -883,9 +883,20 @@ bool CBoidGameController::isIdle()
 	return(GameSequence[CurrentGameSequence] == GAME_STATE_IDLE);
 }
 
+
+void CBoidGameController::clearAnimals() {
+	setFish(0);
+	setRabbits(0);
+	setSharks(0);
+	setShowMotherFish(false);
+	setShowMotherRabbit(false);
+	setForceGuiUpdate(true);
+}
+
 void CBoidGameController::onButtonEvent(ofxDatGuiButtonEvent e) {
 	if (e.target->is("Remove all animals")) {
-		fish.clear();
+		clearAnimals();
+		/*fish.clear();
 		ofFish = 0;
 		rabbits.clear();
 		ofRabbits = 0;
@@ -896,7 +907,7 @@ void CBoidGameController::onButtonEvent(ofxDatGuiButtonEvent e) {
 		gui->getSlider(CMP_OF_FISH)->setValue(0);
 		gui->getSlider(CMP_OF_RABBITS)->setValue(0);
 		gui->getToggle(CMP_MOTHER_FISH)->setChecked(false);
-		gui->getToggle(CMP_MOTHER_RABBIT)->setChecked(false);
+		gui->getToggle(CMP_MOTHER_RABBIT)->setChecked(false);*/
 	}
 	//else if (e.target->is("Start Sandimal game"))
 	//{
@@ -910,25 +921,13 @@ void CBoidGameController::onButtonEvent(ofxDatGuiButtonEvent e) {
 
 void CBoidGameController::onToggleEvent(ofxDatGuiToggleEvent e) {
 	if (e.target->is(CMP_MOTHER_FISH)) {
-		if (!showMotherFish) {
-			if (!addMotherFish())
-				e.target->setChecked(false);
-		}
-		else {
-			showMotherFish = e.checked;
-		}
-	}
-	else if (e.target->is(CMP_MOTHER_RABBIT)) {
-		if (!showMotherRabbit) {
-			if (!addMotherRabbit())
-				e.target->setChecked(false);
-		}
-		else {
-			showMotherRabbit = e.checked;
-		}
-	}
-	else if (e.target->is(CMP_DO_FLIPPED_DRAWING)) {
-		doFlippedDrawing = e.checked;
+		setShowMotherFish(e.checked);
+	} else
+	if (e.target->is(CMP_MOTHER_RABBIT)) {
+		setShowMotherRabbit(e.checked);
+	} else
+	if (e.target->is(CMP_DO_FLIPPED_DRAWING)) {
+		setDoFlippedDrawing(e.checked);
 	}
 }
 
@@ -968,6 +967,35 @@ void CBoidGameController::setDoFlippedDrawing(bool newValue) {
 		updateStateEvent();
 	}
 }
+
+void CBoidGameController::setShowMotherFish(bool newValue) {
+	auto oldValue = showMotherFish;
+	showMotherFish = newValue;
+	if (oldValue != newValue) {
+		updateStateEvent();
+	}
+	if (newValue) {
+		showMotherFish = addMotherFish();
+		if (showMotherFish != newValue) {
+			setForceGuiUpdate(true);
+		}
+	}
+}
+
+void CBoidGameController::setShowMotherRabbit(bool newValue) {
+	auto oldValue = showMotherRabbit;
+	showMotherRabbit = newValue;
+	if (oldValue != newValue) {
+		updateStateEvent();
+	}
+	if (newValue) {
+		showMotherFish = addMotherRabbit();
+		if (showMotherFish != newValue) {
+			setForceGuiUpdate(true);
+		}
+	}
+}
+
 
 void CBoidGameController::setFish(int newValue) {
 	auto oldValue = ofFish;
