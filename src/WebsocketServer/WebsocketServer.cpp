@@ -4,7 +4,7 @@
 
 WebsocketServer::WebsocketServer(
 	std::shared_ptr<KinectProjector> const& kp, 
-	CBoidGameController const bgc,
+	CBoidGameController* const bgc,
 	SandSurfaceRenderer* const ssr
 ) {
 	ofxLibwebsockets::ServerOptions options = ofxLibwebsockets::defaultServerOptions();
@@ -173,9 +173,9 @@ Json::Value WebsocketServer::getStateMessage() {
 	roi["height"] = kinectProjector->getKinectROI().getHeight();
 	message[FL_KINECT_ROI] = roi;
 
-	message[FL_OF_SHARKS] = boidGameController.getSharks();
-	message[FL_OF_FISH] = boidGameController.getFish();
-	message[FL_OF_RABBITS] = boidGameController.getRabbits();
+	message[FL_OF_SHARKS] = boidGameController->getSharks();
+	message[FL_OF_FISH] = boidGameController->getFish();
+	message[FL_OF_RABBITS] = boidGameController->getRabbits();
 	return message;
 }
 
@@ -245,7 +245,7 @@ void WebsocketServer::resolveSetValue(ofxLibwebsockets::Event& args) {
 	const auto field = args.json.get(FL_FIELD, "").asString();
 	const auto kp = kinectProjector;
 	const auto ssr = sandSurfaceRenderer;
-	const auto getBoidGui = [this]() {return kinectProjector->GetApplicationState() == KinectProjector::APPLICATION_STATE_RUNNING ? this->boidGameController.getGui() : nullptr; };
+	const auto getBoidGui = [this]() {return kinectProjector->GetApplicationState() == KinectProjector::APPLICATION_STATE_RUNNING ? this->boidGameController->getGui() : nullptr; };
 	const auto getSSRGui = [this]() {return kinectProjector->GetApplicationState() == KinectProjector::APPLICATION_STATE_RUNNING ? this->sandSurfaceRenderer->getGui() : nullptr; };
 	const auto getGui = [this]() {return this->kinectProjector->getGui(); };
 	
@@ -264,9 +264,9 @@ void WebsocketServer::resolveSetValue(ofxLibwebsockets::Event& args) {
 	(field == FL_DO_SHOW_ROI_ON_PROJECTOR) ? resolveToggleValue(args, CMP_SHOW_ROI_ON_SAND, [kp](bool val) { kp->showROIonProjector(val); }) :
 	(field == FL_KINECT_ROI) ? resolveSetKinectROI(args) :
 
-	(field == FL_OF_FISH) ? resolveFloatValue(args, [this](float val) { this->boidGameController.setFish(val); }, CMP_OF_FISH, getBoidGui() ) :
-	(field == FL_OF_SHARKS) ? resolveFloatValue(args, [this](float val) { this->boidGameController.setSharks(val); }, CMP_OF_SHARKS, getBoidGui()) :
-	(field == FL_OF_RABBITS) ? resolveFloatValue(args, [this](float val) { this->boidGameController.setRabbits(val); }, CMP_OF_RABBITS, getBoidGui()) :
+	(field == FL_OF_FISH) ? resolveFloatValue(args, [this](float val) { this->boidGameController->setFish(val); }, CMP_OF_FISH, getBoidGui() ) :
+	(field == FL_OF_SHARKS) ? resolveFloatValue(args, [this](float val) { this->boidGameController->setSharks(val); }, CMP_OF_SHARKS, getBoidGui()) :
+	(field == FL_OF_RABBITS) ? resolveFloatValue(args, [this](float val) { this->boidGameController->setRabbits(val); }, CMP_OF_RABBITS, getBoidGui()) :
 
 	(field == FL_DRAW_CONTOUR_LINES) ? resolveToggleValue(args, CMP_FULL_FRAME_FILTERING, [ssr](bool val) { ssr->setDrawContourLines(val); }) :
 	(field == FL_CONTOUR_LINE_DISTANCE) ? resolveFloatValue(args, [this](float val) { this->sandSurfaceRenderer->setContourLineDistance(val); }, CMP_CONTOUR_LINE_DISTANCE, getSSRGui()) :

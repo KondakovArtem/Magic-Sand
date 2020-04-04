@@ -74,7 +74,7 @@ constexpr auto CM_SET_OF_RABBITS = "setOfRabbits";*/
 
 class WebsocketServer {
 public:
-    WebsocketServer(std::shared_ptr<KinectProjector> const& kp, CBoidGameController const boidGameController, SandSurfaceRenderer* sandSurfaceRenderer);
+    WebsocketServer(std::shared_ptr<KinectProjector> const& kp, CBoidGameController* const boidGameController, SandSurfaceRenderer* sandSurfaceRenderer);
     
     ofxLibwebsockets::Server server;
     bool bSetup;
@@ -98,7 +98,7 @@ public:
     void resolveResponseFloat(ofxLibwebsockets::Event& args, int result);
 private: 
     std::shared_ptr<KinectProjector> kinectProjector;
-    CBoidGameController boidGameController;
+    CBoidGameController* boidGameController;
     SandSurfaceRenderer* sandSurfaceRenderer;
 
     //void setToggleComponentValue(string name, bool value);
