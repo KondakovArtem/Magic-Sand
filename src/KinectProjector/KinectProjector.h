@@ -314,6 +314,7 @@ public:
     void setApplicationState(Application_state newValue);
     void setROICalibState(ROI_calibration_state newValue);
     void setConfirmModalMessage(string message);
+    void setProjKinectCalibrated(bool newValue);
 
 	bool getDumpDebugFiles();
 

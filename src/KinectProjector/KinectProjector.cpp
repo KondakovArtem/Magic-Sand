@@ -223,7 +223,7 @@ void KinectProjector::updateStatusGUI()
 		StatusGUI->getLabel("Baseplane Status")->setLabelColor(ofColor(255, 0, 0));
 	}
 
-	if (projKinectCalibrated)
+	if (isCalibrated())
 	{
 		StatusGUI->getLabel("Calibration Status")->setLabel("Projector/Kinect calibrated");
 		StatusGUI->getLabel("Calibration Status")->setLabelColor(ofColor(0, 255, 0));
@@ -942,21 +942,22 @@ void KinectProjector::updateProjKinectAutoCalibration()
 			if (ReprojectionError > 50)
 			{
 				ofLogVerbose("KinectProjector") << "autoCalib(): ReprojectionError too big. Something wrong with projection matrix";
-				projKinectCalibrated = false;
+				setProjKinectCalibrated(false);
 				projKinectCalibrationUpdated = false;
 				setApplicationState(APPLICATION_STATE_SETUP);
 				calibrationText = "Calibration failed - reprojection error too big";
+				updateErrorEvent("CALIBRATION_FAILED_ERROR_TOO_BIG");
 				updateStatusGUI();
 				return;
 			}
 
 			// Rasmus update - I am not sure it is good to override the manual ROI
 			// updateROIFromCalibration(); // Compute the limite of the ROI according to the projected area
-			projKinectCalibrated = true; // Update states variables
+			setProjKinectCalibrated(true);
 			projKinectCalibrationUpdated = true;
 			setApplicationState(APPLICATION_STATE_SETUP);
 			calibrationText = "Calibration successful";
-
+			
 			//saveCalibrationAndSettings(); // Already done in updateROIFromCalibration
 			if (kpt->saveCalibration("settings/calibration.xml"))
 			{
@@ -1612,7 +1613,7 @@ string KinectProjector::startApplication(bool updateFlag = true)
 		return "KINECT_NOT_RUNNING";
 	}
 
-	if (!projKinectCalibrated)
+	if (!isCalibrated())
 	{
 		ofLogVerbose("KinectProjector") << "KinectProjector.startApplication(): Kinect projector not calibrated - trying to load calibration.xml";
 		//Try to load calibration file if possible
@@ -1621,7 +1622,7 @@ string KinectProjector::startApplication(bool updateFlag = true)
 			ofLogVerbose("KinectProjector") << "KinectProjector.setup(): Calibration loaded ";
 			kinectProjMatrix = kpt->getProjectionMatrix();
 			ofLogVerbose("KinectProjector") << "KinectProjector.setup(): kinectProjMatrix: " << kinectProjMatrix;
-			projKinectCalibrated = true;
+			setProjKinectCalibrated(true);
 			projKinectCalibrationUpdated = true;
 			updateStateEvent();
 			updateFlag ? updateStatusGUI() : noop;
@@ -1958,7 +1959,9 @@ void KinectProjector::setConfirmModalMessage(string message)
 {
 	auto oldvalue = confirmModalMessage;
 	confirmModalMessage = message;
-	if (!oldvalue.compare(confirmModalMessage) && broadcastState) {
+	
+	if (oldvalue.compare(confirmModalMessage)!=0 && broadcastState) {
+		cout << "setConfirmModalMessage " << endl;
 		confirmModal->setMessage(message);
 		updateStateEvent();
 	}
@@ -1969,6 +1972,7 @@ void KinectProjector::setConfirmModalState(ConfirmModal_State state)
 	auto oldvalue = confirmModalState;
 	confirmModalState = state;
 	if (oldvalue != state && broadcastState) {
+		cout << "setConfirmModalState " << endl;
 		updateStateEvent();
 		if (confirmModalState == CONFIRM_MODAL_CLOSED) {
 			confirmModal->hide();
@@ -1980,7 +1984,14 @@ void KinectProjector::setConfirmModalState(ConfirmModal_State state)
 	}
 }
 
-
+void KinectProjector::setProjKinectCalibrated(bool newValue)
+{
+	auto oldvalue = projKinectCalibrated;
+	projKinectCalibrated = newValue;
+	if (oldvalue != newValue && broadcastState) {
+		updateStateEvent();
+	}
+}
 
 
 bool KinectProjector::getDumpDebugFiles()
@@ -2109,6 +2120,7 @@ void KinectProjector::onSliderEvent(ofxDatGuiSliderEvent e)
 
 void KinectProjector::onConfirmModalEvent(ofxModalEvent e)
 {
+	cout << "onConfirmModalEvent " << e.type << endl;
 	if (e.type == ofxModalEvent::SHOWN) {
 		ofLogVerbose("KinectProjector") << "Confirm modal window is open";
 		setConfirmModalState(CONFIRM_MODAL_OPENED);
@@ -2118,6 +2130,8 @@ void KinectProjector::onConfirmModalEvent(ofxModalEvent e)
 			setConfirmModalMessage("STILL_NO_CONNECTION_KINECT");
 			// confirmModal->setMessage("Still no connection to Kinect. Please check that the kinect is (1) connected, (2) powerer and (3) not used by another application.");
 			setConfirmModalState(CONFIRM_MODAL_OPENED);
+		} else {
+			setConfirmModalState(CONFIRM_MODAL_CLOSED);
 		}
 		ofLogVerbose("KinectProjector") << "Confirm modal window is closed";
 	} else
@@ -2126,7 +2140,6 @@ void KinectProjector::onConfirmModalEvent(ofxModalEvent e)
 		onCancelCalibration(true);
 	} else
 	if (e.type == ofxModalEvent::CONFIRM) {
-		setConfirmModalState(CONFIRM_MODAL_CLOSED);
 		onConfirmCalibration();
 	}
 	updateStateEvent();
@@ -2146,19 +2159,17 @@ string KinectProjector::onCancelCalibration(bool updateGui = true)
 
 string KinectProjector::onConfirmCalibration()
 {
-	if (GetApplicationState() == APPLICATION_STATE_CALIBRATING)
-	{
-		if (waitingForFlattenSand)
-		{
+	setConfirmModalState(CONFIRM_MODAL_CLOSED);
+	if (GetApplicationState() == APPLICATION_STATE_CALIBRATING) {
+		if (waitingForFlattenSand) {
 			waitingForFlattenSand = false;
 			calibModal->hide();
-		}
-		else if ((GetCalibrationState() == CALIBRATION_STATE_PROJ_KINECT_AUTO_CALIBRATION ||
-				  (GetCalibrationState() == CALIBRATION_STATE_FULL_AUTO_CALIBRATION && GetFullCalibState() == FULL_CALIBRATION_STATE_AUTOCALIB)) &&
-				 GetAutoCalibrationState() == AUTOCALIB_STATE_NEXT_POINT)
+		} else
+		if ((GetCalibrationState() == CALIBRATION_STATE_PROJ_KINECT_AUTO_CALIBRATION ||
+			(GetCalibrationState() == CALIBRATION_STATE_FULL_AUTO_CALIBRATION && GetFullCalibState() == FULL_CALIBRATION_STATE_AUTOCALIB)) &&
+			GetAutoCalibrationState() == AUTOCALIB_STATE_NEXT_POINT)
 		{
-			if (!upframe)
-			{
+			if (!upframe) {
 				upframe = true;
 			}
 		}
@@ -2188,7 +2199,7 @@ void KinectProjector::onCalibModalEvent(ofxModalEvent e)
 
 void KinectProjector::saveCalibrationAndSettings()
 {
-	if (projKinectCalibrated)
+	if (isCalibrated())
 	{
 		if (kpt->saveCalibration("settings/calibration.xml"))
 		{

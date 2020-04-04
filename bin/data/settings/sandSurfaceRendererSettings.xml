@@ -1,5 +1,5 @@
 <SURFACERENDERERSETTINGS>
 	<colorMapFile>Sandy.xml</colorMapFile>
-	<drawContourLines>0</drawContourLines>
+	<drawContourLines>1</drawContourLines>
 	<contourLineDistance>28.34</contourLineDistance>
 </SURFACERENDERERSETTINGS>

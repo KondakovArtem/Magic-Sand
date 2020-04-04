@@ -133,6 +133,7 @@ Json::Value WebsocketServer::getStateMessage() {
 	Json::Value message;
 	message[FL_COMMAND] = CM_GET_STATE;
 	
+	message[FL_IS_CALIBRATED] = kinectProjector->isCalibrated();
 	message[FL_APPLICATION_STATE] = kinectProjector->GetApplicationState();
 	message[FL_CALIBRATION_STATE] = kinectProjector->GetCalibrationState();
 	message[FL_AUTO_CALIBRATION_STATE] = kinectProjector->GetAutoCalibrationState();

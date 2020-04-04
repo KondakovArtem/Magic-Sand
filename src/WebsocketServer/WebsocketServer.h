@@ -12,6 +12,7 @@ constexpr auto FL_FULL_CALIB_STATE = "fullCalibState";
 constexpr auto FL_ROI_CALIB_STATE = "ROICalibState";
 constexpr auto FL_CONFIRM_MODAL_STATE = "confirmModalState";
 constexpr auto FL_CONFIRM_MESSAGE = "confirmMessage";
+constexpr auto FL_IS_CALIBRATED = "projKinectCalibrated";
 
 constexpr auto FL_DRAW_KINECT_DEPTH_VIEW = "drawKinectDepthView";
 constexpr auto FL_DRAW_KINECT_COLOR_VIEW = "drawKinectColorView";
