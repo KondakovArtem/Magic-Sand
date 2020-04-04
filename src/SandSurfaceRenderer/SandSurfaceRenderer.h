@@ -77,6 +77,8 @@ public:
     void drawMainWindow(float x, float y, float width, float height);
     void drawProjectorWindow();
     
+    bool forceGuiUpdate;
+
     // Gui and events functions
     void setupGui();
     void onButtonEvent(ofxDatGuiButtonEvent e);
@@ -93,6 +95,10 @@ public:
     void onSaveModalEvent(ofxModalEvent e);
     bool isUpdateStateEvent();
     void exit(ofEventArgs& e);
+
+    void setForceGuiUpdate(bool value);
+
+    void updateGuiValue();
    
     bool GetDrawContourLines() {
         return drawContourLines;

@@ -32,6 +32,7 @@ SandSurfaceRenderer::SandSurfaceRenderer(std::shared_ptr<KinectProjector> const&
 editColorMap(false){
     kinectProjector = k;
     projWindow = p;
+    forceGuiUpdate = false;
 }
 
 void SandSurfaceRenderer::setup(bool sdisplayGui){
@@ -154,6 +155,24 @@ void SandSurfaceRenderer::exit(ofEventArgs& e){
     }
 }
 
+
+void SandSurfaceRenderer::setForceGuiUpdate(bool value)
+{
+    forceGuiUpdate = value;
+}
+
+
+void SandSurfaceRenderer::updateGuiValue()
+{
+    if (forceGuiUpdate)
+    {
+        gui2->getToggle(CMP_DRAW_DISTANCE)->setChecked(GetDrawContourLines());
+        gui2->getSlider(CMP_CONTOUR_LINE_DISTANCE)->setValue(GetContourLineDistance());
+        setForceGuiUpdate(false);
+    }
+}
+
+
 void SandSurfaceRenderer::updateConversionMatrices(){
     // Get conversion matrices
     transposedKinectProjMatrix = kinectProjector->getTransposedKinectProjMatrix();
@@ -223,6 +242,7 @@ void SandSurfaceRenderer::update(){
     
     // GUI
 	if (displayGui) {
+        updateGuiValue();
 		gui->update();
 		gui2->update();
         if (editColorMap){
