@@ -4,7 +4,8 @@
 
 WebsocketServer::WebsocketServer(
 	std::shared_ptr<KinectProjector> const& kp, 
-	CBoidGameController const bgc
+	CBoidGameController const bgc,
+	SandSurfaceRenderer* const ssr
 ) {
 	ofxLibwebsockets::ServerOptions options = ofxLibwebsockets::defaultServerOptions();
 	options.port = 9092;
@@ -14,10 +15,16 @@ WebsocketServer::WebsocketServer(
 	server.addListener(this);
 	kinectProjector = kp;
 	boidGameController = bgc;
+	sandSurfaceRenderer = ssr;
 	kp->broadcast = ([this](Json::Value message) { broadcast(message); });
-	kp->broadcastState = ([this]() { broadcast(getStateMessage()); });
+	kp->broadcastState = ([this]() { broadcastState(); });
 }
 
+
+
+void WebsocketServer::broadcastState() {
+	broadcast(getStateMessage());
+}
 
 //--------------------------------------------------------------
 void WebsocketServer::onConnect(ofxLibwebsockets::Event& args) {
@@ -142,6 +149,9 @@ Json::Value WebsocketServer::getStateMessage() {
 	message[FL_CONFIRM_MODAL_STATE] = kinectProjector->GetConfirmModalState();
 	message[FL_CONFIRM_MESSAGE] = kinectProjector->GetConfirmModalMessage();
 
+	message[FL_DRAW_CONTOUR_LINES] = sandSurfaceRenderer->GetDrawContourLines();
+	message[FL_CONTOUR_LINE_DISTANCE] = sandSurfaceRenderer->GetContourLineDistance();
+
 	message[FL_DRAW_KINECT_DEPTH_VIEW] = kinectProjector->getDrawKinectDepthView();
 	message[FL_DRAW_KINECT_COLOR_VIEW] = kinectProjector->getDrawKinectColorView();
 	message[FL_DUMP_DEBUG_FILES] = kinectProjector->getDumpDebugFiles();
@@ -234,7 +244,9 @@ void WebsocketServer::resolveSetValue(ofxLibwebsockets::Event& args) {
 
 	const auto field = args.json.get(FL_FIELD, "").asString();
 	const auto kp = this->kinectProjector;
+	const auto ssr = this->sandSurfaceRenderer;
 	const auto getBoidGui = [this]() {return kinectProjector->GetApplicationState() == KinectProjector::APPLICATION_STATE_RUNNING ? this->boidGameController.getGui() : nullptr; };
+	const auto getSSRGui = [this]() {return kinectProjector->GetApplicationState() == KinectProjector::APPLICATION_STATE_RUNNING ? this->sandSurfaceRenderer->getGui() : nullptr; };
 	const auto getGui = [this]() {return this->kinectProjector->getGui(); };
 	
 	(field == FL_DRAW_KINECT_DEPTH_VIEW) ? resolveToggleValue(args, CMP_DRAW_KINECT_DEPTH_VIEW, [kp](bool val) { kp->setDrawKinectDepthView(val); }) :
@@ -255,6 +267,10 @@ void WebsocketServer::resolveSetValue(ofxLibwebsockets::Event& args) {
 	(field == FL_OF_FISH) ? resolveFloatValue(args, [this](float val) { this->boidGameController.setFish(val); }, CMP_OF_FISH, getBoidGui() ) :
 	(field == FL_OF_SHARKS) ? resolveFloatValue(args, [this](float val) { this->boidGameController.setSharks(val); }, CMP_OF_SHARKS, getBoidGui()) :
 	(field == FL_OF_RABBITS) ? resolveFloatValue(args, [this](float val) { this->boidGameController.setRabbits(val); }, CMP_OF_RABBITS, getBoidGui()) :
+
+	(field == FL_DRAW_CONTOUR_LINES) ? resolveToggleValue(args, CMP_FULL_FRAME_FILTERING, [ssr](bool val) { ssr->setDrawContourLines(val); }) :
+	(field == FL_CONTOUR_LINE_DISTANCE) ? resolveFloatValue(args, [this](float val) { this->sandSurfaceRenderer->setContourLineDistance(val); }, CMP_CONTOUR_LINE_DISTANCE, getSSRGui()) :
+
 	noop;
 	kp->externUpdate = true;
 }
@@ -265,6 +281,7 @@ void WebsocketServer::resolveToggleValue(ofxLibwebsockets::Event& args, string c
 	bool value = args.json.get(FL_VALUE, false).asBool();
 	method(value);
 	kinectProjector->setForceGuiUpdate(true);
+	sandSurfaceRenderer->setForceGuiUpdate(true);
 	resolveResponseBool(args, 0);
 }
 

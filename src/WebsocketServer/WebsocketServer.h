@@ -2,6 +2,7 @@
 #include "ofxLibwebsockets.h"
 #include "KinectProjector/KinectProjector.h"
 #include "Games/BoidGameController.h"
+#include "SandSurfaceRenderer.h";
 
 // fields
 constexpr auto FL_COMMAND = "command";
@@ -13,6 +14,8 @@ constexpr auto FL_ROI_CALIB_STATE = "ROICalibState";
 constexpr auto FL_CONFIRM_MODAL_STATE = "confirmModalState";
 constexpr auto FL_CONFIRM_MESSAGE = "confirmMessage";
 constexpr auto FL_IS_CALIBRATED = "projKinectCalibrated";
+constexpr auto FL_DRAW_CONTOUR_LINES = "drawContourLines";
+constexpr auto FL_CONTOUR_LINE_DISTANCE = "contourLineDistance";
 
 constexpr auto FL_DRAW_KINECT_DEPTH_VIEW = "drawKinectDepthView";
 constexpr auto FL_DRAW_KINECT_COLOR_VIEW = "drawKinectColorView";
@@ -71,7 +74,7 @@ constexpr auto CM_SET_OF_RABBITS = "setOfRabbits";*/
 
 class WebsocketServer {
 public:
-    WebsocketServer(std::shared_ptr<KinectProjector> const& kp, CBoidGameController const boidGameController);
+    WebsocketServer(std::shared_ptr<KinectProjector> const& kp, CBoidGameController const boidGameController, SandSurfaceRenderer* sandSurfaceRenderer);
     
     ofxLibwebsockets::Server server;
     bool bSetup;
@@ -79,6 +82,8 @@ public:
     
     //string to send to clients
     string toSend;
+
+    void broadcastState();
 
     // websocket methods
     void onConnect(ofxLibwebsockets::Event& args);
@@ -94,7 +99,8 @@ public:
 private: 
     std::shared_ptr<KinectProjector> kinectProjector;
     CBoidGameController boidGameController;
-    
+    SandSurfaceRenderer* sandSurfaceRenderer;
+
     //void setToggleComponentValue(string name, bool value);
     //void setSliderComponentValue(string name, float value);
     Json::Value getStateMessage();

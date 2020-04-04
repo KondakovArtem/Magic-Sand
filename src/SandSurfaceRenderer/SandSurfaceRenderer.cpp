@@ -295,9 +295,9 @@ void SandSurfaceRenderer::setupGui(){
     
     // instantiate the gui //
     gui2 = new ofxDatGui( ofxDatGuiAnchor::TOP_LEFT );
-    gui2->addToggle("Contour lines", drawContourLines)->setStripeColor(ofColor::blue);
-    gui2->addSlider("Lines distance", 1, 30, contourLineDistance)->setName("Contour lines distance");
-    gui2->getSlider("Contour lines distance")->setStripeColor(ofColor::blue);
+    gui2->addToggle(CMP_DRAW_DISTANCE, drawContourLines)->setStripeColor(ofColor::blue);
+    gui2->addSlider("Lines distance", 1, 30, contourLineDistance)->setName(CMP_CONTOUR_LINE_DISTANCE);
+    gui2->getSlider(CMP_CONTOUR_LINE_DISTANCE)->setStripeColor(ofColor::blue);
     gui2->addDropdown("Load Color Map", colorMapFilesList)->setName("Load Color Map");
     gui2->getDropdown("Load Color Map")->setStripeColor(ofColor::yellow);
     gui2->addHeader(":: Display ::", false);
@@ -427,9 +427,30 @@ void SandSurfaceRenderer::onButtonEvent(ofxDatGuiButtonEvent e){
     }
 }
 
+
+void SandSurfaceRenderer::updateStateEvent()
+{
+    updateStateEvent(true);
+}
+
+void SandSurfaceRenderer::updateStateEvent(bool value)
+{
+    stateEvent = value;
+}
+
+void  SandSurfaceRenderer::setDrawContourLines(bool newValue) {
+    auto oldValue = drawContourLines;
+    drawContourLines = newValue;
+    if (oldValue != newValue) {
+        updateStateEvent();
+    }
+
+}
+
 void SandSurfaceRenderer::onToggleEvent(ofxDatGuiToggleEvent e){
-    if (e.target->is("Contour lines")) {
-        drawContourLines = e.checked;
+    if (e.target->is(CMP_DRAW_DISTANCE)) {
+        setDrawContourLines(e.checked);
+        // drawContourLines = e.checked;
     } else if (e.target->is("Edit")) {
         editColorMap = e.checked;
     }
@@ -444,10 +465,25 @@ void SandSurfaceRenderer::onColorPickerEvent(ofxDatGuiColorPickerEvent e){
     }
 }
 
+
+void SandSurfaceRenderer::setContourLineDistance(float newValue) {
+    auto oldValue = contourLineDistance;
+    contourLineDistance = newValue;
+    contourLineFactor = contourLineFboScale / contourLineDistance;
+    if (newValue != oldValue) {
+        updateStateEvent();
+    }
+}
+
+ofxDatGui* SandSurfaceRenderer::getGui() {
+    return gui2;
+}
+
+
 void SandSurfaceRenderer::onSliderEvent(ofxDatGuiSliderEvent e){
-    if (e.target->is("Contour lines distance")) {
-        contourLineDistance = e.value;
-        contourLineFactor = contourLineFboScale/contourLineDistance;        
+    if (e.target->is(CMP_CONTOUR_LINE_DISTANCE)) {
+        setContourLineDistance(e.value);
+        
     } else if (e.target->is("Height")) {
         int i = selectedColor;
         int j = heightMap.size()-1-i;
@@ -502,6 +538,10 @@ void SandSurfaceRenderer::onSaveModalEvent(ofxModalEvent e){
     }
 }
 
+
+bool SandSurfaceRenderer::isUpdateStateEvent() {
+    return stateEvent;
+}
 
 //TODO: Save additionnal settings
 

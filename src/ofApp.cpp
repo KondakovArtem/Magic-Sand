@@ -87,19 +87,17 @@ void ofApp::update() {
 	boidGameController.update();
 
 
-	if (sandSurfaceRenderer->isUpdateStateEvent()) {
-		initUpdateTimeStamp = timeSinceEpochMillisec();
-		needSendUpdateState = true;
-		sandSurfaceRenderer->updateStateEvent(false);
-	}
-	if (kinectProjector->isUpdateStateEvent()) {
+	if (sandSurfaceRenderer->isUpdateStateEvent() ||
+		kinectProjector->isUpdateStateEvent()) {
 		initUpdateTimeStamp = timeSinceEpochMillisec();
 		needSendUpdateState = true;
 		kinectProjector->updateStateEvent(false);
+		sandSurfaceRenderer->updateStateEvent(false);
 	}
+	
 	if (needSendUpdateState && (timeSinceEpochMillisec() > (initUpdateTimeStamp + 100))) {
 		needSendUpdateState = false;
-		kinectProjector->broadcastState();
+		websocketServer->broadcastState();
 	}
 
 	auto error = kinectProjector->getErrorEvent();

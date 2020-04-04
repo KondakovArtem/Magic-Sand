@@ -32,6 +32,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include "ColorMap.h"
 
 
+constexpr auto CMP_DRAW_DISTANCE = "Contour lines";
+constexpr auto CMP_CONTOUR_LINE_DISTANCE = "Contour lines distance";
+
+
+
 class SaveModal : public ofxModalWindow
 {
 public:
@@ -75,14 +80,28 @@ public:
     // Gui and events functions
     void setupGui();
     void onButtonEvent(ofxDatGuiButtonEvent e);
-    void onToggleEvent(ofxDatGuiToggleEvent e);
+	void updateStateEvent();
+	void updateStateEvent(bool value);
+	void setDrawContourLines(bool value);
+	void onToggleEvent(ofxDatGuiToggleEvent e);
+    void setContourLineDistance(float value);
+    ofxDatGui* getGui();
     void onSliderEvent(ofxDatGuiSliderEvent e);
     void onColorPickerEvent(ofxDatGuiColorPickerEvent e);
     void onDropdownEvent(ofxDatGuiDropdownEvent e);
     void onScrollViewEvent(ofxDatGuiScrollViewEvent e);
     void onSaveModalEvent(ofxModalEvent e);
+    bool isUpdateStateEvent();
     void exit(ofEventArgs& e);
    
+    bool GetDrawContourLines() {
+        return drawContourLines;
+    }
+
+    float GetContourLineDistance() {
+        return contourLineDistance;
+    }
+
 private:
     // Private methods
     void setupMesh();
@@ -152,6 +171,7 @@ private:
     int selectedColor;
     shared_ptr<SaveModal> saveModal;
     ofColor undoColor;
+    bool stateEvent;
 };
 
 #endif /* defined(__GreatSand__SandSurfaceRenderer__) */
