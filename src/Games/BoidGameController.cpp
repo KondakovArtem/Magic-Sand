@@ -157,7 +157,20 @@ void CBoidGameController::update()
 			InitiateGameSequence();
 		}
 	}
+
+	updateGuiValue();
 	gui->update();
+}
+
+void CBoidGameController::updateGuiValue()
+{
+	if (forceGuiUpdate)
+	{
+		gui->getSlider(CMP_OF_FISH)->setValue(getFish());
+		gui->getSlider(CMP_OF_RABBITS)->setValue(getRabbits());
+		gui->getSlider(CMP_OF_SHARKS)->setValue(getSharks());
+		setForceGuiUpdate(false);
+	}
 }
 
 void CBoidGameController::ComputeScores()
@@ -931,8 +944,26 @@ void CBoidGameController::adaptFish(int value) {
 	}
 }
 
-void CBoidGameController::setFish(int value) {
-	ofFish = value;
+void CBoidGameController::updateStateEvent()
+{
+	updateStateEvent(true);
+}
+
+void CBoidGameController::updateStateEvent(bool value)
+{
+	stateEvent = value;
+}
+
+bool CBoidGameController::isUpdateStateEvent() {
+	return stateEvent;
+}
+
+void CBoidGameController::setFish(int newValue) {
+	auto oldValue = ofFish;
+	ofFish = newValue;
+	if (oldValue != newValue) {
+		updateStateEvent();
+	}
 	if (kinectProjector != nullptr && kinectProjector->GetApplicationState() == KinectProjector::APPLICATION_STATE_RUNNING) {
 		adaptFish(ofFish);
 	}
@@ -941,6 +972,12 @@ void CBoidGameController::setFish(int value) {
 int CBoidGameController::getFish() {
 	return ofFish;
 }
+
+
+void CBoidGameController::setForceGuiUpdate(bool value) {
+	forceGuiUpdate = value;
+}
+
 
 void CBoidGameController::adaptShark(int value) {
 	if (value > sharks.size()) {
@@ -956,7 +993,12 @@ void CBoidGameController::adaptShark(int value) {
 }
 
 void CBoidGameController::setSharks(int value) {
+	
+	auto oldValue = ofFish;
 	ofShark = value;
+	if (oldValue != value) {
+		updateStateEvent();
+	}
 	if (kinectProjector != nullptr && kinectProjector->GetApplicationState() == KinectProjector::APPLICATION_STATE_RUNNING) {
 		adaptShark(ofShark);
 	}
@@ -981,7 +1023,11 @@ void CBoidGameController::adaptRabbits(int value) {
 }
 
 void CBoidGameController::setRabbits(int value) {
+	auto oldValue = ofFish;
 	ofRabbits = value;
+	if (oldValue != value) {
+		updateStateEvent();
+	}
 	if (kinectProjector != nullptr && kinectProjector->GetApplicationState() == KinectProjector::APPLICATION_STATE_RUNNING) {
 		adaptRabbits(ofRabbits);
 	}

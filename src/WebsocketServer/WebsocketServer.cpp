@@ -243,8 +243,8 @@ void WebsocketServer::resolveSetKinectROI(ofxLibwebsockets::Event& args) {
 void WebsocketServer::resolveSetValue(ofxLibwebsockets::Event& args) {
 
 	const auto field = args.json.get(FL_FIELD, "").asString();
-	const auto kp = this->kinectProjector;
-	const auto ssr = this->sandSurfaceRenderer;
+	const auto kp = kinectProjector;
+	const auto ssr = sandSurfaceRenderer;
 	const auto getBoidGui = [this]() {return kinectProjector->GetApplicationState() == KinectProjector::APPLICATION_STATE_RUNNING ? this->boidGameController.getGui() : nullptr; };
 	const auto getSSRGui = [this]() {return kinectProjector->GetApplicationState() == KinectProjector::APPLICATION_STATE_RUNNING ? this->sandSurfaceRenderer->getGui() : nullptr; };
 	const auto getGui = [this]() {return this->kinectProjector->getGui(); };
@@ -282,6 +282,7 @@ void WebsocketServer::resolveToggleValue(ofxLibwebsockets::Event& args, string c
 	method(value);
 	kinectProjector->setForceGuiUpdate(true);
 	sandSurfaceRenderer->setForceGuiUpdate(true);
+	boidGameController.setForceGuiUpdate(true);
 	resolveResponseBool(args, 0);
 }
 
@@ -293,6 +294,7 @@ void WebsocketServer::resolveFloatValue(ofxLibwebsockets::Event& args, Proc meth
 		auto slider = gui->getSlider(componentName);
 		kinectProjector->setForceGuiUpdate(true);
 		sandSurfaceRenderer->setForceGuiUpdate(true);
+		boidGameController.setForceGuiUpdate(true);
 	}
 	resolveResponseFloat(args, 0);
 }

@@ -73,8 +73,15 @@ class CBoidGameController
 
 		void adaptFish(int value);
 
+		void updateStateEvent();
+
+		void updateStateEvent(bool value);
+
+		bool isUpdateStateEvent();
+
 		void setFish(int value);
 		int getFish();
+		void setForceGuiUpdate(bool value);
 		void adaptShark(int value);
 		void setSharks(int value);
 		int getSharks();
@@ -100,6 +107,8 @@ class CBoidGameController
 
 		void DrawFinalScoresOnFBO();
 	
+		void updateGuiValue();
+
 		void ComputeScores();
 
 		std::string DataBaseDir;
@@ -190,6 +199,8 @@ class CBoidGameController
 		int ofRabbits;
 		// GUI
 		ofxDatGui* gui;
+		bool stateEvent;
+		bool forceGuiUpdate;
 };
 
 #endif

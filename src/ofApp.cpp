@@ -88,11 +88,13 @@ void ofApp::update() {
 
 
 	if (sandSurfaceRenderer->isUpdateStateEvent() ||
-		kinectProjector->isUpdateStateEvent()) {
+		kinectProjector->isUpdateStateEvent() ||
+		boidGameController.isUpdateStateEvent()) {
 		initUpdateTimeStamp = timeSinceEpochMillisec();
 		needSendUpdateState = true;
 		kinectProjector->updateStateEvent(false);
 		sandSurfaceRenderer->updateStateEvent(false);
+		boidGameController.updateStateEvent(false);
 	}
 	
 	if (needSendUpdateState && (timeSinceEpochMillisec() > (initUpdateTimeStamp + 100))) {
