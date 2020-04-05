@@ -989,8 +989,8 @@ void CBoidGameController::setShowMotherRabbit(bool newValue) {
 		updateStateEvent();
 	}
 	if (newValue) {
-		showMotherFish = addMotherRabbit();
-		if (showMotherFish != newValue) {
+		showMotherRabbit = addMotherRabbit();
+		if (showMotherRabbit != newValue) {
 			setForceGuiUpdate(true);
 		}
 	}

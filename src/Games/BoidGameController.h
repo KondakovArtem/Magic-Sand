@@ -110,11 +110,11 @@ class CBoidGameController
 		void setRabbits(int value);
 
 		int getRabbits();
-
+		void clearAnimals();
 	private:
 		
 		std::shared_ptr<KinectProjector> kinectProjector;
-		void clearAnimals();
+		
 		void onButtonEvent(ofxDatGuiButtonEvent e);
 		void onToggleEvent(ofxDatGuiToggleEvent e);
 		
