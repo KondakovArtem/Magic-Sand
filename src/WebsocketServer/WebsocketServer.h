@@ -16,6 +16,7 @@ constexpr auto FL_CONFIRM_MESSAGE = "confirmMessage";
 constexpr auto FL_IS_CALIBRATED = "projKinectCalibrated";
 constexpr auto FL_DRAW_CONTOUR_LINES = "drawContourLines";
 constexpr auto FL_CONTOUR_LINE_DISTANCE = "contourLineDistance";
+constexpr auto FL_COLOR_MAP_FILE = "colorMapFile";
 
 constexpr auto FL_DRAW_KINECT_DEPTH_VIEW = "drawKinectDepthView";
 constexpr auto FL_DRAW_KINECT_COLOR_VIEW = "drawKinectColorView";
@@ -120,6 +121,8 @@ private:
     void sendToConnection(ofxLibwebsockets::Connection* connection, Json::Value message, bool noLog);
     template <typename Proc>
     void resolveToggleValue(ofxLibwebsockets::Event& args, string componentName, Proc method);
+    template<typename Proc>
+    void resolveStringValue(ofxLibwebsockets::Event& args, Proc method, string componentName, ofxDatGui* gui);
     template<typename Proc>
     void resolveFloatValue(ofxLibwebsockets::Event& args, Proc method, string componentName, ofxDatGui* gui);
     template<typename T>

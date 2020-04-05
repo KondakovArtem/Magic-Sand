@@ -151,6 +151,7 @@ Json::Value WebsocketServer::getStateMessage() {
 
 	message[FL_DRAW_CONTOUR_LINES] = sandSurfaceRenderer->GetDrawContourLines();
 	message[FL_CONTOUR_LINE_DISTANCE] = sandSurfaceRenderer->GetContourLineDistance();
+	message[FL_COLOR_MAP_FILE] = sandSurfaceRenderer->GetColorMapFile();
 
 	message[FL_DRAW_KINECT_DEPTH_VIEW] = kinectProjector->getDrawKinectDepthView();
 	message[FL_DRAW_KINECT_COLOR_VIEW] = kinectProjector->getDrawKinectColorView();
@@ -282,6 +283,7 @@ void WebsocketServer::resolveSetValue(ofxLibwebsockets::Event& args) {
 
 	(field == FL_DRAW_CONTOUR_LINES) ? resolveToggleValue(args, CMP_FULL_FRAME_FILTERING, [ssr](bool val) { ssr->setDrawContourLines(val); }) :
 	(field == FL_CONTOUR_LINE_DISTANCE) ? resolveFloatValue(args, [this](float val) { this->sandSurfaceRenderer->setContourLineDistance(val); }, CMP_CONTOUR_LINE_DISTANCE, getSSRGui()) :
+	(field == FL_COLOR_MAP_FILE) ? resolveStringValue(args, [this](string val) { this->sandSurfaceRenderer->selectColorMap(val); }, CMP_CONTOUR_LINE_DISTANCE, getSSRGui()) :
 
 	noop;
 	kp->externUpdate = true;
@@ -297,6 +299,16 @@ void WebsocketServer::resolveToggleValue(ofxLibwebsockets::Event& args, string c
 	boidGameController->setForceGuiUpdate(true);
 	resolveResponseBool(args, 0);
 }
+
+template <typename Proc>
+void WebsocketServer::resolveStringValue(ofxLibwebsockets::Event& args, Proc method, string componentName, ofxDatGui* gui) {
+	bool value = args.json.get(FL_VALUE, "").asString();
+	method(value);
+	kinectProjector->setForceGuiUpdate(true);
+	sandSurfaceRenderer->setForceGuiUpdate(true);
+	boidGameController->setForceGuiUpdate(true);
+}
+
 
 template <typename Proc>
 void WebsocketServer::resolveFloatValue(ofxLibwebsockets::Event& args, Proc method, string componentName, ofxDatGui* gui) {

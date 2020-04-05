@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 constexpr auto CMP_DRAW_DISTANCE = "Contour lines";
 constexpr auto CMP_CONTOUR_LINE_DISTANCE = "Contour lines distance";
-
+constexpr auto CMP_LOAD_COLOR_MAP = "Load Color Map";
 
 
 class SaveModal : public ofxModalWindow
@@ -55,6 +55,7 @@ public:
         closeButton->setBorder(ofColor::fromHex(0x1f4c73), 1);
         autoSize();
     }
+
     void show() {
         textInput->setFocused(true);
         ofxModalWindow::show();
@@ -90,6 +91,7 @@ public:
     ofxDatGui* getGui();
     void onSliderEvent(ofxDatGuiSliderEvent e);
     void onColorPickerEvent(ofxDatGuiColorPickerEvent e);
+    void selectColorMap(string fileName);
     void onDropdownEvent(ofxDatGuiDropdownEvent e);
     void onScrollViewEvent(ofxDatGuiScrollViewEvent e);
     void onSaveModalEvent(ofxModalEvent e);
@@ -107,6 +109,11 @@ public:
     float GetContourLineDistance() {
         return contourLineDistance;
     }
+
+    string GetColorMapFile() {
+        return colorMapFile;
+    }
+
 
 private:
     // Private methods
@@ -154,6 +161,7 @@ private:
     // Colormap
     string colorMapPath;
     string colorMapFile;
+
     std::vector<string> colorMapFilesList;
     ColorMap    heightMap;
     std::vector<ColorMap::HeightMapKey> heightMapKeys;

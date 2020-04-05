@@ -166,6 +166,7 @@ void SandSurfaceRenderer::updateGuiValue()
 {
     if (forceGuiUpdate)
     {
+        populateColorList();
         gui2->getToggle(CMP_DRAW_DISTANCE)->setChecked(GetDrawContourLines());
         gui2->getSlider(CMP_CONTOUR_LINE_DISTANCE)->setValue(GetContourLineDistance());
         setForceGuiUpdate(false);
@@ -318,8 +319,8 @@ void SandSurfaceRenderer::setupGui(){
     gui2->addToggle(CMP_DRAW_DISTANCE, drawContourLines)->setStripeColor(ofColor::blue);
     gui2->addSlider("Lines distance", 1, 30, contourLineDistance)->setName(CMP_CONTOUR_LINE_DISTANCE);
     gui2->getSlider(CMP_CONTOUR_LINE_DISTANCE)->setStripeColor(ofColor::blue);
-    gui2->addDropdown("Load Color Map", colorMapFilesList)->setName("Load Color Map");
-    gui2->getDropdown("Load Color Map")->setStripeColor(ofColor::yellow);
+    gui2->addDropdown(CMP_LOAD_COLOR_MAP, colorMapFilesList)->setName(CMP_LOAD_COLOR_MAP);
+    gui2->getDropdown(CMP_LOAD_COLOR_MAP)->setStripeColor(ofColor::yellow);
     gui2->addHeader(":: Display ::", false);
 
     gui = new ofxDatGui( ofxDatGuiAnchor::NO_ANCHOR );
@@ -353,7 +354,7 @@ void SandSurfaceRenderer::setupGui(){
 	
 	int pos = find(colorMapFilesList.begin(), colorMapFilesList.end(), colorMapFile) - colorMapFilesList.begin();
     if (pos < colorMapFilesList.size())
-        gui2->getDropdown("Load Color Map")->select(pos);
+        gui2->getDropdown(CMP_LOAD_COLOR_MAP)->select(pos);
     
     // add a scroll view to list colors //
     colorList = new ofxDatGuiScrollView("Colors", 7);
@@ -512,10 +513,21 @@ void SandSurfaceRenderer::onSliderEvent(ofxDatGuiSliderEvent e){
     }
 }
 
+
+void SandSurfaceRenderer::selectColorMap(string fileName) {
+    auto oldValue = colorMapFile;
+    colorMapFile = fileName;
+    bool loaded = heightMap.loadFile(colorMapPath + fileName);
+    if (loaded) {
+        if (oldValue.compare(colorMapFile) != 0) {
+            updateStateEvent();
+        }
+    }
+    setForceGuiUpdate(true);
+}
+
 void SandSurfaceRenderer::onDropdownEvent(ofxDatGuiDropdownEvent e){
-    colorMapFile = e.target->getLabel();
-    heightMap.loadFile(colorMapPath+e.target->getLabel());
-    populateColorList();
+    selectColorMap(colorMapFile);
 }
 
 void SandSurfaceRenderer::onScrollViewEvent(ofxDatGuiScrollViewEvent e){
@@ -553,7 +565,7 @@ void SandSurfaceRenderer::onSaveModalEvent(ofxModalEvent e){
             filen += ".xml";
         heightMap.saveFile(colorMapPath+filen);
         colorMapFilesList.push_back(filen);
-        gui2->getDropdown("Load Color Map")->setOptions(colorMapFilesList);
+        gui2->getDropdown(CMP_LOAD_COLOR_MAP)->setOptions(colorMapFilesList);
         ofLogVerbose("SandSurfaceRenderer") << "save confirm button pressed, filename: " << filen;
     }
 }
