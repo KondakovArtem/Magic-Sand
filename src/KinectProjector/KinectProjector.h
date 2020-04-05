@@ -99,7 +99,8 @@ public:
 
 	// Try to start the application - assumes calibration has been done before
 	string startApplication();
-    string startApplication(bool updateFlag);
+	string checkStartReady(bool updateFlag);
+	string startApplication(bool updateFlag);
 
     // Setup & calibration functions
     void startFullCalibration();

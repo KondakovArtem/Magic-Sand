@@ -148,6 +148,7 @@ void KinectProjector::setup(bool sdisplayGui)
 	kinectgrabber.start(); // Start the acquisition
 
 	updateStatusGUI();
+	checkStartReady(false);
 }
 
 void KinectProjector::exit(ofEventArgs &e)
@@ -1588,11 +1589,8 @@ string KinectProjector::startApplication()
 	return startApplication(true);
 };
 
-string KinectProjector::startApplication(bool updateFlag = true)
-{
 
-	string message;
-
+string KinectProjector::checkStartReady(bool updateFlag = true) {
 	if (GetApplicationState() == APPLICATION_STATE_RUNNING)
 	{
 		setApplicationState(APPLICATION_STATE_SETUP);
@@ -1651,8 +1649,8 @@ string KinectProjector::startApplication(bool updateFlag = true)
 			setSpatialFiltering(spatialFiltering, updateFlag);
 
 			int nAvg = numAveragingSlots;
-			kinectgrabber.performInThread([nAvg](KinectGrabber &kg) { kg.setAveragingSlotsNumber(nAvg); });
-            
+			kinectgrabber.performInThread([nAvg](KinectGrabber& kg) { kg.setAveragingSlotsNumber(nAvg); });
+
 			updateFlag ? updateStatusGUI() : noop;
 		}
 		else
@@ -1663,19 +1661,33 @@ string KinectProjector::startApplication(bool updateFlag = true)
 		}
 	}
 
+	setFullCalibState(FULL_CALIBRATION_STATE_DONE);
+	setROICalibState(ROI_CALIBRATION_STATE_DONE);
+	setAutoCalibrationState(AUTOCALIB_STATE_DONE);
+	return "";
+
+}
+
+
+string KinectProjector::startApplication(bool updateFlag = true)
+{
+	string message = checkStartReady(updateFlag);
+	if (!message.empty()) {
+		return message;
+	}
+	
 	ResetSeaLevel();
 
 	// If all is well we are running
 	setApplicationState(APPLICATION_STATE_RUNNING);
-	setFullCalibState(FULL_CALIBRATION_STATE_DONE);
-	setROICalibState(ROI_CALIBRATION_STATE_DONE);
-	setAutoCalibrationState(AUTOCALIB_STATE_DONE);
 	
 	drawKinectColorView = false;
 	drawKinectView = false;
-	updateFlag ? gui->getToggle(CMP_DRAW_KINECT_COLOR_VIEW)->setChecked(drawKinectColorView) : noop;
-	updateFlag ? gui->getToggle(CMP_DRAW_KINECT_DEPTH_VIEW)->setChecked(drawKinectView) : noop;
-	updateFlag ? updateStatusGUI() : noop;
+	if (updateFlag) {
+		gui->getToggle(CMP_DRAW_KINECT_COLOR_VIEW)->setChecked(drawKinectColorView);
+		gui->getToggle(CMP_DRAW_KINECT_DEPTH_VIEW)->setChecked(drawKinectView);
+		updateStatusGUI();
+	}
 	updateStateEvent();
 	return "";
 }
