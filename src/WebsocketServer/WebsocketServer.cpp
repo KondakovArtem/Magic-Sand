@@ -302,7 +302,7 @@ void WebsocketServer::resolveToggleValue(ofxLibwebsockets::Event& args, string c
 
 template <typename Proc>
 void WebsocketServer::resolveStringValue(ofxLibwebsockets::Event& args, Proc method, string componentName, ofxDatGui* gui) {
-	bool value = args.json.get(FL_VALUE, "").asString();
+	string value = args.json.get(FL_VALUE, "").asString();
 	method(value);
 	kinectProjector->setForceGuiUpdate(true);
 	sandSurfaceRenderer->setForceGuiUpdate(true);
@@ -336,11 +336,8 @@ void WebsocketServer::sendToConnection(ofxLibwebsockets::Connection& connection,
 	Json::StyledWriter writer;
 	string str = writer.write(message);
 	if (!noLog) {
-		
-
 		cout << "send message " << str << endl;
-	}
-	else {
+	} else {
 		cout << "send message " << message[FL_COMMAND].asString() << endl;
 	}
 	connection.send(str);
@@ -349,10 +346,9 @@ void WebsocketServer::sendToConnection(ofxLibwebsockets::Connection& connection,
 void WebsocketServer::sendToConnection(ofxLibwebsockets::Connection* connection, Json::Value message, bool noLog) {
 	Json::StyledWriter writer;
 	string str = writer.write(message);
-	if (!noLog) {
+	if (!noLog) { 
 		cout << "send message " << str << endl;
-	}
-	else {
+	} else {
 		cout << "send message " << message[FL_COMMAND].asString() << endl;
 	}
 	connection->send(str);

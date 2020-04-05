@@ -164,6 +164,14 @@ void SandSurfaceRenderer::setForceGuiUpdate(bool value)
 
 void SandSurfaceRenderer::updateGuiValue()
 {
+    if (forceLoadColorMapFile){
+        forceLoadColorMapFile = false;
+        heightMap.loadFile(colorMapPath + colorMapFile);
+        int pos = find(colorMapFilesList.begin(), colorMapFilesList.end(), colorMapFile) - colorMapFilesList.begin();
+        if (pos < colorMapFilesList.size()){
+            gui2->getDropdown(CMP_LOAD_COLOR_MAP)->select(pos);
+        }
+    }
     if (forceGuiUpdate)
     {
         populateColorList();
@@ -517,17 +525,18 @@ void SandSurfaceRenderer::onSliderEvent(ofxDatGuiSliderEvent e){
 void SandSurfaceRenderer::selectColorMap(string fileName) {
     auto oldValue = colorMapFile;
     colorMapFile = fileName;
-    bool loaded = heightMap.loadFile(colorMapPath + fileName);
-    if (loaded) {
+    //bool loaded = heightMap.loadFile(colorMapPath + fileName);
+    //if (loaded) {
         if (oldValue.compare(colorMapFile) != 0) {
             updateStateEvent();
         }
-    }
-    setForceGuiUpdate(true);
+    //}
+    forceLoadColorMapFile = true;
+    // setForceGuiUpdate(true);
 }
 
 void SandSurfaceRenderer::onDropdownEvent(ofxDatGuiDropdownEvent e){
-    selectColorMap(colorMapFile);
+    selectColorMap(e.target->getLabel());
 }
 
 void SandSurfaceRenderer::onScrollViewEvent(ofxDatGuiScrollViewEvent e){

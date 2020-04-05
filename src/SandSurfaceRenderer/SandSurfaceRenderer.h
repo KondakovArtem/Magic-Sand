@@ -113,7 +113,7 @@ public:
     string GetColorMapFile() {
         return colorMapFile;
     }
-
+    bool forceLoadColorMapFile;
 
 private:
     // Private methods
