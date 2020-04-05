@@ -139,6 +139,7 @@ public:
     int getAveraging();
     void setCeiling(float value);
     float getCeiling();
+    float getMaxOffset();
     void setTilt(float tiltX, float tiltY);
     void setTiltX(float value);
     void setTiltY(float value);

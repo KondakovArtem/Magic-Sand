@@ -161,7 +161,7 @@ Json::Value WebsocketServer::getStateMessage() {
 	message[FL_DO_FULL_FRAME_FILTERING] = kinectProjector->getFullFrameFiltering();
 	message[FL_QUICK_REACTION] = kinectProjector->getFollowBigChanges();
 	message[FL_AVERAGING] = kinectProjector->getAveraging();
-	message[FL_CEILING] = kinectProjector->getCeiling();
+	message[FL_CEILING] = kinectProjector->getMaxOffset();
 	message[FL_TILT_X] = kinectProjector->getTiltX();
 	message[FL_TILT_Y] = kinectProjector->getTiltY();
 	message[FL_VERTICAL_OFFSET] = kinectProjector->getVerticalOffset();

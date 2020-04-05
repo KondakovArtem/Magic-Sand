@@ -268,7 +268,7 @@ void KinectProjector::updateGuiValue()
 		gui->getToggle(CMP_DRAW_KINECT_DEPTH_VIEW)->setChecked(drawKinectView);
 		gui->getToggle(CMP_DRAW_KINECT_COLOR_VIEW)->setChecked(drawKinectColorView);
 		gui->getToggle(CMP_DUMP_DEBUG)->setChecked(DumpDebugFiles);
-		gui->getSlider(CMP_CEILING)->setValue(getCeiling());
+		gui->getSlider(CMP_CEILING)->setValue(getMaxOffset());
 		gui->getToggle(CMP_SPATIAL_FILTERING)->setChecked(spatialFiltering);
 		gui->getToggle(CMP_INPAINT_OUTLIERS)->setChecked(doInpainting);
 		gui->getToggle(CMP_FULL_FRAME_FILTERING)->setChecked(doFullFrameFiltering);
@@ -1591,19 +1591,7 @@ string KinectProjector::startApplication()
 
 
 string KinectProjector::checkStartReady(bool updateFlag = true) {
-	if (GetApplicationState() == APPLICATION_STATE_RUNNING)
-	{
-		setApplicationState(APPLICATION_STATE_SETUP);
-		updateStateEvent();
-		updateFlag ? updateStatusGUI() : noop;
-		return "";
-	}
-	if (GetApplicationState() == APPLICATION_STATE_CALIBRATING)
-	{
-		ofLogVerbose("KinectProjector") << "KinectProjector.startApplication() : we are calibrating";
-		updateErrorEvent("CALIBRATING");
-		return "CALIBRATING";
-	}
+	
 	if (!kinectOpened)
 	{
 		ofLogVerbose("KinectProjector") << "KinectProjector.startApplication(): Kinect is not running ";
@@ -1671,6 +1659,21 @@ string KinectProjector::checkStartReady(bool updateFlag = true) {
 
 string KinectProjector::startApplication(bool updateFlag = true)
 {
+	
+	if (GetApplicationState() == APPLICATION_STATE_RUNNING)
+	{
+		setApplicationState(APPLICATION_STATE_SETUP);
+		updateStateEvent();
+		updateFlag ? updateStatusGUI() : noop;
+		return "";
+	}
+	if (GetApplicationState() == APPLICATION_STATE_CALIBRATING)
+	{
+		ofLogVerbose("KinectProjector") << "KinectProjector.startApplication() : we are calibrating";
+		updateErrorEvent("CALIBRATING");
+		return "CALIBRATING";
+	}
+	
 	string message = checkStartReady(updateFlag);
 	if (!message.empty()) {
 		return message;
@@ -2065,12 +2068,18 @@ int KinectProjector::getAveraging()
 
 void KinectProjector::setCeiling(float value)
 {
+	cout << "setCeiling " << value << endl;
+	cout << "maxOffsetBack " << maxOffsetBack << endl;
 	maxOffset = maxOffsetBack - value;
-	ofLogVerbose("KinectProjector") << "onSliderEvent(): maxOffset" << maxOffset;
+	cout << "onSliderEvent(): maxOffset " << maxOffset << endl;
 	kinectgrabber.performInThread([this](KinectGrabber &kg) {
 		kg.setMaxOffset(this->maxOffset);
 	});
 	updateStateEvent();
+}
+
+float KinectProjector::getMaxOffset(){
+	return maxOffsetBack - maxOffset;
 }
 
 float KinectProjector::getCeiling()
@@ -2127,7 +2136,11 @@ float KinectProjector::getVerticalOffset()
 
 void KinectProjector::onSliderEvent(ofxDatGuiSliderEvent e)
 {
-	e.target->is(CMP_VERTICAL_OFFSET) ? setVerticalOffset(e.value) : e.target->is(CMP_TILT_X) ? setTiltX(e.value) : e.target->is(CMP_TILT_Y) ? setTiltY(e.value) : e.target->is(CMP_CEILING) ? setCeiling(e.value) : e.target->is(CMP_AVERAGING) ? setAveraging(e.value) : noop;
+	e.target->is(CMP_VERTICAL_OFFSET) ? setVerticalOffset(e.value) : 
+	e.target->is(CMP_TILT_X) ? setTiltX(e.value) : 
+	e.target->is(CMP_TILT_Y) ? setTiltY(e.value) : 
+	e.target->is(CMP_CEILING) ? setCeiling(e.value) : 
+	e.target->is(CMP_AVERAGING) ? setAveraging(e.value) : noop;
 }
 
 void KinectProjector::onConfirmModalEvent(ofxModalEvent e)
