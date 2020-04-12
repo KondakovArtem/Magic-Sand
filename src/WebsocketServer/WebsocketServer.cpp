@@ -255,35 +255,35 @@ void WebsocketServer::resolveSetValue(ofxLibwebsockets::Event& args) {
 	const auto field = args.json.get(FL_FIELD, "").asString();
 	const auto kp = kinectProjector;
 	const auto ssr = sandSurfaceRenderer;
-	const auto getBoidGui = [this]() {return kinectProjector->GetApplicationState() == KinectProjector::APPLICATION_STATE_RUNNING ? this->boidGameController->getGui() : nullptr; };
-	const auto getSSRGui = [this]() {return kinectProjector->GetApplicationState() == KinectProjector::APPLICATION_STATE_RUNNING ? this->sandSurfaceRenderer->getGui() : nullptr; };
-	const auto getGui = [this]() {return this->kinectProjector->getGui(); };
+	//const auto getBoidGui = [this]() {return kinectProjector->GetApplicationState() == KinectProjector::APPLICATION_STATE_RUNNING ? this->boidGameController->getGui() : nullptr; };
+	//const auto getSSRGui = [this]() {return kinectProjector->GetApplicationState() == KinectProjector::APPLICATION_STATE_RUNNING ? this->sandSurfaceRenderer->getGui() : nullptr; };
+	//const auto getGui = [this]() {return this->kinectProjector->getGui(); };
 	
 	(field == FL_DRAW_KINECT_DEPTH_VIEW) ? resolveToggleValue(args, CMP_DRAW_KINECT_DEPTH_VIEW, [kp](bool val) { kp->setDrawKinectDepthView(val); }) :
 	(field == FL_DRAW_KINECT_COLOR_VIEW) ? resolveToggleValue(args, CMP_DRAW_KINECT_COLOR_VIEW, [kp](bool val) { kp->setDrawKinectColorView(val); }) :
 	(field == FL_DUMP_DEBUG_FILES) ? resolveToggleValue(args, CMP_DUMP_DEBUG, [kp](bool val) { kp->setDumpDebugFiles(val); }) :
-	(field == FL_CEILING) ? resolveFloatValue(args, [kp](float val) { kp->setCeiling(val); }, CMP_CEILING, getGui()) :
+	(field == FL_CEILING) ? resolveFloatValue(args, [kp](float val) { kp->setCeiling(val); }, CMP_CEILING) : //, getGui()) :
 	(field == FL_SPATIAL_FILTERING) ? resolveToggleValue(args, CMP_SPATIAL_FILTERING, [kp](bool val) { kp->setSpatialFiltering(val, false); }) :
 	(field == FL_DO_INPAINTING) ? resolveToggleValue(args, CMP_INPAINT_OUTLIERS, [kp](bool val) { kp->setInPainting(val, false); }) :
 	(field == FL_DO_FULL_FRAME_FILTERING) ? resolveToggleValue(args, CMP_FULL_FRAME_FILTERING, [kp](bool val) { kp->setFullFrameFiltering(val, false); }) :
 	(field == FL_QUICK_REACTION) ? resolveToggleValue(args, CMP_QUICK_REACTION, [kp](bool val) { kp->setFollowBigChanges(val, false); }) :
-	(field == FL_AVERAGING) ? resolveFloatValue(args, [kp](float val) { kp->setAveraging(val); }, CMP_AVERAGING, getGui()) :
-	(field == FL_TILT_X) ? resolveFloatValue(args, [kp](float val) { kp->setTiltX(val); }, CMP_TILT_X, getGui()) :
-	(field == FL_TILT_Y) ? resolveFloatValue(args, [kp](float val) { kp->setTiltY(val); }, CMP_TILT_Y, getGui()) :
-	(field == FL_VERTICAL_OFFSET) ? resolveFloatValue(args, [kp](float val) { kp->setVerticalOffset(val); }, CMP_VERTICAL_OFFSET, getGui()) :
+	(field == FL_AVERAGING) ? resolveFloatValue(args, [kp](float val) { kp->setAveraging(val); }, CMP_AVERAGING) ://, getGui()) :
+	(field == FL_TILT_X) ? resolveFloatValue(args, [kp](float val) { kp->setTiltX(val); }, CMP_TILT_X) ://, getGui()) :
+	(field == FL_TILT_Y) ? resolveFloatValue(args, [kp](float val) { kp->setTiltY(val); }, CMP_TILT_Y): //, getGui()) :
+	(field == FL_VERTICAL_OFFSET) ? resolveFloatValue(args, [kp](float val) { kp->setVerticalOffset(val); }, CMP_VERTICAL_OFFSET) : //, getGui()) :
 	(field == FL_DO_SHOW_ROI_ON_PROJECTOR) ? resolveToggleValue(args, CMP_SHOW_ROI_ON_SAND, [kp](bool val) { kp->showROIonProjector(val); }) :
 	(field == FL_KINECT_ROI) ? resolveSetKinectROI(args) :
 
-	(field == FL_OF_FISH) ? resolveFloatValue(args, [this](float val) { this->boidGameController->setFish(val); }, CMP_OF_FISH, getBoidGui() ) :
-	(field == FL_OF_SHARKS) ? resolveFloatValue(args, [this](float val) { this->boidGameController->setSharks(val); }, CMP_OF_SHARKS, getBoidGui()) :
-	(field == FL_OF_RABBITS) ? resolveFloatValue(args, [this](float val) { this->boidGameController->setRabbits(val); }, CMP_OF_RABBITS, getBoidGui()) :
+	(field == FL_OF_FISH) ? resolveFloatValue(args, [this](float val) { this->boidGameController->setFish(val); }, CMP_OF_FISH) : //, getBoidGui() ) :
+	(field == FL_OF_SHARKS) ? resolveFloatValue(args, [this](float val) { this->boidGameController->setSharks(val); }, CMP_OF_SHARKS) : //, getBoidGui()) :
+	(field == FL_OF_RABBITS) ? resolveFloatValue(args, [this](float val) { this->boidGameController->setRabbits(val); }, CMP_OF_RABBITS) : //, getBoidGui()) :
 	(field == FL_DO_FLIPPED_DRAWING) ? resolveToggleValue(args, CMP_DO_FLIPPED_DRAWING, [this](bool val) { this->boidGameController->setDoFlippedDrawing(val); }) :
 	(field == FL_SHOW_MOTHER_FISH) ? resolveToggleValue(args, CMP_MOTHER_FISH, [this](bool val) { this->boidGameController->setShowMotherFish(val); }) :
 	(field == FL_SHOW_MOTHER_RABBIT) ? resolveToggleValue(args, CMP_MOTHER_RABBIT, [this](bool val) { this->boidGameController->setShowMotherRabbit(val); }) :
 
 	(field == FL_DRAW_CONTOUR_LINES) ? resolveToggleValue(args, CMP_FULL_FRAME_FILTERING, [ssr](bool val) { ssr->setDrawContourLines(val); }) :
-	(field == FL_CONTOUR_LINE_DISTANCE) ? resolveFloatValue(args, [this](float val) { this->sandSurfaceRenderer->setContourLineDistance(val); }, CMP_CONTOUR_LINE_DISTANCE, getSSRGui()) :
-	(field == FL_COLOR_MAP_FILE) ? resolveStringValue(args, [this](string val) { this->sandSurfaceRenderer->selectColorMap(val); }, CMP_CONTOUR_LINE_DISTANCE, getSSRGui()) :
+	(field == FL_CONTOUR_LINE_DISTANCE) ? resolveFloatValue(args, [this](float val) { this->sandSurfaceRenderer->setContourLineDistance(val); }, CMP_CONTOUR_LINE_DISTANCE) : //, getSSRGui()) :
+	(field == FL_COLOR_MAP_FILE) ? resolveStringValue(args, [this](string val) { this->sandSurfaceRenderer->selectColorMap(val); }, CMP_CONTOUR_LINE_DISTANCE) : //, getSSRGui()) :
 
 	noop;
 	kp->externUpdate = true;
@@ -301,12 +301,26 @@ void WebsocketServer::resolveToggleValue(ofxLibwebsockets::Event& args, string c
 }
 
 template <typename Proc>
+void WebsocketServer::resolveStringValue(ofxLibwebsockets::Event& args, Proc method, string componentName) {
+	string value = args.json.get(FL_VALUE, "").asString();
+	method(value);
+}
+
+template <typename Proc>
 void WebsocketServer::resolveStringValue(ofxLibwebsockets::Event& args, Proc method, string componentName, ofxDatGui* gui) {
 	string value = args.json.get(FL_VALUE, "").asString();
 	method(value);
 	kinectProjector->setForceGuiUpdate(true);
 	sandSurfaceRenderer->setForceGuiUpdate(true);
 	boidGameController->setForceGuiUpdate(true);
+}
+
+
+template <typename Proc>
+void WebsocketServer::resolveFloatValue(ofxLibwebsockets::Event& args, Proc method, string componentName) {
+	float value = args.json.get(FL_VALUE, 0).asFloat();
+	method(value);
+	resolveResponseFloat(args, 0);
 }
 
 

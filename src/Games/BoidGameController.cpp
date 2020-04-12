@@ -159,7 +159,7 @@ void CBoidGameController::update()
 	}
 
 	updateGuiValue();
-	gui->update();
+	//gui->update();
 }
 
 void CBoidGameController::updateGuiValue()
@@ -323,7 +323,7 @@ void CBoidGameController::DrawFinalScoresOnFBO()
 void CBoidGameController::drawMainWindow(float x, float y, float width, float height) 
 {
 	fboVehicles.draw(x, y, width, height);
-	gui->draw();
+	//gui->draw();
 }
 
 
@@ -832,7 +832,7 @@ void CBoidGameController::drawMotherRabbit()
 
 void CBoidGameController::setupGui() {
 	// instantiate and position the gui //
-	gui = new ofxDatGui();
+	//gui = new ofxDatGui();
 	//	auto animalGame = gui->addFolder("Animal Game", ofColor::greenYellow);
 
 	//animalGame->addSlider(CMP_OF_FISH, 0, 10, fish.size())->setPrecision(0);
@@ -844,38 +844,38 @@ void CBoidGameController::setupGui() {
 //	gui->addButton("Start Sandimal game");
 //	gui->addButton("Start Seek Mother game");
 
-	gui->addSlider(CMP_OF_FISH, 0, 200, ofFish)->setPrecision(0);
-	gui->addSlider(CMP_OF_RABBITS, 0, 50, ofRabbits)->setPrecision(0);
-	gui->addSlider(CMP_OF_SHARKS, 0, 10, ofShark)->setPrecision(0);
-	gui->addToggle(CMP_MOTHER_FISH, showMotherFish);
-	gui->addToggle(CMP_MOTHER_RABBIT, showMotherRabbit);
-	gui->addToggle(CMP_DO_FLIPPED_DRAWING, doFlippedDrawing);
-	gui->addButton("Remove all animals");
+	//gui->addSlider(CMP_OF_FISH, 0, 200, ofFish)->setPrecision(0);
+	//gui->addSlider(CMP_OF_RABBITS, 0, 50, ofRabbits)->setPrecision(0);
+	//gui->addSlider(CMP_OF_SHARKS, 0, 10, ofShark)->setPrecision(0);
+	//gui->addToggle(CMP_MOTHER_FISH, showMotherFish);
+	//gui->addToggle(CMP_MOTHER_RABBIT, showMotherRabbit);
+	//gui->addToggle(CMP_DO_FLIPPED_DRAWING, doFlippedDrawing);
+	//gui->addButton("Remove all animals");
 
-	gui->addHeader(":: Games ::", false);
+	//gui->addHeader(":: Games ::", false);
 
-	gui->onButtonEvent(this, &CBoidGameController::onButtonEvent);
-	gui->onToggleEvent(this, &CBoidGameController::onToggleEvent);
-	gui->onSliderEvent(this, &CBoidGameController::onSliderEvent);
-	gui->setLabelAlignment(ofxDatGuiAlignment::CENTER);
+	//gui->onButtonEvent(this, &CBoidGameController::onButtonEvent);
+	//gui->onToggleEvent(this, &CBoidGameController::onToggleEvent);
+	//gui->onSliderEvent(this, &CBoidGameController::onSliderEvent);
+	//gui->setLabelAlignment(ofxDatGuiAlignment::CENTER);
 
-	gui->setPosition(ofxDatGuiAnchor::BOTTOM_RIGHT); // You have to do it at the end
-	gui->setAutoDraw(false); // troubles with multiple windows drawings on Windows
+	//gui->setPosition(ofxDatGuiAnchor::BOTTOM_RIGHT); // You have to do it at the end
+	//gui->setAutoDraw(false); // troubles with multiple windows drawings on Windows
 	
 //	std::cout << "GUI size " << gui->getWidth() << " x " << gui->getHeight() << std::endl;
 }
 
-ofxDatGui* CBoidGameController::getGui() {
-	return gui;
-}
+//ofxDatGui* CBoidGameController::getGui() {
+	//return gui;
+//}
 
 void CBoidGameController::UpdateGUI()
 {
-	gui->getSlider(CMP_OF_FISH)->setValue(ofFish);
-	gui->getSlider(CMP_OF_RABBITS)->setValue(ofRabbits);
-	gui->getSlider(CMP_OF_SHARKS)->setValue(ofShark);
-	gui->getToggle(CMP_MOTHER_FISH)->setEnabled(showMotherFish);
-	gui->getToggle(CMP_MOTHER_RABBIT)->setEnabled(showMotherRabbit);
+	//gui->getSlider(CMP_OF_FISH)->setValue(ofFish);
+	//gui->getSlider(CMP_OF_RABBITS)->setValue(ofRabbits);
+	//gui->getSlider(CMP_OF_SHARKS)->setValue(ofShark);
+	//gui->getToggle(CMP_MOTHER_FISH)->setEnabled(showMotherFish);
+	//gui->getToggle(CMP_MOTHER_RABBIT)->setEnabled(showMotherRabbit);
 }
 
 bool CBoidGameController::isIdle()
@@ -893,9 +893,9 @@ void CBoidGameController::clearAnimals() {
 	setForceGuiUpdate(true);
 }
 
-void CBoidGameController::onButtonEvent(ofxDatGuiButtonEvent e) {
-	if (e.target->is("Remove all animals")) {
-		clearAnimals();
+//void CBoidGameController::onButtonEvent(ofxDatGuiButtonEvent e) {
+//	if (e.target->is("Remove all animals")) {
+//		clearAnimals();
 		/*fish.clear();
 		ofFish = 0;
 		rabbits.clear();
@@ -908,7 +908,7 @@ void CBoidGameController::onButtonEvent(ofxDatGuiButtonEvent e) {
 		gui->getSlider(CMP_OF_RABBITS)->setValue(0);
 		gui->getToggle(CMP_MOTHER_FISH)->setChecked(false);
 		gui->getToggle(CMP_MOTHER_RABBIT)->setChecked(false);*/
-	}
+	//}
 	//else if (e.target->is("Start Sandimal game"))
 	//{
 	//	StartGame();
@@ -917,19 +917,19 @@ void CBoidGameController::onButtonEvent(ofxDatGuiButtonEvent e) {
 	//{
 	//	StartSeekMotherGame();
 	//}
-}
+//}
 
-void CBoidGameController::onToggleEvent(ofxDatGuiToggleEvent e) {
-	if (e.target->is(CMP_MOTHER_FISH)) {
-		setShowMotherFish(e.checked);
-	} else
-	if (e.target->is(CMP_MOTHER_RABBIT)) {
-		setShowMotherRabbit(e.checked);
-	} else
-	if (e.target->is(CMP_DO_FLIPPED_DRAWING)) {
-		setDoFlippedDrawing(e.checked);
-	}
-}
+//void CBoidGameController::onToggleEvent(ofxDatGuiToggleEvent e) {
+//	if (e.target->is(CMP_MOTHER_FISH)) {
+//		setShowMotherFish(e.checked);
+//	} else
+//	if (e.target->is(CMP_MOTHER_RABBIT)) {
+//		setShowMotherRabbit(e.checked);
+//	} else
+//	if (e.target->is(CMP_DO_FLIPPED_DRAWING)) {
+//		setDoFlippedDrawing(e.checked);
+//	}
+//}
 
 
 void CBoidGameController::adaptFish(int value) {
@@ -1076,8 +1076,8 @@ int CBoidGameController::getRabbits() {
 	return ofRabbits;
 }
 
-void CBoidGameController::onSliderEvent(ofxDatGuiSliderEvent e) {
-	e.target->is(CMP_OF_FISH) ? setFish(e.value) : 
-	e.target->is(CMP_OF_RABBITS) ? setRabbits(e.value) :
-	e.target->is(CMP_OF_SHARKS) ? setSharks(e.value) : noop;
-}
+//void CBoidGameController::onSliderEvent(ofxDatGuiSliderEvent e) {
+//	e.target->is(CMP_OF_FISH) ? setFish(e.value) : 
+//	e.target->is(CMP_OF_RABBITS) ? setRabbits(e.value) :
+//	e.target->is(CMP_OF_SHARKS) ? setSharks(e.value) : noop;
+//}

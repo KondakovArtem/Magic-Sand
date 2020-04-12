@@ -250,10 +250,10 @@ void KinectProjector::updateStatusGUI()
 	;
 	StatusGUI->getLabel("Calibration Step")->setLabelColor(ofColor(0, 255, 255));
 
-	gui->getToggle(CMP_SPATIAL_FILTERING)->setChecked(spatialFiltering);
-	gui->getToggle(CMP_QUICK_REACTION)->setChecked(followBigChanges);
-	gui->getToggle(CMP_INPAINT_OUTLIERS)->setChecked(doInpainting);
-	gui->getToggle(CMP_FULL_FRAME_FILTERING)->setChecked(doFullFrameFiltering);
+	//gui->getToggle(CMP_SPATIAL_FILTERING)->setChecked(spatialFiltering);
+	//gui->getToggle(CMP_QUICK_REACTION)->setChecked(followBigChanges);
+	//gui->getToggle(CMP_INPAINT_OUTLIERS)->setChecked(doInpainting);
+	//gui->getToggle(CMP_FULL_FRAME_FILTERING)->setChecked(doFullFrameFiltering);
 }
 
 void KinectProjector::setForceGuiUpdate(bool value)
@@ -265,18 +265,18 @@ void KinectProjector::updateGuiValue()
 {
 	if (forceGuiUpdate)
 	{
-		gui->getToggle(CMP_DRAW_KINECT_DEPTH_VIEW)->setChecked(drawKinectView);
-		gui->getToggle(CMP_DRAW_KINECT_COLOR_VIEW)->setChecked(drawKinectColorView);
-		gui->getToggle(CMP_DUMP_DEBUG)->setChecked(DumpDebugFiles);
-		gui->getSlider(CMP_CEILING)->setValue(getMaxOffset());
-		gui->getToggle(CMP_SPATIAL_FILTERING)->setChecked(spatialFiltering);
-		gui->getToggle(CMP_INPAINT_OUTLIERS)->setChecked(doInpainting);
-		gui->getToggle(CMP_FULL_FRAME_FILTERING)->setChecked(doFullFrameFiltering);
-		gui->getToggle(CMP_QUICK_REACTION)->setChecked(followBigChanges);
-		gui->getSlider(CMP_AVERAGING)->setValue(numAveragingSlots);
-		gui->getSlider(CMP_TILT_X)->setValue(tiltX);
-		gui->getSlider(CMP_TILT_Y)->setValue(tiltY);
-		gui->getSlider(CMP_VERTICAL_OFFSET)->setValue(verticalOffset);
+		//gui->getToggle(CMP_DRAW_KINECT_DEPTH_VIEW)->setChecked(drawKinectView);
+		//gui->getToggle(CMP_DRAW_KINECT_COLOR_VIEW)->setChecked(drawKinectColorView);
+		//gui->getToggle(CMP_DUMP_DEBUG)->setChecked(DumpDebugFiles);
+		//gui->getSlider(CMP_CEILING)->setValue(getMaxOffset());
+		//gui->getToggle(CMP_SPATIAL_FILTERING)->setChecked(spatialFiltering);
+		//gui->getToggle(CMP_INPAINT_OUTLIERS)->setChecked(doInpainting);
+		//gui->getToggle(CMP_FULL_FRAME_FILTERING)->setChecked(doFullFrameFiltering);
+		//gui->getToggle(CMP_QUICK_REACTION)->setChecked(followBigChanges);
+		//gui->getSlider(CMP_AVERAGING)->setValue(numAveragingSlots);
+		//gui->getSlider(CMP_TILT_X)->setValue(tiltX);
+		//gui->getSlider(CMP_TILT_Y)->setValue(tiltY);
+		//gui->getSlider(CMP_VERTICAL_OFFSET)->setValue(verticalOffset);
 		setForceGuiUpdate(false);
 	}
 }
@@ -320,7 +320,7 @@ void KinectProjector::update()
 	{
 
 		updateGuiValue();
-		gui->update();
+		//gui->update();
 		StatusGUI->update();
 	}
 
@@ -1333,7 +1333,7 @@ void KinectProjector::drawMainWindow(float x, float y, float width, float height
 
 	if (displayGui)
 	{
-		gui->draw();
+		//gui->draw();
 		StatusGUI->draw();
 	}
 }
@@ -1524,34 +1524,34 @@ ofVec2f KinectProjector::gradientAtKinectCoord(float x, float y)
 void KinectProjector::setupGui()
 {
 	// instantiate and position the gui //
-	gui = new ofxDatGui(ofxDatGuiAnchor::TOP_RIGHT);
-	gui->addButton("RUN!")->setName("Start Application");
-	gui->addBreak();
-	gui->addFRM();
-	fpsKinectText = gui->addTextInput("Kinect FPS", "0");
-	gui->addBreak();
+	//gui = new ofxDatGui(ofxDatGuiAnchor::TOP_RIGHT);
+	//gui->addButton("RUN!")->setName("Start Application");
+	//gui->addBreak();
+	//gui->addFRM();
+	//fpsKinectText = gui->addTextInput("Kinect FPS", "0");
+	//gui->addBreak();
 
-	auto advancedFolder = gui->addFolder("Advanced", ofColor::purple);
-	advancedFolder->addToggle("Display kinect depth view", drawKinectView)->setName(CMP_DRAW_KINECT_DEPTH_VIEW);
-	advancedFolder->addToggle("Display kinect color view", drawKinectColorView)->setName(CMP_DRAW_KINECT_COLOR_VIEW);
-	advancedFolder->addToggle(CMP_DUMP_DEBUG, DumpDebugFiles);
-	advancedFolder->addSlider(CMP_CEILING, -300, 300, 0);
-	advancedFolder->addToggle(CMP_SPATIAL_FILTERING, spatialFiltering);
-	advancedFolder->addToggle(CMP_INPAINT_OUTLIERS, doInpainting);
-	advancedFolder->addToggle(CMP_FULL_FRAME_FILTERING, doFullFrameFiltering);
-	advancedFolder->addToggle(CMP_QUICK_REACTION, followBigChanges);
-	advancedFolder->addSlider(CMP_AVERAGING, 1, 40, numAveragingSlots)->setPrecision(0);
-	advancedFolder->addSlider(CMP_TILT_X, -30, 30, tiltX);
-	advancedFolder->addSlider(CMP_TILT_Y, -30, 30, tiltY);
-	advancedFolder->addSlider(CMP_VERTICAL_OFFSET, -100, 100, verticalOffset);
-	advancedFolder->addButton("Reset sea level");
-	advancedFolder->addBreak();
+	//auto advancedFolder = gui->addFolder("Advanced", ofColor::purple);
+	//advancedFolder->addToggle("Display kinect depth view", drawKinectView)->setName(CMP_DRAW_KINECT_DEPTH_VIEW);
+	//advancedFolder->addToggle("Display kinect color view", drawKinectColorView)->setName(CMP_DRAW_KINECT_COLOR_VIEW);
+	//advancedFolder->addToggle(CMP_DUMP_DEBUG, DumpDebugFiles);
+	//advancedFolder->addSlider(CMP_CEILING, -300, 300, 0);
+	//advancedFolder->addToggle(CMP_SPATIAL_FILTERING, spatialFiltering);
+	//advancedFolder->addToggle(CMP_INPAINT_OUTLIERS, doInpainting);
+	//advancedFolder->addToggle(CMP_FULL_FRAME_FILTERING, doFullFrameFiltering);
+	//advancedFolder->addToggle(CMP_QUICK_REACTION, followBigChanges);
+	//advancedFolder->addSlider(CMP_AVERAGING, 1, 40, numAveragingSlots)->setPrecision(0);
+	//advancedFolder->addSlider(CMP_TILT_X, -30, 30, tiltX);
+	//advancedFolder->addSlider(CMP_TILT_Y, -30, 30, tiltY);
+	//advancedFolder->addSlider(CMP_VERTICAL_OFFSET, -100, 100, verticalOffset);
+	//advancedFolder->addButton("Reset sea level");
+	//advancedFolder->addBreak();
 
-	auto calibrationFolder = gui->addFolder("Calibration", ofColor::darkCyan);
-	calibrationFolder->addButton("Manually define sand region");
-	calibrationFolder->addButton("Automatically calibrate kinect & projector");
-	calibrationFolder->addButton("Auto Adjust ROI");
-	calibrationFolder->addToggle(CMP_SHOW_ROI_ON_SAND, doShowROIonProjector);
+	//auto calibrationFolder = gui->addFolder("Calibration", ofColor::darkCyan);
+	//calibrationFolder->addButton("Manually define sand region");
+	//calibrationFolder->addButton("Automatically calibrate kinect & projector");
+	//calibrationFolder->addButton("Auto Adjust ROI");
+	//calibrationFolder->addToggle(CMP_SHOW_ROI_ON_SAND, doShowROIonProjector);
 
 	//	  advancedFolder->addButton("Draw ROI")->setName("Draw ROI");
 	//    advancedFolder->addButton("Calibrate")->setName("Full Calibration");
@@ -1562,15 +1562,15 @@ void KinectProjector::setupGui()
 	//    calibrationFolder->addButton("Manually calibrate kinect & projector");
 	//    gui->addBreak();
 
-	gui->addHeader(":: Settings ::", false);
+	//gui->addHeader(":: Settings ::", false);
 
 	// once the gui has been assembled, register callbacks to listen for component specific events //
-	gui->onButtonEvent(this, &KinectProjector::onButtonEvent);
-	gui->onToggleEvent(this, &KinectProjector::onToggleEvent);
-	gui->onSliderEvent(this, &KinectProjector::onSliderEvent);
+	//gui->onButtonEvent(this, &KinectProjector::onButtonEvent);
+	//gui->onToggleEvent(this, &KinectProjector::onToggleEvent);
+	//gui->onSliderEvent(this, &KinectProjector::onSliderEvent);
 
 	// disactivate autodraw
-	gui->setAutoDraw(false);
+	//gui->setAutoDraw(false);
 
 	StatusGUI = new ofxDatGui(ofxDatGuiAnchor::BOTTOM_LEFT);
 	StatusGUI->addLabel("Application Status");
@@ -1687,8 +1687,8 @@ string KinectProjector::startApplication(bool updateFlag = true)
 	drawKinectColorView = false;
 	drawKinectView = false;
 	if (updateFlag) {
-		gui->getToggle(CMP_DRAW_KINECT_COLOR_VIEW)->setChecked(drawKinectColorView);
-		gui->getToggle(CMP_DRAW_KINECT_DEPTH_VIEW)->setChecked(drawKinectView);
+		//gui->getToggle(CMP_DRAW_KINECT_COLOR_VIEW)->setChecked(drawKinectColorView);
+		//gui->getToggle(CMP_DRAW_KINECT_DEPTH_VIEW)->setChecked(drawKinectView);
 		updateStatusGUI();
 	}
 	updateStateEvent();
@@ -1901,9 +1901,9 @@ void KinectProjector::StartManualROIDefinition()
 
 void KinectProjector::ResetSeaLevel()
 {
-	gui->getSlider(CMP_TILT_X)->setValue(0);
-	gui->getSlider(CMP_TILT_Y)->setValue(0);
-	gui->getSlider(CMP_VERTICAL_OFFSET)->setValue(0);
+	//gui->getSlider(CMP_TILT_X)->setValue(0);
+	//gui->getSlider(CMP_TILT_Y)->setValue(0);
+	//gui->getSlider(CMP_VERTICAL_OFFSET)->setValue(0);
 	basePlaneNormal = basePlaneNormalBack;
 	basePlaneOffset = basePlaneOffsetBack;
 	basePlaneEq = getPlaneEquation(basePlaneOffset, basePlaneNormal);
@@ -2034,7 +2034,7 @@ void KinectProjector::setDrawKinectDepthView(bool value)
 	if (drawKinectView)
 	{
 		drawKinectColorView = false;
-		gui->getToggle(CMP_DRAW_KINECT_COLOR_VIEW)->setChecked(drawKinectColorView);
+		//gui->getToggle(CMP_DRAW_KINECT_COLOR_VIEW)->setChecked(drawKinectColorView);
 	}
 	updateStateEvent();
 }
@@ -2050,7 +2050,7 @@ void KinectProjector::setDrawKinectColorView(bool value)
 	if (drawKinectColorView)
 	{
 		drawKinectView = false;
-		gui->getToggle(CMP_DRAW_KINECT_DEPTH_VIEW)->setChecked(drawKinectView);
+		//gui->getToggle(CMP_DRAW_KINECT_DEPTH_VIEW)->setChecked(drawKinectView);
 	}
 	updateStateEvent();
 }
