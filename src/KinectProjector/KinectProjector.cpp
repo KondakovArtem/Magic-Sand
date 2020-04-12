@@ -1519,7 +1519,7 @@ ofVec2f KinectProjector::gradientAtKinectCoord(float x, float y)
 void KinectProjector::setupGui()
 {
 	// instantiate and position the gui //
-	//gui = new ofxDatGui(ofxDatGuiAnchor::TOP_RIGHT);
+	//gui = new o_fxDatGui(o_fxDatGuiAnchor::TOP_RIGHT);
 	//gui->addButton("RUN!")->setName("Start Application");
 	//gui->addBreak();
 	//gui->addFRM();
@@ -1567,7 +1567,7 @@ void KinectProjector::setupGui()
 	// disactivate autodraw
 	//gui->setAutoDraw(false);
 
-	//StatusGUI = new ofxDatGui(ofxDatGuiAnchor::BOTTOM_LEFT);
+	//StatusGUI = new o_fxDatGui(o_fxDatGuiAnchor::BOTTOM_LEFT);
 	//StatusGUI->addLabel("Application Status");
 	//StatusGUI->addLabel("Kinect Status");
 	//StatusGUI->addLabel("ROI Status");
@@ -1840,7 +1840,7 @@ bool KinectProjector::getFollowBigChanges()
 	return followBigChanges;
 }
 
-/*void KinectProjector::onButtonEvent(ofxDatGuiButtonEvent e)
+/*void KinectProjector::onButtonEvent(o_fxDatGuiButtonEvent e)
 {
 	if (e.target->is("Full Calibration"))
 	{
@@ -2029,7 +2029,7 @@ bool KinectProjector::getDumpDebugFiles()
 	return DumpDebugFiles;
 }
 
-/*void KinectProjector::onToggleEvent(ofxDatGuiToggleEvent e)
+/*void KinectProjector::onToggleEvent(o_fxDatGuiToggleEvent e)
 {
 	(e.target->is(CMP_SPATIAL_FILTERING)) ? setSpatialFiltering(e.checked) : 
 	(e.target->is(CMP_QUICK_REACTION)) ? setFollowBigChanges(e.checked) : 
@@ -2156,7 +2156,7 @@ float KinectProjector::getVerticalOffset()
 	return verticalOffset;
 }
 
-/*void KinectProjector::onSliderEvent(ofxDatGuiSliderEvent e)
+/*void KinectProjector::onSliderEvent(o_fxDatGuiSliderEvent e)
 {
 	e.target->is(CMP_VERTICAL_OFFSET) ? setVerticalOffset(e.value) : 
 	e.target->is(CMP_TILT_X) ? setTiltX(e.value) : 
@@ -2595,7 +2595,7 @@ string KinectProjector::getKinectColorImage()
 	return base64_encode(imageBuffer);
 }
 
-/*ofxDatGui *KinectProjector::getGui()
+/*o_fxDatGui *KinectProjector::getGui()
 {
 	return gui;
 }*/

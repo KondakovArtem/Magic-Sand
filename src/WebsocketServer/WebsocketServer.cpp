@@ -309,14 +309,14 @@ void WebsocketServer::resolveStringValue(ofxLibwebsockets::Event& args, Proc met
 	method(value);
 }
 
-template <typename Proc>
-void WebsocketServer::resolveStringValue(ofxLibwebsockets::Event& args, Proc method, string componentName, ofxDatGui* gui) {
-	string value = args.json.get(FL_VALUE, "").asString();
-	method(value);
-	kinectProjector->setForceGuiUpdate(true);
-	sandSurfaceRenderer->setForceGuiUpdate(true);
-	boidGameController->setForceGuiUpdate(true);
-}
+//template <typename Proc>
+//void WebsocketServer::resolveStringValue(ofxLibwebsockets::Event& args, Proc method, string componentName, o_fxDatGui* gui) {
+//	string value = args.json.get(FL_VALUE, "").asString();
+//	method(value);
+//	kinectProjector->setForceGuiUpdate(true);
+//	sandSurfaceRenderer->setForceGuiUpdate(true);
+//	boidGameController->setForceGuiUpdate(true);
+//}
 
 
 template <typename Proc>
@@ -327,18 +327,18 @@ void WebsocketServer::resolveFloatValue(ofxLibwebsockets::Event& args, Proc meth
 }
 
 
-template <typename Proc>
-void WebsocketServer::resolveFloatValue(ofxLibwebsockets::Event& args, Proc method, string componentName, ofxDatGui* gui) {
-	float value = args.json.get(FL_VALUE, 0).asFloat();
-	method(value);
-	if (gui != nullptr) {
-		auto slider = gui->getSlider(componentName);
-		kinectProjector->setForceGuiUpdate(true);
-		sandSurfaceRenderer->setForceGuiUpdate(true);
-		boidGameController->setForceGuiUpdate(true);
-	}
-	resolveResponseFloat(args, 0);
-}
+//template <typename Proc>
+//void WebsocketServer::resolveFloatValue(ofxLibwebsockets::Event& args, Proc method, string componentName, o_fxDatGui* gui) {
+//	float value = args.json.get(FL_VALUE, 0).asFloat();
+//	method(value);
+//	if (gui != nullptr) {
+//		auto slider = gui->getSlider(componentName);
+//		kinectProjector->setForceGuiUpdate(true);
+//		sandSurfaceRenderer->setForceGuiUpdate(true);
+//		boidGameController->setForceGuiUpdate(true);
+//	}
+//	resolveResponseFloat(args, 0);
+//}
 
 
 void WebsocketServer::sendMessage(ofxLibwebsockets::Event& args, Json::Value message) {

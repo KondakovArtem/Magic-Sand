@@ -70,7 +70,7 @@ class CBoidGameController
 		void setDebug(bool flag);
 
 		void setupGui();
-		//ofxDatGui* getGui();
+		//o_fxDatGui* getGui();
 
 		bool isIdle();
 
@@ -115,10 +115,10 @@ class CBoidGameController
 		
 		std::shared_ptr<KinectProjector> kinectProjector;
 		
-		//void onButtonEvent(ofxDatGuiButtonEvent e);
-		//void onToggleEvent(ofxDatGuiToggleEvent e);
+		//void onButtonEvent(o_fxDatGuiButtonEvent e);
+		//void onToggleEvent(o_fxDatGuiToggleEvent e);
 		
-		//void onSliderEvent(ofxDatGuiSliderEvent e);
+		//void onSliderEvent(o_fxDatGuiSliderEvent e);
 		void UpdateGUI();
 
 		void updateBOIDS();
@@ -220,7 +220,7 @@ class CBoidGameController
 		int ofShark;
 		int ofRabbits;
 		// GUI
-		//ofxDatGui* gui;
+		//o_fxDatGui* gui;
 		bool stateEvent;
 		bool forceGuiUpdate;
 };

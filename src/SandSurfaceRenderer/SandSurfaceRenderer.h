@@ -43,16 +43,16 @@ public:
     SaveModal(std::shared_ptr<ofxModalTheme> theme){
         setTheme(theme);
         setTitle("Save Color Map File");
-        //textInput = addComponent(new ofxDatGuiTextInput("file name", ""));
+        //textInput = addComponent(new o_fxDatGuiTextInput("file name", ""));
         addButton("Cancel");
-        ofxDatGuiButton* closeButton = getButton(0);
-        closeButton->setLabel("Save");
-        closeButton->setLabelColor(ofColor::fromHex(0xffffff));
-        closeButton->setBackgroundColors(
-                                         ofColor::fromHex(0x337ab7),     // normal //
-                                         ofColor::fromHex(0x286090),     // on mouse over //
-                                         ofColor::fromHex(0x1f4c73));      // on mouse down //
-        closeButton->setBorder(ofColor::fromHex(0x1f4c73), 1);
+        //o_fxDatGuiButton* closeButton = getButton(0);
+        //closeButton->setLabel("Save");
+        //closeButton->setLabelColor(ofColor::fromHex(0xffffff));
+        //closeButton->setBackgroundColors(
+        //                                 ofColor::fromHex(0x337ab7),     // normal //
+        //                                 ofColor::fromHex(0x286090),     // on mouse over //
+        //                                 ofColor::fromHex(0x1f4c73));      // on mouse down //
+        //closeButton->setBorder(ofColor::fromHex(0x1f4c73), 1);
         autoSize();
     }
 
@@ -65,7 +65,7 @@ public:
     //}
 
 private:
-    //ofxDatGuiTextInput* textInput;
+    //o_fxDatGuiTextInput* textInput;
 };
 
 class SandSurfaceRenderer {
@@ -82,18 +82,18 @@ public:
 
     // Gui and events functions
     void setupGui();
-    void onButtonEvent(ofxDatGuiButtonEvent e);
+//    void onButtonEvent(o_fxDatGuiButtonEvent e);
 	void updateStateEvent();
 	void updateStateEvent(bool value);
 	void setDrawContourLines(bool value);
-	void onToggleEvent(ofxDatGuiToggleEvent e);
+//	void onToggleEvent(o_fxDatGuiToggleEvent e);
     void setContourLineDistance(float value);
-    //ofxDatGui* getGui();
-    void onSliderEvent(ofxDatGuiSliderEvent e);
-    void onColorPickerEvent(ofxDatGuiColorPickerEvent e);
+    //o_fxDatGui* getGui();
+//    void onSliderEvent(o_fxDatGuiSliderEvent e);
+//    void onColorPickerEvent(o_fxDatGuiColorPickerEvent e);
     void selectColorMap(string fileName);
-    void onDropdownEvent(ofxDatGuiDropdownEvent e);
-    void onScrollViewEvent(ofxDatGuiScrollViewEvent e);
+//    void onDropdownEvent(o_fxDatGuiDropdownEvent e);
+//    void onScrollViewEvent(o_fxDatGuiScrollViewEvent e);
     void onSaveModalEvent(ofxModalEvent e);
     bool isUpdateStateEvent();
     void exit(ofEventArgs& e);
@@ -178,10 +178,10 @@ private:
     // GUI Main interface and Modal
     bool displayGui;
     bool editColorMap;
-    //ofxDatGui* gui;
-    //ofxDatGui* gui2;
-    //ofxDatGui* gui3;
-    //ofxDatGuiScrollView* colorList;
+    //o_fxDatGui* gui;
+    //o_fxDatGui* gui2;
+    //o_fxDatGui* gui3;
+    //o_fxDatGuiScrollView* colorList;
     int selectedColor;
     shared_ptr<SaveModal> saveModal;
     ofColor undoColor;

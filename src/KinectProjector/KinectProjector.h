@@ -128,9 +128,9 @@ public:
 
     // Gui and event functions
     void setupGui();
-    // void onButtonEvent(ofxDatGuiButtonEvent e);
+    // void onButtonEvent(o_fxDatGuiButtonEvent e);
 
-	// void onToggleEvent(ofxDatGuiToggleEvent e);
+	// void onToggleEvent(o_fxDatGuiToggleEvent e);
     void setAveraging(float value);
     void setDrawKinectDepthView(bool value);
     bool getDrawKinectDepthView();
@@ -147,7 +147,7 @@ public:
     float getTiltY();
     void setVerticalOffset(float value);
     float getVerticalOffset();
-    // void onSliderEvent(ofxDatGuiSliderEvent e);
+    // void onSliderEvent(o_fxDatGuiSliderEvent e);
     void onConfirmModalEvent(ofxModalEvent e);
 	string onCancelCalibration(bool updateGui);
     string onConfirmCalibration();
@@ -341,7 +341,7 @@ public:
 	void SaveKinectColorImage();
     string getKinectColorImage();
 
-    // ofxDatGui* getGui();
+    // o_fxDatGui* getGui();
 
     //void setBroadcastMethod(std::function<void(Json::Value)> method);
     //void setBroadcastStateMethod(std::function<void()> fn);
@@ -447,7 +447,7 @@ private:
     ofxCvColorImage             kinectColorImage;
     ofVec2f*                    gradField;
 	ofFpsCounter                fpsKinect;
-	// ofxDatGuiTextInput*         fpsKinectText;
+	// o_fxDatGuiTextInput*         fpsKinectText;
 
     // Projector and kinect variables
     ofVec2f projRes;
@@ -524,8 +524,8 @@ private:
     string confirmModalMessage;
     shared_ptr<ofxModalAlert>   calibModal;
     shared_ptr<ofxModalThemeProjKinect>   modalTheme;
-    //ofxDatGui* gui;
-	//ofxDatGui* StatusGUI;
+    //o_fxDatGui* gui;
+	//o_fxDatGui* StatusGUI;
 	std::string calibrationText;
 	
 	// Debug functions

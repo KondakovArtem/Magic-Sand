@@ -832,7 +832,7 @@ void CBoidGameController::drawMotherRabbit()
 
 void CBoidGameController::setupGui() {
 	// instantiate and position the gui //
-	//gui = new ofxDatGui();
+	//gui = new o_fxDatGui();
 	//	auto animalGame = gui->addFolder("Animal Game", ofColor::greenYellow);
 
 	//animalGame->addSlider(CMP_OF_FISH, 0, 10, fish.size())->setPrecision(0);
@@ -857,15 +857,15 @@ void CBoidGameController::setupGui() {
 	//gui->onButtonEvent(this, &CBoidGameController::onButtonEvent);
 	//gui->onToggleEvent(this, &CBoidGameController::onToggleEvent);
 	//gui->onSliderEvent(this, &CBoidGameController::onSliderEvent);
-	//gui->setLabelAlignment(ofxDatGuiAlignment::CENTER);
+	//gui->setLabelAlignment(o_fxDatGuiAlignment::CENTER);
 
-	//gui->setPosition(ofxDatGuiAnchor::BOTTOM_RIGHT); // You have to do it at the end
+	//gui->setPosition(o_fxDatGuiAnchor::BOTTOM_RIGHT); // You have to do it at the end
 	//gui->setAutoDraw(false); // troubles with multiple windows drawings on Windows
 	
 //	std::cout << "GUI size " << gui->getWidth() << " x " << gui->getHeight() << std::endl;
 }
 
-//ofxDatGui* CBoidGameController::getGui() {
+//o_fxDatGui* CBoidGameController::getGui() {
 	//return gui;
 //}
 
@@ -893,7 +893,7 @@ void CBoidGameController::clearAnimals() {
 	setForceGuiUpdate(true);
 }
 
-//void CBoidGameController::onButtonEvent(ofxDatGuiButtonEvent e) {
+//void CBoidGameController::onButtonEvent(o_fxDatGuiButtonEvent e) {
 //	if (e.target->is("Remove all animals")) {
 //		clearAnimals();
 		/*fish.clear();
@@ -919,7 +919,7 @@ void CBoidGameController::clearAnimals() {
 	//}
 //}
 
-//void CBoidGameController::onToggleEvent(ofxDatGuiToggleEvent e) {
+//void CBoidGameController::onToggleEvent(o_fxDatGuiToggleEvent e) {
 //	if (e.target->is(CMP_MOTHER_FISH)) {
 //		setShowMotherFish(e.checked);
 //	} else
@@ -1076,7 +1076,7 @@ int CBoidGameController::getRabbits() {
 	return ofRabbits;
 }
 
-//void CBoidGameController::onSliderEvent(ofxDatGuiSliderEvent e) {
+//void CBoidGameController::onSliderEvent(o_fxDatGuiSliderEvent e) {
 //	e.target->is(CMP_OF_FISH) ? setFish(e.value) : 
 //	e.target->is(CMP_OF_RABBITS) ? setRabbits(e.value) :
 //	e.target->is(CMP_OF_SHARKS) ? setSharks(e.value) : noop;
