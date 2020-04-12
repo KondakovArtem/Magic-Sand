@@ -148,6 +148,9 @@ Json::Value WebsocketServer::getStateMessage() {
 	message[FL_ROI_CALIB_STATE] = kinectProjector->GetROICalibState();
 	message[FL_CONFIRM_MODAL_STATE] = kinectProjector->GetConfirmModalState();
 	message[FL_CONFIRM_MESSAGE] = kinectProjector->GetConfirmModalMessage();
+	message[FL_KINECT_OPENED] = kinectProjector->GetKinectOpened();
+	message[FL_ROI_CALIBRATED] = kinectProjector->GetROIcalibrated();
+	message[FL_BASE_PLANE_COMPUTED] = kinectProjector->GetBasePlaneComputed();
 
 	message[FL_DRAW_CONTOUR_LINES] = sandSurfaceRenderer->GetDrawContourLines();
 	message[FL_CONTOUR_LINE_DISTANCE] = sandSurfaceRenderer->GetContourLineDistance();
