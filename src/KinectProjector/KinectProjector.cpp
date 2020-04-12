@@ -57,6 +57,7 @@ KinectProjector::KinectProjector(std::shared_ptr<ofAppBaseWindow> const &p)
 
 void KinectProjector::setup(bool sdisplayGui)
 {
+	std::cout << "KinectProjector::setup +" << std::endl;
 	setApplicationState(APPLICATION_STATE_SETUP);
 	
 	ofAddListener(ofEvents().exit, this, &KinectProjector::exit);
@@ -149,6 +150,8 @@ void KinectProjector::setup(bool sdisplayGui)
 
 	updateStatusGUI();
 	checkStartReady(false);
+
+	std::cout << "KinectProjector::setup -" << std::endl;
 }
 
 void KinectProjector::exit(ofEventArgs &e)
@@ -309,35 +312,28 @@ void KinectProjector::update()
 			updateStatusGUI();
 		}
 	}
-
-	if (askToFlattenSandFlag)
-	{
+	if (askToFlattenSandFlag) {
 		askToFlattenSandFlag = false;
 		askToFlattenSand();
 	}
-
-	if (displayGui)
-	{
-
+	if (displayGui) {
 		updateGuiValue();
 		//gui->update();
 		StatusGUI->update();
 	}
-
+	
 	// Get images from kinect grabber
 	ofFloatPixels filteredframe;
-	if (kinectOpened && kinectgrabber.filtered.tryReceive(filteredframe))
-	{
+	if (kinectOpened && kinectgrabber.filtered.tryReceive(filteredframe)) {
 		fpsKinect.newFrame();
-		fpsKinectText->setText(ofToString(fpsKinect.getFps(), 2));
+		// fpsKinectText->setText(ofToString(fpsKinect.getFps(), 2));
 
 		FilteredDepthImage.setFromPixels(filteredframe.getData(), kinectRes.x, kinectRes.y);
 		FilteredDepthImage.updateTexture();
-
+		
 		// Get color image from kinect grabber
 		ofPixels coloredframe;
-		if (kinectgrabber.colored.tryReceive(coloredframe))
-		{
+		if (kinectgrabber.colored.tryReceive(coloredframe)) {
 			kinectColorImage.setFromPixels(coloredframe);
 
 			if (TemporalFilteringType == 0)
@@ -345,7 +341,7 @@ void KinectProjector::update()
 			else if (TemporalFilteringType == 1)
 				TemporalFrameFilter.NewColFrame(kinectColorImage.getPixels().getData(), kinectColorImage.width, kinectColorImage.height);
 		}
-
+		
 		// Get gradient field from kinect grabber
 		kinectgrabber.gradient.tryReceive(gradField);
 
@@ -356,69 +352,63 @@ void KinectProjector::update()
 
 		// Is the depth image stabilized
 		imageStabilized = kinectgrabber.isImageStabilized();
-
+		
 		// Are we calibrating ?
-		if (GetApplicationState() == APPLICATION_STATE_CALIBRATING && !waitingForFlattenSand)
-		{
+		if (GetApplicationState() == APPLICATION_STATE_CALIBRATING && !waitingForFlattenSand) {
+			
+		
 			updateCalibration();
-		}
-		else
-		{
+		} else {
+			
+		
 			//ofEnableAlphaBlending();
 			fboMainWindow.begin();
-			if (drawKinectView || drawKinectColorView)
-			{
-				if (drawKinectColorView)
-				{
+			if (drawKinectView || drawKinectColorView) {
+				if (drawKinectColorView) {
 					kinectColorImage.updateTexture();
 					kinectColorImage.draw(0, 0);
-				}
-				else
-				{
+				} else {
 					FilteredDepthImage.draw(0, 0);
 				}
 				ofNoFill();
 
-				if (ROIcalibrated)
-				{
+				if (ROIcalibrated) {
 					ofSetColor(0, 0, 255);
 					ofDrawRectangle(kinectROI);
 				}
 
 				ofSetColor(255, 0, 0);
 				ofDrawRectangle(1, 1, kinectRes.x - 1, kinectRes.y - 1);
-
-				if (GetCalibrationState() == CALIBRATION_STATE_ROI_MANUAL_DETERMINATION && GetROICalibState() == ROI_CALIBRATION_STATE_INIT)
-				{
+				
+		
+				if (GetCalibrationState() == CALIBRATION_STATE_ROI_MANUAL_DETERMINATION && 
+					GetROICalibState() == ROI_CALIBRATION_STATE_INIT) {
 					int xmin = std::min((int)ROIStartPoint.x, (int)ROICurrentPoint.x);
 					int xmax = std::max((int)ROIStartPoint.x, (int)ROICurrentPoint.x);
 					int ymin = std::min((int)ROIStartPoint.y, (int)ROICurrentPoint.y);
 					int ymax = std::max((int)ROIStartPoint.y, (int)ROICurrentPoint.y);
-
-					if (xmin >= 0) // Start point has been set
-					{
+					
+					
+					if (xmin >= 0) { // Start point has been set
 						ofSetColor(0, 255, 0);
 						ofRectangle tempRect(xmin, ymin, xmax - xmin, ymax - ymin);
 						ofDrawRectangle(tempRect);
 					}
+					
 				}
-			}
-			else
-			{
+			} else {
 				ofClear(0, 0, 0, 0);
 			}
 			fboMainWindow.end();
 		}
 	}
-
+	
 	fboProjWindow.begin();
 
-	if (GetApplicationState() != APPLICATION_STATE_CALIBRATING)
-	{
+	if (GetApplicationState() != APPLICATION_STATE_CALIBRATING) {
 		ofClear(255, 255, 255, 0);
 	}
-	if (doShowROIonProjector && ROIcalibrated && kinectOpened)
-	{
+	if (doShowROIonProjector && ROIcalibrated && kinectOpened) {
 		ofNoFill();
 		ofSetLineWidth(4);
 
@@ -456,11 +446,11 @@ void KinectProjector::update()
 		ofSetColor(255, 0, 255);
 		tempRect2 = ofRectangle(ofPoint(UL.x - 2, UL.y - 2), ofPoint(UL.x + 2, UL.y + 2));
 		ofDrawRectangle(tempRect2);
-	}
-	else if (GetApplicationState() == APPLICATION_STATE_SETUP)
-	{
+	} else
+	if (GetApplicationState() == APPLICATION_STATE_SETUP) {
 		ofBackground(255); // Set to white in setup mode
 	}
+	
 	fboProjWindow.end();
 }
 

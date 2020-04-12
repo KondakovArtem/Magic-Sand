@@ -22,8 +22,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include "ofApp.h"
 
 void ofApp::setup() {
-
-	
 	// OF basics
 	ofSetFrameRate(60);
 	ofBackground(0);
@@ -63,11 +61,14 @@ void ofApp::setup() {
 
 	websocketServer = std::make_shared<WebsocketServer>(kinectProjector, &boidGameController, sandSurfaceRenderer);
 	needSendUpdateState = false;
+	
 }
 
 
 void ofApp::update() {
-    // Call kinectProjector->update() first during the update function()
+    
+	
+	// Call kinectProjector->update() first during the update function()
 	kinectProjector->update();
 	if (kinectProjector->externUpdate == true) {
 		kinectProjector->externUpdate = false;
@@ -112,7 +113,6 @@ void ofApp::update() {
 		kinectProjector->updateErrorEvent("");
 		websocketServer->broadcastError(error);
 	}
-
 }
 
 uint64_t ofApp::timeSinceEpochMillisec() {
