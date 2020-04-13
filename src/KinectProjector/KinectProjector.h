@@ -346,7 +346,7 @@ public:
     //void setBroadcastMethod(std::function<void(Json::Value)> method);
     //void setBroadcastStateMethod(std::function<void()> fn);
 
-    std::function<void(Json::Value)> broadcast;
+    std::function<void(ofJson)> broadcast;
     std::function<void()> broadcastState;
 
     

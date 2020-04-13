@@ -751,7 +751,7 @@ void KinectProjector::updateROIFromFile()
 {
 	string settingsFile = "settings/kinectProjectorSettings.xml";
 
-	ofXml xml;
+	ofxXmlPoco xml;
 	if (xml.load(settingsFile))
 	{
 		xml.setTo("KINECTSETTINGS");
@@ -2273,7 +2273,7 @@ bool KinectProjector::loadSettings()
 {
 	string settingsFile = "settings/kinectProjectorSettings.xml";
 
-	ofXml xml;
+	ofxXmlPoco xml;
 	if (!xml.load(settingsFile))
 		return false;
 	xml.setTo("KINECTSETTINGS");
@@ -2297,7 +2297,7 @@ bool KinectProjector::saveSettings()
 {
 	string settingsFile = "settings/kinectProjectorSettings.xml";
 
-	ofXml xml;
+	ofxXmlPoco xml;
 	xml.addChild("KINECTSETTINGS");
 	xml.setTo("KINECTSETTINGS");
 	xml.addValue("kinectROI", kinectROI);
