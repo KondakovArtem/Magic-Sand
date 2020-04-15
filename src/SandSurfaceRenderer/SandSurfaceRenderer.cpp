@@ -526,6 +526,10 @@ void SandSurfaceRenderer::setContourLineDistance(float newValue) {
 
 
 void SandSurfaceRenderer::selectColorMap(string fileName) {
+    if (fileName.empty()){
+        cout << "wrong filename!! " << fileName <<endl;
+        return;
+    }
     auto oldValue = colorMapFile;
     colorMapFile = fileName;
     //bool loaded = heightMap.loadFile(colorMapPath + fileName);

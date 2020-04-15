@@ -16,8 +16,8 @@ WebsocketServer::WebsocketServer(
 	kinectProjector = kp;
 	boidGameController = bgc;
 	sandSurfaceRenderer = ssr;
-	// kp->broadcast = ([this](ofJson message) { broadcast(message); });
-	// kp->broadcastState = ([this]() { broadcastState(); });
+	kp->broadcast = ([this](ofJson message) { broadcast(message); });
+	kp->broadcastState = ([this]() { broadcastState(); });
 }
 
 
@@ -131,7 +131,7 @@ void WebsocketServer::resolveResponseValue(ofxLibwebsockets::Event& args, T valu
 	message[FL_COMMAND] = args.json[FL_COMMAND].get<string>();
 	message[FL_FIELD] = args.json[FL_FIELD].get<string>();
 	message[FL_VALUE] = value;
-	(!error.empty()) ? message[FL_ERROR] = error : 0;
+	if (!error.empty()) message[FL_ERROR] = error;
 	sendMessage(args, message, true);
 }
 
@@ -254,7 +254,6 @@ void WebsocketServer::resolveSetKinectROI(ofxLibwebsockets::Event& args) {
 
 
 void WebsocketServer::resolveSetValue(ofxLibwebsockets::Event& args) {
-
 	const auto field = args.json[FL_FIELD].get<string>();
 	const auto kp = kinectProjector;
 	const auto ssr = sandSurfaceRenderer;
@@ -305,7 +304,12 @@ void WebsocketServer::resolveToggleValue(ofxLibwebsockets::Event& args, string c
 
 template <typename Proc>
 void WebsocketServer::resolveStringValue(ofxLibwebsockets::Event& args, Proc method, string componentName) {
-	string value = args.json[FL_VALUE].get<string>();
+	// cout << "WebsocketServer::resolveStringValue" <<endl;
+	if (args.json[FL_VALUE].is_null()){
+		cout << "wrong value null" << endl;
+		return;
+	}
+	auto value = args.json[FL_VALUE].get<string>();
 	method(value);
 }
 
@@ -357,7 +361,7 @@ void WebsocketServer::sendToConnection(ofxLibwebsockets::Connection& connection,
 	} else {
 		cout << "send message " << message[FL_COMMAND] << endl;
 	}
-	connection.send(message);
+	connection.send(message.dump());
 }
 
 void WebsocketServer::sendToConnection(ofxLibwebsockets::Connection* connection, ofJson message, bool noLog) {
@@ -369,5 +373,5 @@ void WebsocketServer::sendToConnection(ofxLibwebsockets::Connection* connection,
 	} else {
 		cout << "send message " << message[FL_COMMAND] << endl;
 	}
-	connection->send(message);
+	connection->send(message.dump());
 }

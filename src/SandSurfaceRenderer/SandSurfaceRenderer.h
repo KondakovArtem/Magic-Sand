@@ -30,7 +30,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include "ofMain.h"
 #include "../KinectProjector/KinectProjector.h"
 #include "ColorMap.h"
-
+#include "ofxXmlPoco.h"
 
 constexpr auto CMP_DRAW_DISTANCE = "Contour lines";
 constexpr auto CMP_CONTOUR_LINE_DISTANCE = "Contour lines distance";

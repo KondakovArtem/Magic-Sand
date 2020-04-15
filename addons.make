@@ -1,9 +1,9 @@
-ofxOpenCv
 ofxCv
 ofxDatGui
 ofxKinect
 ofxLibwebsockets
 ofxModal
+ofxOpenCv
 ofxParagraph
 ofxPoco
 ofxXmlSettings
