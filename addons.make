@@ -5,4 +5,5 @@ ofxLibwebsockets
 ofxModal
 ofxOpenCv
 ofxParagraph
+ofxPoco
 ofxXmlSettings

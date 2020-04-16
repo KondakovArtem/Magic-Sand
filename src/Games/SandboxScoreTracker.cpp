@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include <time.h>
 #include "ofMain.h"
 
+
 CSandboxScoreTracker::CSandboxScoreTracker()
 {
 	wasHiScore = false;
@@ -106,7 +107,7 @@ std::string CSandboxScoreTracker::getScoreImage(int idx)
 
 bool CSandboxScoreTracker::SaveScoresXML(std::string &fname)
 {
-	ofXml XMLOut;
+	ofxXmlPoco XMLOut;
 	XMLOut.addChild("scores");
 	XMLOut.setTo("scores");
 
@@ -125,7 +126,7 @@ bool CSandboxScoreTracker::SaveScoresXML(std::string &fname)
 
 bool CSandboxScoreTracker::LoadScoresXML(std::string &fname)
 {
-	ofXml XMLIn;
+	ofxXmlPoco XMLIn;
 	if (!XMLIn.load(fname))
 	{
 		std::cout << "Could not read " << fname << std::endl;

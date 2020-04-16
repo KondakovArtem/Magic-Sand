@@ -109,7 +109,7 @@ public:
     void startAutomaticKinectProjectorCalibration();
     void setSpatialFiltering(bool sspatialFiltering, bool updateGui);
     void setGradFieldResolution(int gradFieldResolution);
-	void updateStatusGUI();
+	//void updateStatusGUI();
     void setForceGuiUpdate(bool value);
     bool getSpatialFiltering();
     void setInPainting(bool inp, bool updateGui);
@@ -128,9 +128,9 @@ public:
 
     // Gui and event functions
     void setupGui();
-    void onButtonEvent(ofxDatGuiButtonEvent e);
+    // void onButtonEvent(o_fxDatGuiButtonEvent e);
 
-	void onToggleEvent(ofxDatGuiToggleEvent e);
+	// void onToggleEvent(o_fxDatGuiToggleEvent e);
     void setAveraging(float value);
     void setDrawKinectDepthView(bool value);
     bool getDrawKinectDepthView();
@@ -147,7 +147,7 @@ public:
     float getTiltY();
     void setVerticalOffset(float value);
     float getVerticalOffset();
-    void onSliderEvent(ofxDatGuiSliderEvent e);
+    // void onSliderEvent(o_fxDatGuiSliderEvent e);
     void onConfirmModalEvent(ofxModalEvent e);
 	string onCancelCalibration(bool updateGui);
     string onConfirmCalibration();
@@ -308,7 +308,15 @@ public:
     auto GetAutoCalibrationState() {
         return autoCalibState;
     }
-
+    auto GetKinectOpened() {
+        return kinectOpened;
+    }
+    auto GetROIcalibrated() {
+        return ROIcalibrated;
+    }
+    auto GetBasePlaneComputed() {
+        return basePlaneComputed;
+    }
 
     void setAutoCalibrationState(Auto_calibration_state newValue);
     void setCalibrationState(Calibration_state newValue);
@@ -322,17 +330,23 @@ public:
 
     void setDumpDebugFiles(bool value);
 
+    void setKinectOpened(bool value);
+
+    void setBasePlaneComputed(bool newValue);
+
+    void setROIcalibrated(bool newValue);
+
 	// Debug functions
 	void SaveFilteredDepthImage();
 	void SaveKinectColorImage();
     string getKinectColorImage();
 
-    ofxDatGui* getGui();
+    // o_fxDatGui* getGui();
 
     //void setBroadcastMethod(std::function<void(Json::Value)> method);
     //void setBroadcastStateMethod(std::function<void()> fn);
 
-    std::function<void(Json::Value)> broadcast;
+    std::function<void(ofJson)> broadcast;
     std::function<void()> broadcastState;
 
     
@@ -433,7 +447,7 @@ private:
     ofxCvColorImage             kinectColorImage;
     ofVec2f*                    gradField;
 	ofFpsCounter                fpsKinect;
-	ofxDatGuiTextInput*         fpsKinectText;
+	// o_fxDatGuiTextInput*         fpsKinectText;
 
     // Projector and kinect variables
     ofVec2f projRes;
@@ -510,8 +524,8 @@ private:
     string confirmModalMessage;
     shared_ptr<ofxModalAlert>   calibModal;
     shared_ptr<ofxModalThemeProjKinect>   modalTheme;
-    ofxDatGui* gui;
-	ofxDatGui* StatusGUI;
+    //o_fxDatGui* gui;
+	//o_fxDatGui* StatusGUI;
 	std::string calibrationText;
 	
 	// Debug functions

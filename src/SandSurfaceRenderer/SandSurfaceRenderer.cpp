@@ -218,8 +218,11 @@ void SandSurfaceRenderer::setupMesh(){
         for(unsigned int x=0;x<meshwidth;x++)
         {
             ofPoint pt = ofPoint(x+kinectROI.x,y+kinectROI.y,0.0f)-ofPoint(0.5,0.5,0); // We move of a half pixel to center the color pixel (more beautiful)
+            ofDefaultTexCoordType vc;
+            vc.x = pt.x;
+            vc.y = pt.y;
             mesh.addVertex(pt); // make a new vertex
-            mesh.addTexCoord(pt);
+            mesh.addTexCoord(vc);
         }
     for(unsigned int y=0;y<meshheight-1;y++)
         for(unsigned int x=0;x<meshwidth-1;x++)
@@ -323,7 +326,7 @@ void SandSurfaceRenderer::setupGui(){
     saveModal->addListener(this, &SandSurfaceRenderer::onSaveModalEvent);
     
     // instantiate the gui //
-    //gui2 = new ofxDatGui( ofxDatGuiAnchor::TOP_LEFT );
+    //gui2 = new o_fxDatGui( o_fxDatGuiAnchor::TOP_LEFT );
     //gui2->addToggle(CMP_DRAW_DISTANCE, drawContourLines)->setStripeColor(ofColor::blue);
     //gui2->addSlider("Lines distance", 1, 30, contourLineDistance)->setName(CMP_CONTOUR_LINE_DISTANCE);
     //gui2->getSlider(CMP_CONTOUR_LINE_DISTANCE)->setStripeColor(ofColor::blue);
@@ -331,13 +334,13 @@ void SandSurfaceRenderer::setupGui(){
     //gui2->getDropdown(CMP_LOAD_COLOR_MAP)->setStripeColor(ofColor::yellow);
     //gui2->addHeader(":: Display ::", false);
 
-    //gui = new ofxDatGui( ofxDatGuiAnchor::NO_ANCHOR );
+    //gui = new o_fxDatGui( o_fxDatGuiAnchor::NO_ANCHOR );
     //gui->setPosition(gui2->getPosition().x, gui2->getPosition().y+gui2->getHeight()+30);
     //gui->addButton("Reset colors to color map file")->setName("Reset colors");
     //gui->addButton("Save to color map file")->setName("Save");
     //gui->addToggle("Edit color map", editColorMap)->setName("Edit");
 
-    //gui3 = new ofxDatGui( ofxDatGuiAnchor::NO_ANCHOR );
+    //gui3 = new o_fxDatGui( o_fxDatGuiAnchor::NO_ANCHOR );
     //gui3->addSlider("Height", -300, 300, 0)->setName("Height");
     //gui3->addColorPicker("ColorPicker", ofColor::black);
     //gui3->addButton("Undo color change")->setName("Undo");
@@ -365,7 +368,7 @@ void SandSurfaceRenderer::setupGui(){
         //gui2->getDropdown(CMP_LOAD_COLOR_MAP)->select(pos);
     
     // add a scroll view to list colors //
-    //colorList = new ofxDatGuiScrollView("Colors", 7);
+    //colorList = new o_fxDatGuiScrollView("Colors", 7);
     //colorList->setPosition(gui->getPosition().x, gui->getPosition().y+gui->getHeight());
     //colorList->onScrollViewEvent(this, &SandSurfaceRenderer::onScrollViewEvent);
     populateColorList();
@@ -399,10 +402,10 @@ void SandSurfaceRenderer::populateColorList(){
     //gui3->getSlider("Height")->setValue(heightMap[j].height);
     //gui3->getSlider("Height")->setMax(heightMap[j].height+100);
     //gui3->getSlider("Height")->setMin(heightMap[j-1].height);
-    //colorList->get(0)->setLabelAlignment(ofxDatGuiAlignment::CENTER);
+    //colorList->get(0)->setLabelAlignment(o_fxDatGuiAlignment::CENTER);
 }
 
-void SandSurfaceRenderer::onButtonEvent(ofxDatGuiButtonEvent e){
+/*void SandSurfaceRenderer::onButtonEvent(o_fxDatGuiButtonEvent e){
     if (e.target->is("Save")) {
         saveModal->show();
     } else if (e.target->is("Reset colors")) {
@@ -417,7 +420,7 @@ void SandSurfaceRenderer::onButtonEvent(ofxDatGuiButtonEvent e){
         //colorList->get(i)->setLabel("Height: "+ofToString(newheight));
         //colorList->move(i,selectedColor+1);
         heightMap.addKey(heightMap[j].color, newheight);
-        //onScrollViewEvent(ofxDatGuiScrollViewEvent(colorList, colorList->get(selectedColor+1), selectedColor+1));
+        //onScrollViewEvent(o_fxDatGuiScrollViewEvent(colorList, colorList->get(selectedColor+1), selectedColor+1));
     } else if (e.target->is("Remove color")){
         if (heightMap.size() > 1){
             int j = heightMap.size()-1-selectedColor;
@@ -427,7 +430,7 @@ void SandSurfaceRenderer::onButtonEvent(ofxDatGuiButtonEvent e){
             if (i == heightMap.size())
                 i -= 1;
             selectedColor += 1; // To get i != selectedColor => update
-            //onScrollViewEvent(ofxDatGuiScrollViewEvent(colorList, colorList->get(i), i));
+            //onScrollViewEvent(o_fxDatGuiScrollViewEvent(colorList, colorList->get(i), i));
         }
     } else if (e.target->is("Move up")){
         int i = selectedColor;
@@ -436,7 +439,7 @@ void SandSurfaceRenderer::onButtonEvent(ofxDatGuiButtonEvent e){
             heightMap.swapKeys(j, j+1);
             updateColorListColor(i, j);
             updateColorListColor(i-1, j+1);
-            //onScrollViewEvent(ofxDatGuiScrollViewEvent(colorList, colorList->get(i-1), i-1));
+            //onScrollViewEvent(o_fxDatGuiScrollViewEvent(colorList, colorList->get(i-1), i-1));
        }
     } else if (e.target->is("Move down")){
         int i = selectedColor;
@@ -445,7 +448,7 @@ void SandSurfaceRenderer::onButtonEvent(ofxDatGuiButtonEvent e){
             heightMap.swapKeys(j, j-1);
             updateColorListColor(i, j);
             updateColorListColor(i+1, j-1);
-            //onScrollViewEvent(ofxDatGuiScrollViewEvent(colorList, colorList->get(i+1), i+1));
+            //onScrollViewEvent(o_fxDatGuiScrollViewEvent(colorList, colorList->get(i+1), i+1));
         }
     } else if (e.target->is("Undo")){
         int i = selectedColor;
@@ -454,7 +457,7 @@ void SandSurfaceRenderer::onButtonEvent(ofxDatGuiButtonEvent e){
         //gui3->getColorPicker("ColorPicker")->setColor(undoColor);
         updateColorListColor(i, j);
     }
-}
+}*/
 
 
 void SandSurfaceRenderer::updateStateEvent()
@@ -476,23 +479,23 @@ void  SandSurfaceRenderer::setDrawContourLines(bool newValue) {
 
 }
 
-void SandSurfaceRenderer::onToggleEvent(ofxDatGuiToggleEvent e){
-    if (e.target->is(CMP_DRAW_DISTANCE)) {
-        setDrawContourLines(e.checked);
-        // drawContourLines = e.checked;
-    } else if (e.target->is("Edit")) {
-        editColorMap = e.checked;
-    }
-}
+//void SandSurfaceRenderer::onToggleEvent(o_fxDatGuiToggleEvent e){
+//    if (e.target->is(CMP_DRAW_DISTANCE)) {
+//        setDrawContourLines(e.checked);
+//        // drawContourLines = e.checked;
+//    } else if (e.target->is("Edit")) {
+//        editColorMap = e.checked;
+//    }
+//}
 
-void SandSurfaceRenderer::onColorPickerEvent(ofxDatGuiColorPickerEvent e){
-    if (e.target->is("ColorPicker")) {
-        int i = selectedColor;
-        int j = heightMap.size()-1-i;
-        heightMap.setColorKey(j, e.color);
-        updateColorListColor(i, j);
-    }
-}
+//void SandSurfaceRenderer::onColorPickerEvent(o_fxDatGuiColorPickerEvent e){
+//    if (e.target->is("ColorPicker")) {
+//        int i = selectedColor;
+//        int j = heightMap.size()-1-i;
+//        heightMap.setColorKey(j, e.color);
+//        updateColorListColor(i, j);
+//    }
+//}
 
 
 void SandSurfaceRenderer::setContourLineDistance(float newValue) {
@@ -504,25 +507,29 @@ void SandSurfaceRenderer::setContourLineDistance(float newValue) {
     }
 }
 
-//ofxDatGui* SandSurfaceRenderer::getGui() {
+//o_fxDatGui* SandSurfaceRenderer::getGui() {
     //return gui2;
 //}
 
 
-void SandSurfaceRenderer::onSliderEvent(ofxDatGuiSliderEvent e){
-    if (e.target->is(CMP_CONTOUR_LINE_DISTANCE)) {
-        setContourLineDistance(e.value);
-        
-    } else if (e.target->is("Height")) {
-        int i = selectedColor;
-        int j = heightMap.size()-1-i;
-        heightMap.setHeightKey(j, e.value);
-        //colorList->get(i)->setLabel("Height: "+ofToString(e.value));
-    }
-}
+//void SandSurfaceRenderer::onSliderEvent(o_fxDatGuiSliderEvent e){
+//    if (e.target->is(CMP_CONTOUR_LINE_DISTANCE)) {
+//        setContourLineDistance(e.value);
+//        
+//    } else if (e.target->is("Height")) {
+//        int i = selectedColor;
+//        int j = heightMap.size()-1-i;
+//        heightMap.setHeightKey(j, e.value);
+//        //colorList->get(i)->setLabel("Height: "+ofToString(e.value));
+//    }
+//}
 
 
 void SandSurfaceRenderer::selectColorMap(string fileName) {
+    if (fileName.empty()){
+        cout << "wrong filename!! " << fileName <<endl;
+        return;
+    }
     auto oldValue = colorMapFile;
     colorMapFile = fileName;
     //bool loaded = heightMap.loadFile(colorMapPath + fileName);
@@ -535,20 +542,20 @@ void SandSurfaceRenderer::selectColorMap(string fileName) {
     // setForceGuiUpdate(true);
 }
 
-void SandSurfaceRenderer::onDropdownEvent(ofxDatGuiDropdownEvent e){
-    selectColorMap(e.target->getLabel());
-}
+//void SandSurfaceRenderer::onDropdownEvent(o_fxDatGuiDropdownEvent e){
+//    selectColorMap(e.target->getLabel());
+//}
 
-void SandSurfaceRenderer::onScrollViewEvent(ofxDatGuiScrollViewEvent e){
-    int i = e.index;
-    if (i != selectedColor){
-        int j = heightMap.size()-1-i;
-        e.target->setLabelAlignment(ofxDatGuiAlignment::CENTER);
-        //colorList->get(selectedColor)->setLabelAlignment(ofxDatGuiAlignment::LEFT);
+//void SandSurfaceRenderer::onScrollViewEvent(o_fxDatGuiScrollViewEvent e){
+//    int i = e.index;
+//    if (i != selectedColor){
+//        int j = heightMap.size()-1-i;
+//        e.target->setLabelAlignment(o_fxDatGuiAlignment::CENTER);
+        //colorList->get(selectedColor)->setLabelAlignment(o_fxDatGuiAlignment::LEFT);
 //        gui3->getButton("ColorName")->setLabel("Color #"+ofToString(i+1));
         //gui3->getColorPicker("ColorPicker")->setColor(heightMap[j].color);
-        undoColor = heightMap[j].color;
-        //ofxDatGuiSlider* hgt = gui3->getSlider("Height");
+//        undoColor = heightMap[j].color;
+        //o_fxDatGuiSlider* hgt = gui3->getSlider("Height");
         //hgt->setMin(heightMap.getScalarRangeMin());
         //hgt->setMax(heightMap.getScalarRangeMax());
         //float nmax = (j < heightMap.size()-1) ? heightMap[j+1].height : heightMap[j].height+100;
@@ -556,9 +563,9 @@ void SandSurfaceRenderer::onScrollViewEvent(ofxDatGuiScrollViewEvent e){
         //float nmin = (j > 0) ? heightMap[j-1].height : heightMap[j].height-100;
         //hgt->setMin(nmin);
         //hgt->setValue(heightMap[j].height);
-        selectedColor = i;
-    }
-}
+//        selectedColor = i;
+//    }
+//}
 
 void SandSurfaceRenderer::onSaveModalEvent(ofxModalEvent e){
     if (e.type == ofxModalEvent::SHOWN){
@@ -589,7 +596,7 @@ bool SandSurfaceRenderer::isUpdateStateEvent() {
 bool SandSurfaceRenderer::loadSettings(){
     string settingsFile = "settings/sandSurfaceRendererSettings.xml";
     
-    ofXml xml;
+    ofxXmlPoco xml;
     if (!xml.load(settingsFile))
         return false;
     xml.setTo("SURFACERENDERERSETTINGS");
@@ -603,7 +610,7 @@ bool SandSurfaceRenderer::loadSettings(){
 bool SandSurfaceRenderer::saveSettings(){
     string settingsFile = "settings/sandSurfaceRendererSettings.xml";
 
-    ofXml xml;
+    ofxXmlPoco xml;
     xml.addChild("SURFACERENDERERSETTINGS");
     xml.setTo("SURFACERENDERERSETTINGS");
     xml.addValue("colorMapFile", colorMapFile);

@@ -16,7 +16,7 @@ WebsocketServer::WebsocketServer(
 	kinectProjector = kp;
 	boidGameController = bgc;
 	sandSurfaceRenderer = ssr;
-	kp->broadcast = ([this](Json::Value message) { broadcast(message); });
+	kp->broadcast = ([this](ofJson message) { broadcast(message); });
 	kp->broadcastState = ([this]() { broadcastState(); });
 }
 
@@ -54,8 +54,8 @@ void WebsocketServer::onMessage(ofxLibwebsockets::Event& args) {
 	cout << "got message " << args.message << endl;
 
 	// trace out string messages or JSON messages!
-	if (!args.json.isNull()) {
-		const auto command = args.json.get(FL_COMMAND, "defaultCommand").asString();
+	if (!args.json.is_null()) {
+		const auto command = args.json[FL_COMMAND].get<std::string>();
 
 		(command == CM_SET_STATE) ? resolveSetState(args) :
 		(command == CM_GET_STATE) ? resolveGetState(args) :
@@ -74,7 +74,7 @@ void WebsocketServer::onBroadcast(ofxLibwebsockets::Event& args) {
 	cout << "got broadcast " << args.message << endl;
 }
 
-void WebsocketServer::broadcast(Json::Value message) {
+void WebsocketServer::broadcast(ofJson message) {
 	vector<ofxLibwebsockets::Connection *> connections = server.getConnections();
     for ( int i=0; i<connections.size(); i++){
 		sendToConnection(connections[i], message, false);
@@ -84,7 +84,7 @@ void WebsocketServer::broadcast(Json::Value message) {
 void WebsocketServer::broadcastError(string error) {
 	vector<ofxLibwebsockets::Connection*> connections = server.getConnections();
 
-	Json::Value message;
+	ofJson message;
 
 	message[FL_COMMAND] = FL_ERROR;
 	message[FL_ERROR] = error;
@@ -96,31 +96,30 @@ void WebsocketServer::broadcastError(string error) {
 
 
 void WebsocketServer::resolveResponseBool(ofxLibwebsockets::Event& args, int result) {
-	bool value = args.json.get(FL_VALUE, false).asBool();
+	bool value = args.json[FL_VALUE].get<bool>();
 	resolveResponse<bool>(args, result, value);
 }
 
 void WebsocketServer::resolveResponseFloat(ofxLibwebsockets::Event& args, int result) {
-	float value = args.json.get(FL_VALUE, false).asFloat();
+	float value = args.json[FL_VALUE].get<float>();
 	resolveResponse<float>(args, result, value);
 }
 
 template <typename T>
 void WebsocketServer::resolveResponse(ofxLibwebsockets::Event& args, int result, T value) {
-	Json::Value message;
+	ofJson message;
 
-	
-	message[FL_COMMAND] = args.json.get(FL_COMMAND, "FL_COMMAND").asString();
-	message[FL_FIELD] = args.json.get(FL_FIELD, "FL_FIELD").asString();
+	message[FL_COMMAND] = args.json[FL_COMMAND].get<string>();
+	message[FL_FIELD] = args.json[FL_FIELD].get<string>();
 	message[FL_VALUE] = value;
 	message[FL_RESULT] = result;
 	sendMessage(args, message);
 }
 
 void WebsocketServer::resolveResponseState(ofxLibwebsockets::Event& args, int result, string error) {
-	Json::Value message;
-	message[FL_COMMAND] = args.json.get(FL_COMMAND, "FL_COMMAND").asString();
-	message[FL_VALUE] = args.json.get(FL_VALUE, "FL_VALUE").asString();
+	ofJson message;
+	message[FL_COMMAND] = args.json[FL_COMMAND].get<string>();
+	message[FL_VALUE] = args.json[FL_VALUE].get<string>();
 	//(!error.empty()) ? message[FL_ERROR] = error : 0;
 	message[FL_RESULT] = result;
 	sendMessage(args, message);
@@ -128,16 +127,16 @@ void WebsocketServer::resolveResponseState(ofxLibwebsockets::Event& args, int re
 
 template <typename T>
 void WebsocketServer::resolveResponseValue(ofxLibwebsockets::Event& args, T value, string error) {
-	Json::Value message;
-	message[FL_COMMAND] = args.json.get(FL_COMMAND, "FL_COMMAND").asString();
-	message[FL_FIELD] = args.json.get(FL_FIELD, "FL_FIELD").asString();
+	ofJson message;
+	message[FL_COMMAND] = args.json[FL_COMMAND].get<string>();
+	message[FL_FIELD] = args.json[FL_FIELD].get<string>();
 	message[FL_VALUE] = value;
-	(!error.empty()) ? message[FL_ERROR] = error : 0;
+	if (!error.empty()) message[FL_ERROR] = error;
 	sendMessage(args, message, true);
 }
 
-Json::Value WebsocketServer::getStateMessage() {
-	Json::Value message;
+ofJson WebsocketServer::getStateMessage() {
+	ofJson message;
 	message[FL_COMMAND] = CM_GET_STATE;
 	
 	message[FL_IS_CALIBRATED] = kinectProjector->isCalibrated();
@@ -148,6 +147,9 @@ Json::Value WebsocketServer::getStateMessage() {
 	message[FL_ROI_CALIB_STATE] = kinectProjector->GetROICalibState();
 	message[FL_CONFIRM_MODAL_STATE] = kinectProjector->GetConfirmModalState();
 	message[FL_CONFIRM_MESSAGE] = kinectProjector->GetConfirmModalMessage();
+	message[FL_KINECT_OPENED] = kinectProjector->GetKinectOpened();
+	message[FL_ROI_CALIBRATED] = kinectProjector->GetROIcalibrated();
+	message[FL_BASE_PLANE_COMPUTED] = kinectProjector->GetBasePlaneComputed();
 
 	message[FL_DRAW_CONTOUR_LINES] = sandSurfaceRenderer->GetDrawContourLines();
 	message[FL_CONTOUR_LINE_DISTANCE] = sandSurfaceRenderer->GetContourLineDistance();
@@ -167,11 +169,12 @@ Json::Value WebsocketServer::getStateMessage() {
 	message[FL_VERTICAL_OFFSET] = kinectProjector->getVerticalOffset();
 	message[FL_DO_SHOW_ROI_ON_PROJECTOR] = kinectProjector->getShowROIonProjector();
 	
-	Json::Value roi;
-	roi["x"] = kinectProjector->getKinectROI().getX();
-	roi["y"] = kinectProjector->getKinectROI().getY();
-	roi["width"] = kinectProjector->getKinectROI().getWidth();
-	roi["height"] = kinectProjector->getKinectROI().getHeight();
+	ofJson roi = {
+		{"x",  kinectProjector->getKinectROI().getX()},
+		{"y", kinectProjector->getKinectROI().getY()},
+		{"width",  kinectProjector->getKinectROI().getWidth()},
+		{"height", kinectProjector->getKinectROI().getHeight()}
+	};
 	message[FL_KINECT_ROI] = roi;
 
 	message[FL_OF_SHARKS] = boidGameController->getSharks();
@@ -190,7 +193,7 @@ void WebsocketServer::resolveGetState(ofxLibwebsockets::Event& args) {
 
 void WebsocketServer::resolveSetState(ofxLibwebsockets::Event& args) {
 	const auto kp = this->kinectProjector;
-	const auto value = args.json.get(FL_VALUE, "").asString();
+	const auto value = args.json[FL_VALUE].get<std::string>();
 	if (value == CM_OP_START) {
 		string res = kp->startApplication(false);
 		int result = (res.empty()) ? 0 : 1;
@@ -222,7 +225,7 @@ void WebsocketServer::resolveSetState(ofxLibwebsockets::Event& args) {
 
 void WebsocketServer::resolveGetValue(ofxLibwebsockets::Event& args) {
 	const auto kp = this->kinectProjector;
-	const auto field = args.json.get(FL_FIELD, "").asString();
+	const auto field = args.json[FL_FIELD].get<string>();
 	string error;
 	if (field == FL_KINECT_COLOR_IMAGE) {
 		string image = kp->getKinectColorImage();
@@ -234,9 +237,9 @@ void WebsocketServer::resolveGetValue(ofxLibwebsockets::Event& args) {
 
 void WebsocketServer::resolveSetKinectROI(ofxLibwebsockets::Event& args) {
 	const auto kp = this->kinectProjector;
-	const auto roi = args.json.get(FL_VALUE, "");
-	auto x = roi["x"].asInt();
-    auto y = roi["y"].asInt();
+	const auto roi = args.json[FL_VALUE];
+	auto x = roi["x"].get<int>();
+    auto y = roi["y"].get<int>();
 	if (x > 640) x = 640;
 	if (y > 480) x = 480;
 	
@@ -244,15 +247,14 @@ void WebsocketServer::resolveSetKinectROI(ofxLibwebsockets::Event& args) {
 	kp->setKinectROI(
 		x, 
 		y, 
-		roi["width"].asInt(), 
-		roi["height"].asInt()
+		roi["width"].get<int>(),
+		roi["height"].get<int>()
 	);
 }
 
 
 void WebsocketServer::resolveSetValue(ofxLibwebsockets::Event& args) {
-
-	const auto field = args.json.get(FL_FIELD, "").asString();
+	const auto field = args.json[FL_FIELD].get<string>();
 	const auto kp = kinectProjector;
 	const auto ssr = sandSurfaceRenderer;
 	//const auto getBoidGui = [this]() {return kinectProjector->GetApplicationState() == KinectProjector::APPLICATION_STATE_RUNNING ? this->boidGameController->getGui() : nullptr; };
@@ -292,7 +294,7 @@ void WebsocketServer::resolveSetValue(ofxLibwebsockets::Event& args) {
 
 template <typename Proc>
 void WebsocketServer::resolveToggleValue(ofxLibwebsockets::Event& args, string componentName, Proc method) {
-	bool value = args.json.get(FL_VALUE, false).asBool();
+	bool value = args.json[FL_VALUE].get<bool>();
 	method(value);
 	kinectProjector->setForceGuiUpdate(true);
 	sandSurfaceRenderer->setForceGuiUpdate(true);
@@ -302,68 +304,74 @@ void WebsocketServer::resolveToggleValue(ofxLibwebsockets::Event& args, string c
 
 template <typename Proc>
 void WebsocketServer::resolveStringValue(ofxLibwebsockets::Event& args, Proc method, string componentName) {
-	string value = args.json.get(FL_VALUE, "").asString();
+	// cout << "WebsocketServer::resolveStringValue" <<endl;
+	if (args.json[FL_VALUE].is_null()){
+		cout << "wrong value null" << endl;
+		return;
+	}
+	auto value = args.json[FL_VALUE].get<string>();
 	method(value);
 }
 
-template <typename Proc>
-void WebsocketServer::resolveStringValue(ofxLibwebsockets::Event& args, Proc method, string componentName, ofxDatGui* gui) {
-	string value = args.json.get(FL_VALUE, "").asString();
-	method(value);
-	kinectProjector->setForceGuiUpdate(true);
-	sandSurfaceRenderer->setForceGuiUpdate(true);
-	boidGameController->setForceGuiUpdate(true);
-}
+//template <typename Proc>
+//void WebsocketServer::resolveStringValue(ofxLibwebsockets::Event& args, Proc method, string componentName, o_fxDatGui* gui) {
+//	string value = args.json.get(FL_VALUE, "").asString();
+//	method(value);
+//	kinectProjector->setForceGuiUpdate(true);
+//	sandSurfaceRenderer->setForceGuiUpdate(true);
+//	boidGameController->setForceGuiUpdate(true);
+//}
 
 
 template <typename Proc>
 void WebsocketServer::resolveFloatValue(ofxLibwebsockets::Event& args, Proc method, string componentName) {
-	float value = args.json.get(FL_VALUE, 0).asFloat();
+	float value = args.json[FL_VALUE].get<float>();
 	method(value);
 	resolveResponseFloat(args, 0);
 }
 
 
-template <typename Proc>
-void WebsocketServer::resolveFloatValue(ofxLibwebsockets::Event& args, Proc method, string componentName, ofxDatGui* gui) {
-	float value = args.json.get(FL_VALUE, 0).asFloat();
-	method(value);
-	if (gui != nullptr) {
-		auto slider = gui->getSlider(componentName);
-		kinectProjector->setForceGuiUpdate(true);
-		sandSurfaceRenderer->setForceGuiUpdate(true);
-		boidGameController->setForceGuiUpdate(true);
-	}
-	resolveResponseFloat(args, 0);
-}
+//template <typename Proc>
+//void WebsocketServer::resolveFloatValue(ofxLibwebsockets::Event& args, Proc method, string componentName, o_fxDatGui* gui) {
+//	float value = args.json.get(FL_VALUE, 0).asFloat();
+//	method(value);
+//	if (gui != nullptr) {
+//		auto slider = gui->getSlider(componentName);
+//		kinectProjector->setForceGuiUpdate(true);
+//		sandSurfaceRenderer->setForceGuiUpdate(true);
+//		boidGameController->setForceGuiUpdate(true);
+//	}
+//	resolveResponseFloat(args, 0);
+//}
 
 
-void WebsocketServer::sendMessage(ofxLibwebsockets::Event& args, Json::Value message) {
+void WebsocketServer::sendMessage(ofxLibwebsockets::Event& args, ofJson message) {
 	sendToConnection(args.conn, message, false);
 }
 
-void WebsocketServer::sendMessage(ofxLibwebsockets::Event& args, Json::Value message, bool noLog) {
+void WebsocketServer::sendMessage(ofxLibwebsockets::Event& args, ofJson message, bool noLog) {
 	sendToConnection(args.conn, message, noLog);
 }
 
-void WebsocketServer::sendToConnection(ofxLibwebsockets::Connection& connection, Json::Value message, bool noLog) {
-	Json::StyledWriter writer;
-	string str = writer.write(message);
+void WebsocketServer::sendToConnection(ofxLibwebsockets::Connection& connection, ofJson message, bool noLog) {
+	//Json::StyledWriter writer;
+	//string str = writer.write(message);
 	if (!noLog) {
-		cout << "send message " << str << endl;
+		cout << "send message " << message << endl;
 	} else {
-		cout << "send message " << message[FL_COMMAND].asString() << endl;
+		cout << "send message " << message[FL_COMMAND] << endl;
 	}
-	connection.send(str);
+	connection.send(message.dump());
 }
 
-void WebsocketServer::sendToConnection(ofxLibwebsockets::Connection* connection, Json::Value message, bool noLog) {
-	Json::StyledWriter writer;
-	string str = writer.write(message);
+void WebsocketServer::sendToConnection(ofxLibwebsockets::Connection* connection, ofJson message, bool noLog) {
+	// message.to_bson
+	// Json::StyledWriter writer;
+	// string str = writer.write(message);
 	if (!noLog) { 
-		cout << "send message " << str << endl;
+		cout << "send message " << message << endl;
 	} else {
-		cout << "send message " << message[FL_COMMAND].asString() << endl;
+		cout << "send message " << message[FL_COMMAND] << endl;
 	}
-	connection->send(str);
+	connection->send(message.dump());
 }

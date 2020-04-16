@@ -13,6 +13,9 @@ constexpr auto FL_FULL_CALIB_STATE = "fullCalibState";
 constexpr auto FL_ROI_CALIB_STATE = "ROICalibState";
 constexpr auto FL_CONFIRM_MODAL_STATE = "confirmModalState";
 constexpr auto FL_CONFIRM_MESSAGE = "confirmMessage";
+constexpr auto FL_KINECT_OPENED = "kinectOpened";
+constexpr auto FL_ROI_CALIBRATED = "ROIcalibrated";
+constexpr auto FL_BASE_PLANE_COMPUTED = "basePlaneComputed";
 constexpr auto FL_IS_CALIBRATED = "projKinectCalibrated";
 constexpr auto FL_DRAW_CONTOUR_LINES = "drawContourLines";
 constexpr auto FL_CONTOUR_LINE_DISTANCE = "contourLineDistance";
@@ -98,7 +101,7 @@ public:
     void onIdle(ofxLibwebsockets::Event& args);
     void onMessage(ofxLibwebsockets::Event& args);
     void onBroadcast(ofxLibwebsockets::Event& args);
-    void broadcast(Json::Value message);
+    void broadcast(ofJson message);
     void broadcastError(string error);
     void resolveResponseBool(ofxLibwebsockets::Event& args, int result);
     void resolveResponseFloat(ofxLibwebsockets::Event& args, int result);
@@ -109,26 +112,26 @@ private:
 
     //void setToggleComponentValue(string name, bool value);
     //void setSliderComponentValue(string name, float value);
-    Json::Value getStateMessage();
+    ofJson getStateMessage();
     void resolveGetState(ofxLibwebsockets::Event& args);
 	void resolveSetState(ofxLibwebsockets::Event& args);
     void resolveGetValue(ofxLibwebsockets::Event& args);
     void resolveSetKinectROI(ofxLibwebsockets::Event& args);
     void resolveSetValue(ofxLibwebsockets::Event& args);
-    void sendMessage(ofxLibwebsockets::Event& args, Json::Value message);
-    void sendMessage(ofxLibwebsockets::Event& args, Json::Value message, bool noLog);
-    void sendToConnection(ofxLibwebsockets::Connection& connection, Json::Value message, bool noLog);
-    void sendToConnection(ofxLibwebsockets::Connection* connection, Json::Value message, bool noLog);
+    void sendMessage(ofxLibwebsockets::Event& args, ofJson message);
+    void sendMessage(ofxLibwebsockets::Event& args, ofJson message, bool noLog);
+    void sendToConnection(ofxLibwebsockets::Connection& connection, ofJson message, bool noLog);
+    void sendToConnection(ofxLibwebsockets::Connection* connection, ofJson message, bool noLog);
     template <typename Proc>
     void resolveToggleValue(ofxLibwebsockets::Event& args, string componentName, Proc method);
 	template<typename Proc>
 	void resolveStringValue(ofxLibwebsockets::Event& args, Proc method, string componentName);
-    template<typename Proc>
-    void resolveStringValue(ofxLibwebsockets::Event& args, Proc method, string componentName, ofxDatGui* gui);
+//    template<typename Proc>
+//    void resolveStringValue(ofxLibwebsockets::Event& args, Proc method, string componentName, o_fxDatGui* gui);
 	template<typename Proc>
 	void resolveFloatValue(ofxLibwebsockets::Event& args, Proc method, string componentName);
-    template<typename Proc>
-    void resolveFloatValue(ofxLibwebsockets::Event& args, Proc method, string componentName, ofxDatGui* gui);
+//    template<typename Proc>
+//    void resolveFloatValue(ofxLibwebsockets::Event& args, Proc method, string componentName, o_fxDatGui* gui);
     template<typename T>
     void resolveResponse(ofxLibwebsockets::Event& args, int result, T p);
     template<typename T>
