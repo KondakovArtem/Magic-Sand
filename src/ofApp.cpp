@@ -150,6 +150,9 @@ void ofApp::drawProjWindow(ofEventArgs &args)
 
 void ofApp::keyPressed(int key) 
 {
+	if (key == 'j'){
+		kinectProjector->startApplication();
+	}
 	if (key == 'c')
 	{
 		kinectProjector->SaveKinectColorImage();
