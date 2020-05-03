@@ -6,12 +6,12 @@
     "tasks": [
         {
             "type": "shell",
-            "label": "Build RELEASE",
+            "label": "OPENFRAMEWORKS BUILD RELEASE",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": "make -j -s 2>&1 && make RunRelease",
+            "command": "make -j3 -s 2>&1 && make RunRelease",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -31,15 +31,15 @@
         },
         {
             "type": "shell",
-            "label": "Build DEBUG",
+            "label": "OPENFRAMEWORKS BUILD DEBUG",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": "make -j 3 -s 2>&1 || exit 1",
+            "command": "scan-build make Debug  -j4 -s 2>&1 || exit 1",
             "group": {
                 "kind": "build",
-                "isDefault": true
+                "isDefault": false
             },
             "problemMatcher": {
                 "owner": "cpp",
@@ -56,78 +56,51 @@
         },
         {
             "type": "shell",
-            "label": "Clean DEBUG",
+            "label": "build Release",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": "make CleanDebug",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": {
-                "owner": "cpp",
-                "fileLocation": ["relative", "${workspaceFolder}"],
-                "pattern": {
-                  "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
-                  "file": 1,
-                  "line": 2,
-                  "column": 3,
-                  "severity": 4,
-                  "message": 5
-                }
-              }
+            "command": "make",
+            "args": [
+                "Release"
+            ]
         },
         {
             "type": "shell",
-            "label": "Clean RELEASE",
+            "label": "clean Debug",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": "make CleanRelease",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": {
-                "owner": "cpp",
-                "fileLocation": ["relative", "${workspaceFolder}"],
-                "pattern": {
-                  "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
-                  "file": 1,
-                  "line": 2,
-                  "column": 3,
-                  "severity": 4,
-                  "message": 5
-                }
-              }
+            "command": "make",
+            "args": [
+                "CleanDebug"
+            ]
         },
         {
             "type": "shell",
-            "label": "Clean ALL",
+            "label": "clean Release",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": "make clean",
-            "group": {
-                "kind": "build",
-                "isDefault": true
+            "command": "make",
+            "args": [
+                "CleanRelease"
+            ]
+        },
+        {
+            "type": "shell",
+            "label": "clean All",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
             },
-            "problemMatcher": {
-                "owner": "cpp",
-                "fileLocation": ["relative", "${workspaceFolder}"],
-                "pattern": {
-                  "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
-                  "file": 1,
-                  "line": 2,
-                  "column": 3,
-                  "severity": 4,
-                  "message": 5
-                }
-              }
-         }
+            "command": "make",
+            "args": [
+                "clean"
+            ]
+        }
     ]
 }

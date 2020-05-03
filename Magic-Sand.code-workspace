@@ -1,0 +1,35 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path" : "${workspaceRoot}/../../../../addons/ofxCv"
+		},
+		{
+			"path" : "${workspaceRoot}/../../../../addons/ofxDatGui"
+		},
+		{
+			"path" : "${workspaceRoot}/../../../../addons/ofxKinect"
+		},
+		{
+			"path" : "${workspaceRoot}/../../../../addons/ofxLibwebsockets"
+		},
+		{
+			"path" : "${workspaceRoot}/../../../../addons/ofxModal"
+		},
+		{
+			"path" : "${workspaceRoot}/../../../../addons/ofxOpenCv"
+		},
+		{
+			"path" : "${workspaceRoot}/../../../../addons/ofxParagraph"
+		},
+		{
+			"path" : "${workspaceRoot}/../../../../addons/ofxXmlSettings"
+		},
+		{
+			"path": "${workspaceRoot}/../../../../libs/openFrameworks"
+		}
+	],
+	"settings": {}
+}

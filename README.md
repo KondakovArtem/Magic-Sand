@@ -1,3 +1,20 @@
+# Install
+- community addons:
+  * [ofxCv](https://github.com/kylemcdonald/ofxCv)
+  * [ofxParagraph](https://github.com/braitsch/ofxParagraph)
+  * [ofxDatGui (forked version)](https://github.com/thomwolf/ofxDatGui)
+  * [ofxModal](https://github.com/braitsch/ofxModal)
+  * [ofxLibwebsockets](https://github.com/robotconscience/ofxLibwebsockets) (git checkout tags/0.9.8)
+
+
+Simply place this file in /etc/udev/rules.d and you'll no longer need
+to run your apps as root.
+kinectPermission/51-kinect.rules
+
+# Install vscode_OF
+  * [of_vscode](https://github.com/npisanti/of_vscode
+
+
 # Magic Sand
 Magic Sand is a software for operating an augmented reality sandbox like this one:
 
