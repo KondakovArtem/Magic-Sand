@@ -45,14 +45,14 @@ public:
         setTitle("Save Color Map File");
         // textInput = addComponent(new ofxDatGuiTextInput("file name", ""));
         addButton("Cancel");
-        ofxDatGuiButton* closeButton = getButton(0);
-        closeButton->setLabel("Save");
-        closeButton->setLabelColor(ofColor::fromHex(0xffffff));
-        closeButton->setBackgroundColors(
-                                         ofColor::fromHex(0x337ab7),     // normal //
-                                         ofColor::fromHex(0x286090),     // on mouse over //
-                                         ofColor::fromHex(0x1f4c73));      // on mouse down //
-        closeButton->setBorder(ofColor::fromHex(0x1f4c73), 1);
+        // ofxDatGuiButton* closeButton = getButton(0);
+        // closeButton->setLabel("Save");
+        // closeButton->setLabelColor(ofColor::fromHex(0xffffff));
+        // closeButton->setBackgroundColors(
+        //                                  ofColor::fromHex(0x337ab7),     // normal //
+        //                                  ofColor::fromHex(0x286090),     // on mouse over //
+        //                                  ofColor::fromHex(0x1f4c73));      // on mouse down //
+        // closeButton->setBorder(ofColor::fromHex(0x1f4c73), 1);
         autoSize();
     }
 
@@ -82,18 +82,18 @@ public:
 
     // Gui and events functions
     void setupGui();
-    void onButtonEvent(ofxDatGuiButtonEvent e);
+    // void onButtonEvent(ofxDatGuiButtonEvent e);
 	void updateStateEvent();
 	void updateStateEvent(bool value);
 	void setDrawContourLines(bool value);
-	void onToggleEvent(ofxDatGuiToggleEvent e);
+	// void onToggleEvent(ofxDatGuiToggleEvent e);
     void setContourLineDistance(float value);
     // ofxDatGui* getGui();
-    void onSliderEvent(ofxDatGuiSliderEvent e);
-    void onColorPickerEvent(ofxDatGuiColorPickerEvent e);
+    // void onSliderEvent(ofxDatGuiSliderEvent e);
+    // void onColorPickerEvent(ofxDatGuiColorPickerEvent e);
     void selectColorMap(string fileName);
-    void onDropdownEvent(ofxDatGuiDropdownEvent e);
-    void onScrollViewEvent(ofxDatGuiScrollViewEvent e);
+    // void onDropdownEvent(ofxDatGuiDropdownEvent e);
+    // void onScrollViewEvent(ofxDatGuiScrollViewEvent e);
     void onSaveModalEvent(ofxModalEvent e);
     bool isUpdateStateEvent();
     void exit(ofEventArgs& e);

@@ -24,6 +24,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #ifndef __GreatSand__KinectProjector__
 #define __GreatSand__KinectProjector__
 
+#include "Utils/utils.h"
+
 #include "ofxLibwebsockets.h"
 #include <iostream>
 #include "ofMain.h"

@@ -402,59 +402,59 @@ void SandSurfaceRenderer::populateColorList(){
     // colorList->get(0)->setLabelAlignment(ofxDatGuiAlignment::CENTER);
 }
 
-void SandSurfaceRenderer::onButtonEvent(ofxDatGuiButtonEvent e){
-    if (e.target->is("Save")) {
-        saveModal->show();
-    } else if (e.target->is("Reset colors")) {
-        heightMap.loadFile(colorMapPath+colorMapFile);
-        populateColorList();
-    } else if (e.target->is("Insert new color after current color")){
-        int i = heightMap.size();
-        int j = heightMap.size()-1-selectedColor;
-        float newheight = (j > 0) ? (heightMap[j-1].height+heightMap[j].height)/2 : heightMap[j].height+1;
-        // colorList->add("color");
-        updateColorListColor(i, j);
-        // colorList->get(i)->setLabel("Height: "+ofToString(newheight));
-        // colorList->move(i,selectedColor+1);
-        heightMap.addKey(heightMap[j].color, newheight);
-        // onScrollViewEvent(ofxDatGuiScrollViewEvent(colorList, colorList->get(selectedColor+1), selectedColor+1));
-    } else if (e.target->is("Remove color")){
-        if (heightMap.size() > 1){
-            int j = heightMap.size()-1-selectedColor;
-            heightMap.removeKey(j);
-            // colorList->remove(selectedColor);
-            int i = selectedColor;
-            if (i == heightMap.size())
-                i -= 1;
-            selectedColor += 1; // To get i != selectedColor => update
-            // onScrollViewEvent(ofxDatGuiScrollViewEvent(colorList, colorList->get(i), i));
-        }
-    } else if (e.target->is("Move up")){
-        int i = selectedColor;
-        int j = heightMap.size()-1-i;
-        if (i>0){
-            heightMap.swapKeys(j, j+1);
-            updateColorListColor(i, j);
-            updateColorListColor(i-1, j+1);
-            // onScrollViewEvent(ofxDatGuiScrollViewEvent(colorList, colorList->get(i-1), i-1));
-       }
-    } else if (e.target->is("Move down")){
-        int i = selectedColor;
-        int j = heightMap.size()-1-i;
-        if (j>0){
-            heightMap.swapKeys(j, j-1);
-            updateColorListColor(i, j);
-            updateColorListColor(i+1, j-1);
-            // onScrollViewEvent(ofxDatGuiScrollViewEvent(colorList, colorList->get(i+1), i+1));
-        }
-    } else if (e.target->is("Undo")){
-        int i = selectedColor;
-        int j = heightMap.size()-1-i;
-        heightMap.setColorKey(j, undoColor);
-        // gui3->getColorPicker("ColorPicker")->setColor(undoColor);
-        updateColorListColor(i, j);
-    }
-}
+// void SandSurfaceRenderer::onButtonEvent(ofxDatGuiButtonEvent e){
+//     if (e.target->is("Save")) {
+//         saveModal->show();
+//     } else if (e.target->is("Reset colors")) {
+//         heightMap.loadFile(colorMapPath+colorMapFile);
+//         populateColorList();
+//     } else if (e.target->is("Insert new color after current color")){
+//         int i = heightMap.size();
+//         int j = heightMap.size()-1-selectedColor;
+//         float newheight = (j > 0) ? (heightMap[j-1].height+heightMap[j].height)/2 : heightMap[j].height+1;
+//         // colorList->add("color");
+//         updateColorListColor(i, j);
+//         // colorList->get(i)->setLabel("Height: "+ofToString(newheight));
+//         // colorList->move(i,selectedColor+1);
+//         heightMap.addKey(heightMap[j].color, newheight);
+//         // onScrollViewEvent(ofxDatGuiScrollViewEvent(colorList, colorList->get(selectedColor+1), selectedColor+1));
+//     } else if (e.target->is("Remove color")){
+//         if (heightMap.size() > 1){
+//             int j = heightMap.size()-1-selectedColor;
+//             heightMap.removeKey(j);
+//             // colorList->remove(selectedColor);
+//             int i = selectedColor;
+//             if (i == heightMap.size())
+//                 i -= 1;
+//             selectedColor += 1; // To get i != selectedColor => update
+//             // onScrollViewEvent(ofxDatGuiScrollViewEvent(colorList, colorList->get(i), i));
+//         }
+//     } else if (e.target->is("Move up")){
+//         int i = selectedColor;
+//         int j = heightMap.size()-1-i;
+//         if (i>0){
+//             heightMap.swapKeys(j, j+1);
+//             updateColorListColor(i, j);
+//             updateColorListColor(i-1, j+1);
+//             // onScrollViewEvent(ofxDatGuiScrollViewEvent(colorList, colorList->get(i-1), i-1));
+//        }
+//     } else if (e.target->is("Move down")){
+//         int i = selectedColor;
+//         int j = heightMap.size()-1-i;
+//         if (j>0){
+//             heightMap.swapKeys(j, j-1);
+//             updateColorListColor(i, j);
+//             updateColorListColor(i+1, j-1);
+//             // onScrollViewEvent(ofxDatGuiScrollViewEvent(colorList, colorList->get(i+1), i+1));
+//         }
+//     } else if (e.target->is("Undo")){
+//         int i = selectedColor;
+//         int j = heightMap.size()-1-i;
+//         heightMap.setColorKey(j, undoColor);
+//         // gui3->getColorPicker("ColorPicker")->setColor(undoColor);
+//         updateColorListColor(i, j);
+//     }
+// }
 
 
 void SandSurfaceRenderer::updateStateEvent()
@@ -476,23 +476,23 @@ void  SandSurfaceRenderer::setDrawContourLines(bool newValue) {
 
 }
 
-void SandSurfaceRenderer::onToggleEvent(ofxDatGuiToggleEvent e){
-    if (e.target->is(CMP_DRAW_DISTANCE)) {
-        setDrawContourLines(e.checked);
-        // drawContourLines = e.checked;
-    } else if (e.target->is("Edit")) {
-        editColorMap = e.checked;
-    }
-}
+// void SandSurfaceRenderer::onToggleEvent(ofxDatGuiToggleEvent e){
+//     if (e.target->is(CMP_DRAW_DISTANCE)) {
+//         setDrawContourLines(e.checked);
+//         // drawContourLines = e.checked;
+//     } else if (e.target->is("Edit")) {
+//         editColorMap = e.checked;
+//     }
+// }
 
-void SandSurfaceRenderer::onColorPickerEvent(ofxDatGuiColorPickerEvent e){
-    if (e.target->is("ColorPicker")) {
-        int i = selectedColor;
-        int j = heightMap.size()-1-i;
-        heightMap.setColorKey(j, e.color);
-        updateColorListColor(i, j);
-    }
-}
+// void SandSurfaceRenderer::onColorPickerEvent(ofxDatGuiColorPickerEvent e){
+//     if (e.target->is("ColorPicker")) {
+//         int i = selectedColor;
+//         int j = heightMap.size()-1-i;
+//         heightMap.setColorKey(j, e.color);
+//         updateColorListColor(i, j);
+//     }
+// }
 
 
 void SandSurfaceRenderer::setContourLineDistance(float newValue) {
@@ -509,17 +509,17 @@ void SandSurfaceRenderer::setContourLineDistance(float newValue) {
 // }
 
 
-void SandSurfaceRenderer::onSliderEvent(ofxDatGuiSliderEvent e){
-    if (e.target->is(CMP_CONTOUR_LINE_DISTANCE)) {
-        setContourLineDistance(e.value);
+// void SandSurfaceRenderer::onSliderEvent(ofxDatGuiSliderEvent e){
+//     if (e.target->is(CMP_CONTOUR_LINE_DISTANCE)) {
+//         setContourLineDistance(e.value);
         
-    } else if (e.target->is("Height")) {
-        int i = selectedColor;
-        int j = heightMap.size()-1-i;
-        heightMap.setHeightKey(j, e.value);
-        // colorList->get(i)->setLabel("Height: "+ofToString(e.value));
-    }
-}
+//     } else if (e.target->is("Height")) {
+//         int i = selectedColor;
+//         int j = heightMap.size()-1-i;
+//         heightMap.setHeightKey(j, e.value);
+//         // colorList->get(i)->setLabel("Height: "+ofToString(e.value));
+//     }
+// }
 
 
 void SandSurfaceRenderer::selectColorMap(string fileName) {
@@ -535,30 +535,30 @@ void SandSurfaceRenderer::selectColorMap(string fileName) {
     // setForceGuiUpdate(true);
 }
 
-void SandSurfaceRenderer::onDropdownEvent(ofxDatGuiDropdownEvent e){
-    selectColorMap(e.target->getLabel());
-}
+// void SandSurfaceRenderer::onDropdownEvent(ofxDatGuiDropdownEvent e){
+//     selectColorMap(e.target->getLabel());
+// }
 
-void SandSurfaceRenderer::onScrollViewEvent(ofxDatGuiScrollViewEvent e){
-    int i = e.index;
-    if (i != selectedColor){
-        int j = heightMap.size()-1-i;
-        e.target->setLabelAlignment(ofxDatGuiAlignment::CENTER);
-        // colorList->get(selectedColor)->setLabelAlignment(ofxDatGuiAlignment::LEFT);
-//        gui3->getButton("ColorName")->setLabel("Color #"+ofToString(i+1));
-        // gui3->getColorPicker("ColorPicker")->setColor(heightMap[j].color);
-        undoColor = heightMap[j].color;
-        // ofxDatGuiSlider* hgt = gui3->getSlider("Height");
-        // hgt->setMin(heightMap.getScalarRangeMin());
-        // hgt->setMax(heightMap.getScalarRangeMax());
-        // float nmax = (j < heightMap.size()-1) ? heightMap[j+1].height : heightMap[j].height+100;
-        // hgt->setMax(nmax);
-        // float nmin = (j > 0) ? heightMap[j-1].height : heightMap[j].height-100;
-        // hgt->setMin(nmin);
-        // hgt->setValue(heightMap[j].height);
-        selectedColor = i;
-    }
-}
+// void SandSurfaceRenderer::onScrollViewEvent(ofxDatGuiScrollViewEvent e){
+//     int i = e.index;
+//     if (i != selectedColor){
+//         int j = heightMap.size()-1-i;
+//         e.target->setLabelAlignment(ofxDatGuiAlignment::CENTER);
+//         // colorList->get(selectedColor)->setLabelAlignment(ofxDatGuiAlignment::LEFT);
+// //        gui3->getButton("ColorName")->setLabel("Color #"+ofToString(i+1));
+//         // gui3->getColorPicker("ColorPicker")->setColor(heightMap[j].color);
+//         undoColor = heightMap[j].color;
+//         // ofxDatGuiSlider* hgt = gui3->getSlider("Height");
+//         // hgt->setMin(heightMap.getScalarRangeMin());
+//         // hgt->setMax(heightMap.getScalarRangeMax());
+//         // float nmax = (j < heightMap.size()-1) ? heightMap[j+1].height : heightMap[j].height+100;
+//         // hgt->setMax(nmax);
+//         // float nmin = (j > 0) ? heightMap[j-1].height : heightMap[j].height-100;
+//         // hgt->setMin(nmin);
+//         // hgt->setValue(heightMap[j].height);
+//         selectedColor = i;
+//     }
+// }
 
 void SandSurfaceRenderer::onSaveModalEvent(ofxModalEvent e){
     if (e.type == ofxModalEvent::SHOWN){
