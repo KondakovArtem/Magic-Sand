@@ -122,7 +122,11 @@ private:
     template <typename Proc>
     void resolveToggleValue(ofxLibwebsockets::Event& args, string componentName, Proc method);
     template<typename Proc>
+	void resolveStringValue(ofxLibwebsockets::Event& args, Proc method, string componentName);
+    template<typename Proc>
     void resolveStringValue(ofxLibwebsockets::Event& args, Proc method, string componentName, ofxDatGui* gui);
+    template<typename Proc>
+	void resolveFloatValue(ofxLibwebsockets::Event& args, Proc method, string componentName);
     template<typename Proc>
     void resolveFloatValue(ofxLibwebsockets::Event& args, Proc method, string componentName, ofxDatGui* gui);
     template<typename T>
