@@ -26,6 +26,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #ifndef __GreatSand__SandSurfaceRenderer__
 #define __GreatSand__SandSurfaceRenderer__
 
+#include "Utils/utils.h"
 #include <iostream>
 #include "ofMain.h"
 #include "../KinectProjector/KinectProjector.h"

@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #ifndef __Magic_Sand__Calibration__
 #define __Magic_Sand__Calibration__
 
+#include "Utils/utils.h"
 #include <iostream>
 #include "ofMain.h"
 #include "libs/dlib/matrix.h"

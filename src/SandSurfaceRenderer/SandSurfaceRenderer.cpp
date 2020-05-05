@@ -219,6 +219,10 @@ void SandSurfaceRenderer::setupMesh(){
         {
             ofPoint pt = ofPoint(x+kinectROI.x,y+kinectROI.y,0.0f)-ofPoint(0.5,0.5,0); // We move of a half pixel to center the color pixel (more beautiful)
             mesh.addVertex(pt); // make a new vertex
+            // ofDefaultTexCoordType vc;
+            // vc.x = pt.x;
+            // vc.y = pt.y;
+            // mesh.addTexCoord(vc);
             mesh.addTexCoord(pt);
         }
     for(unsigned int y=0;y<meshheight-1;y++)
@@ -589,7 +593,7 @@ bool SandSurfaceRenderer::isUpdateStateEvent() {
 bool SandSurfaceRenderer::loadSettings(){
     string settingsFile = "settings/sandSurfaceRendererSettings.xml";
     
-    ofXml xml;
+    ofxXmlPoco xml;
     if (!xml.load(settingsFile))
         return false;
     xml.setTo("SURFACERENDERERSETTINGS");
@@ -603,7 +607,7 @@ bool SandSurfaceRenderer::loadSettings(){
 bool SandSurfaceRenderer::saveSettings(){
     string settingsFile = "settings/sandSurfaceRendererSettings.xml";
 
-    ofXml xml;
+    ofxXmlPoco xml;
     xml.addChild("SURFACERENDERERSETTINGS");
     xml.setTo("SURFACERENDERERSETTINGS");
     xml.addValue("colorMapFile", colorMapFile);
